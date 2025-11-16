@@ -67,8 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Crea Torneo - Gestione Tornei</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
+    <?php load_theme(); ?>
 </head>
-<body>
+<body <?php body_class(); ?>>
     <header class="modern-header">
         <div class="header-content">
             <h1>Crea Nuovo Torneo</h1>

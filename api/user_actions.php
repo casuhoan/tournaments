@@ -118,6 +118,32 @@ switch ($action) {
         header('Location: ../settings.php?page=profile');
         exit();
 
+    case 'update_appearance':
+        $users_file = '../data/users.json';
+        $users = read_json($users_file);
+        $user_id = $_SESSION['user_id'];
+        $user_key = null;
+
+        foreach ($users as $key => $user) {
+            if ($user['id'] == $user_id) {
+                $user_key = $key;
+                break;
+            }
+        }
+
+        if ($user_key === null) {
+            die('Utente non trovato.');
+        }
+
+        $new_theme = $_POST['theme'] ?? 'light';
+        $users[$user_key]['theme'] = $new_theme;
+
+        write_json($users_file, $users);
+
+        $_SESSION['feedback'] = 'Impostazioni aspetto aggiornate con successo.';
+        header('Location: ../settings.php?page=appearance');
+        exit();
+
     default:
         die('Azione non valida.');
 }

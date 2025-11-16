@@ -79,8 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Registrazione - Gestione Tornei</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
+    <?php load_theme(); ?>
 </head>
-<body>
+<body <?php body_class(); ?>>
     <header class="modern-header">
         <h1>Registrazione</h1>
     </header>

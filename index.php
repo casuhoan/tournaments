@@ -29,8 +29,9 @@ $recent_tournaments = array_slice($tournaments, 0, 3);
     <title>Gestione Tornei</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
+    <?php load_theme(); ?>
 </head>
-<body>
+<body <?php body_class(); ?>>
     <header class="modern-header">
         <h1>Gestione Tornei</h1>
     </header>

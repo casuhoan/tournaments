@@ -45,8 +45,9 @@ $formats = ['Pauper', 'Pioneer', 'Standard', 'Modern', 'Commander'];
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
+    <?php load_theme(); ?>
 </head>
-<body>
+<body <?php body_class(); ?>>
     <header class="modern-header">
         <div class="header-content">
             <h1>Categorizza Lista</h1>
