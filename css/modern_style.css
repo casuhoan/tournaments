@@ -1,0 +1,309 @@
+/* Modern Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --secondary-color: #6c757d;
+    --light-gray: #f8f9fa;
+    --dark-gray: #343a40;
+    --white: #ffffff;
+    --text-color: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+}
+
+header.modern-header {
+    background: var(--white);
+    color: var(--dark-gray);
+    padding: 1rem 2rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+header.modern-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+main.modern-main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--white);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--light-gray);
+    padding-bottom: 1rem;
+}
+
+/* Modern Forms */
+.modern-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.modern-form .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--dark-gray);
+}
+
+.modern-form .form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modern-form .form-group input:focus {
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.modern-form fieldset {
+    border: 1px solid #dee2e6;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--border-radius);
+}
+
+.modern-form legend {
+    padding: 0 0.5rem;
+    font-weight: bold;
+    color: var(--dark-gray);
+    width: auto;
+    font-size: 1.2rem;
+}
+
+/* Score Submission UI */
+.score-ui {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+}
+
+.player-score {
+    text-align: center;
+}
+
+.player-score span {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.score-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.score-display {
+    font-size: 2.5em;
+    color: var(--primary-color);
+    padding: 0 15px;
+    font-weight: bold;
+}
+
+/* Standings Table */
+.standings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.standings-table th, .standings-table td {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
+    text-align: left;
+}
+
+.standings-table th {
+    background-color: var(--light-gray);
+    font-weight: 700;
+}
+
+.standings-table tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* User Avatar */
+.user-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 4px solid var(--white);
+    box-shadow: var(--box-shadow);
+}
+
+/* Decklist Box */
+.decklist-box {
+    background-color: #e9ecef;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+
+/* Modern Buttons */
+.btn-modern {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--white);
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: var(--primary-color);
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-modern:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-modern-secondary {
+    background-color: var(--secondary-color);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+    border-radius: var(--border-radius);
+}
+
+.page-item .page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: var(--primary-color);
+    background-color: var(--white);
+    border: 1px solid #dee2e6;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: var(--white);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.page-item:first-child .page-link {
+    margin-left: 0;
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+/* Summary Boxes */
+.summary-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.summary-box {
+    background: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.summary-box:hover {
+    box-shadow: var(--box-shadow);
+}
+
+.summary-box h3 a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.summary-box p {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0.5rem 0 0;
+    color: var(--dark-gray);
+}
+
+/* Tournament List */
+.tournament-list .tournament-card {
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+}
+
+.tournament-list .tournament-card:last-child {
+    border-bottom: none;
+}
+
+.tournament-list .tournament-card h3 a {
+    color: var(--dark-gray);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.tournament-list .tournament-card h3 a:hover {
+    color: var(--primary-color);
+}

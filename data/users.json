@@ -1,0 +1,50 @@
+[
+    {
+        "id": 3,
+        "username": "PlayerThree",
+        "email": "player3@example.com",
+        "password": "password3",
+        "role": "player",
+        "avatar": ""
+    },
+    {
+        "id": 4,
+        "username": "PlayerFour",
+        "email": "player4@example.com",
+        "password": "password4",
+        "role": "player",
+        "avatar": ""
+    },
+    {
+        "id": 5,
+        "username": "PlayerFive",
+        "email": "player5@example.com",
+        "password": "password5",
+        "role": "player",
+        "avatar": ""
+    },
+    {
+        "id": 6,
+        "username": "PlayerSix",
+        "email": "player6@example.com",
+        "password": "password6",
+        "role": "player",
+        "avatar": ""
+    },
+    {
+        "id": 7,
+        "username": "admin",
+        "email": "casuhoan@gmail.com",
+        "password": "grandius",
+        "role": "admin",
+        "avatar": ""
+    },
+    {
+        "id": 8,
+        "username": "test",
+        "email": "test@gmail.com",
+        "password": "grandius",
+        "role": "player",
+        "avatar": ""
+    }
+]

@@ -1,0 +1,205 @@
+[
+    {
+        "id": 101,
+        "name": "Torneo di Apertura",
+        "date": "2025-10-15",
+        "organizerId": 7,
+        "link": "torneo-di-apertura-101",
+        "status": "completed",
+        "settings": {},
+        "participants": [
+            { "userId": 1, "rank": 1, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 2, "rank": 2, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 3, "rank": 3, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 4, "rank": 4, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" }
+        ],
+        "matches": {}
+    },
+    {
+        "id": 102,
+        "name": "Sfida Autunnale",
+        "date": "2025-10-22",
+        "organizerId": 7,
+        "link": "sfida-autunnale-102",
+        "status": "completed",
+        "settings": {},
+        "participants": [
+            { "userId": 5, "rank": 1, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 1, "rank": 2, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 6, "rank": 3, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 2, "rank": 4, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" }
+        ],
+        "matches": {}
+    },
+    {
+        "id": 103,
+        "name": "Campionato Regionale",
+        "date": "2025-11-01",
+        "organizerId": 7,
+        "link": "campionato-regionale-103",
+        "status": "completed",
+        "settings": {},
+        "participants": [
+            { "userId": 3, "rank": 1, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 5, "rank": 2, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 1, "rank": 3, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 4, "rank": 4, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" }
+        ],
+        "matches": {}
+    },
+    {
+        "id": 104,
+        "name": "Grande Classico",
+        "date": "2025-11-12",
+        "organizerId": 7,
+        "link": "grande-classico-104",
+        "status": "completed",
+        "settings": {},
+        "participants": [
+            { "userId": 2, "rank": 1, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 6, "rank": 2, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 4, "rank": 3, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" },
+            { "userId": 1, "rank": 4, "score": 0, "malus": 0, "played_opponents": [], "games_won": 0, "games_lost": 0, "decklist_name": "", "decklist_format": "" }
+        ],
+        "matches": {}
+    },
+    {
+        "id": 106,
+        "name": "Test2",
+        "date": "2025-11-15",
+        "organizerId": 7,
+        "link": "test2-106",
+        "status": "completed",
+        "settings": {
+            "match_type": "bo1",
+            "tournament_type": "swiss",
+            "rounds": 4,
+            "decklist_req": "optional",
+            "decklist_visibility": "private"
+        },
+        "participants": [
+            {
+                "userId": 7,
+                "decklist": "",
+                "score": 3,
+                "malus": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "decklist_name": "", 
+                "decklist_format": ""
+            },
+            {
+                "userId": 8,
+                "decklist": "",
+                "score": 6,
+                "malus": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "decklist_name": "",
+                "decklist_format": ""
+            }
+        ],
+        "matches": {
+            "round_1": [
+                {
+                    "round": 1,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 0,
+                    "score2": 0,
+                    "winner": "7",
+                    "table": 1
+                }
+            ],
+            "round_2": [
+                {
+                    "round": 2,
+                    "player1": 7,
+                    "player2": 8,
+                    "score1": 0,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ],
+            "round_3": [
+                {
+                    "round": 3,
+                    "player1": 7,
+                    "player2": 8,
+                    "score1": 0,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ],
+            "round_4": [
+                {
+                    "round": 4,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": null,
+                    "score2": null,
+                    "winner": null,
+                    "table": 1
+                }
+            ]
+        }
+    },
+    {
+        "id": 107,
+        "name": "Test 3 Modificato",
+        "date": "2025-11-16",
+        "organizerId": 7,
+        "link": "test-3-107",
+        "status": "in_progress",
+        "settings": {
+            "match_type": "bo3",
+            "tournament_type": "elimination",
+            "rounds": 4,
+            "decklist_req": "optional",
+            "decklist_visibility": "private"
+        },
+        "participants": [
+            {
+                "userId": 8,
+                "decklist": "",
+                "score": 3,
+                "malus": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "played_opponents": [
+                    "7"
+                ],
+                "decklist_name": "",
+                "decklist_format": ""
+            },
+            {
+                "userId": 7,
+                "decklist": "",
+                "score": 0,
+                "malus": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "played_opponents": [
+                    "8"
+                ],
+                "decklist_name": "",
+                "decklist_format": ""
+            }
+        ],
+        "matches": {
+            "round_1": [
+                {
+                    "round": 1,
+                    "player1": 7,
+                    "player2": 8,
+                    "score1": 0,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ]
+        }
+    }
+]
