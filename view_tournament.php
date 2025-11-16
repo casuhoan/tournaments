@@ -12,10 +12,7 @@ $tournaments = read_json('data/tournaments.json');
 $users = read_json('data/users.json');
 $user_map = [];
 foreach ($users as $user) {
-    $user_map[$user['id']] = [
-        'username' => $user['username'],
-        'avatar' => !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png'
-    ];
+    $user_map[$user['id']] = $user['username'];
 }
 
 $tournament_data = null;
@@ -58,9 +55,8 @@ usort($participants, function($a, $b) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
-    <?php load_theme(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body>
     <header class="modern-header">
         <div class="header-content">
             <h1><?php echo htmlspecialchars($tournament_data['name']); ?></h1>
@@ -108,9 +104,8 @@ usort($participants, function($a, $b) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td>
-                                <img src="<?php echo $user_map[$p['userId']]['avatar']; ?>" alt="User Avatar" class="user-avatar-small me-2">
                                 <a href="view_profile.php?uid=<?php echo $p['userId']; ?>">
-                                    <?php echo htmlspecialchars($user_map[$p['userId']]['username'] ?? 'Sconosciuto'); ?>
+                                    <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
                             </td>
                             <td><?php echo $wld_score; ?></td>

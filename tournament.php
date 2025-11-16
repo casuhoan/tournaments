@@ -37,10 +37,7 @@ $is_organizer = $is_logged_in && isset($tournament['organizerId']) && $tournamen
 $users = read_json('data/users.json');
 $user_map = [];
 foreach ($users as $user) {
-    $user_map[$user['id']] = [
-        'username' => $user['username'],
-        'avatar' => !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png'
-    ];
+    $user_map[$user['id']] = $user['username'];
 }
 
 ?>
@@ -53,9 +50,8 @@ foreach ($users as $user) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
-    <?php load_theme(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body>
     <header class="modern-header">
         <div class="header-content">
             <h1><?php echo htmlspecialchars($tournament['name']); ?></h1>
@@ -181,7 +177,7 @@ foreach ($users as $user) {
 
                         if ($current_match):
                             $opponent_id = ($current_match['player1'] == $user_id) ? $current_match['player2'] : $current_match['player1'];
-                            $opponent_name = $user_map[$opponent_id]['username'] ?? 'Sconosciuto';
+                            $opponent_name = $user_map[$opponent_id] ?? 'Sconosciuto';
                         ?>
                             <p>
                                 <strong>Tavolo:</strong> <?php echo htmlspecialchars($current_match['table']); ?><br>
@@ -200,7 +196,7 @@ foreach ($users as $user) {
 
                                         <div class="score-ui">
                                             <div class="player-score">
-                                                <span><?php echo htmlspecialchars($user_map[$current_match['player1']]['username']); ?></span>
+                                                <span><?php echo htmlspecialchars($user_map[$current_match['player1']]); ?></span>
                                                 <div class="score-controls">
                                                     <button type="button" class="btn btn-secondary btn-sm" onclick="updateScore('score1', -1)">-</button>
                                                     <span id="score1-display" class="score-display">0</span>
@@ -208,7 +204,7 @@ foreach ($users as $user) {
                                                 </div>
                                             </div>
                                             <div class="player-score">
-                                                <span><?php echo htmlspecialchars($user_map[$current_match['player2']]['username']); ?></span>
+                                                <span><?php echo htmlspecialchars($user_map[$current_match['player2']]); ?></span>
                                                 <div class="score-controls">
                                                     <button type="button" class="btn btn-secondary btn-sm" onclick="updateScore('score2', -1)">-</button>
                                                     <span id="score2-display" class="score-display">0</span>
@@ -290,9 +286,8 @@ foreach ($users as $user) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td>
-                                <img src="<?php echo $user_map[$player['userId']]['avatar']; ?>" alt="User Avatar" class="user-avatar-small me-2">
                                 <a href="view_profile.php?uid=<?php echo $player['userId']; ?>">
-                                    <?php echo htmlspecialchars($user_map[$player['userId']]['username'] ?? 'Sconosciuto'); ?>
+                                    <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
                             </td>
                             <td><?php echo htmlspecialchars($player['score']); ?></td>
@@ -308,10 +303,7 @@ foreach ($users as $user) {
                 <h3>Partecipanti Iscritti (<?php echo count($tournament['participants']); ?>)</h3>
                 <ul>
                     <?php foreach ($tournament['participants'] as $participant): ?>
-                        <li>
-                            <img src="<?php echo $user_map[$participant['userId']]['avatar']; ?>" alt="User Avatar" class="user-avatar-small me-2">
-                            <?php echo htmlspecialchars($user_map[$participant['userId']]['username'] ?? 'Utente Sconosciuto'); ?>
-                        </li>
+                        <li><?php echo htmlspecialchars($user_map[$participant['userId']] ?? 'Utente Sconosciuto'); ?></li>
                     <?php endforeach; ?>
                 </ul>
             </section>

@@ -6,10 +6,7 @@ $all_tournaments = read_json('data/tournaments.json');
 $users = read_json('data/users.json');
 $user_map = [];
 foreach ($users as $user) {
-    $user_map[$user['id']] = [
-        'username' => $user['username'],
-        'avatar' => !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png'
-    ];
+    $user_map[$user['id']] = $user['username'];
 }
 
 // Filtri
@@ -62,49 +59,14 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
-    <?php load_theme(); ?>
 </head>
-<body <?php body_class(); ?>>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="home.php">Gestione Tornei</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="all_tournaments.php">Vedi tutti i tornei</a>
-                    </li>
-                </ul>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <?php
-                    $current_user = get_current_user();
-                    $avatar_path = $current_user['avatar'];
-                    ?>
-                    <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
-                            <span class="username"><?php echo htmlspecialchars($current_user['username']); ?></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end text-small shadow">
-                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
-                            <?php if ($_SESSION['role'] === 'admin'): ?>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
-                            <?php endif; ?>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-            </div>
+<body>
+    <header class="modern-header">
+        <div class="header-content">
+            <h1>Tutti i Tornei</h1>
+            <a href="home.php" class="btn btn-light">Torna alla Home</a>
         </div>
-    </nav>
+    </header>
 
     <main class="modern-main">
         <section id="filters" class="card mb-4">
@@ -159,8 +121,7 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
                     <ol>
                         <?php foreach ($top_players as $index => $player): ?>
                             <li>
-                                <img src="<?php echo $user_map[$player['userId']]['avatar']; ?>" alt="User Avatar" class="user-avatar-small me-2">
-                                <a href="view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']]['username'] ?? 'Sconosciuto'); ?></a>
+                                <a href="view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?></a>
                                 <?php if (!empty($player['decklist_name'])): ?>
                                     - <a href="view_decklist.php?tid=<?php echo $tournament['id']; ?>&uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($player['decklist_name']); ?></a>
                                 <?php endif; ?>

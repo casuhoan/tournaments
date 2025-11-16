@@ -107,11 +107,3 @@ Sotto ci saranno tutti i partecipanti usando il formato già inviato nel punto 9
 
 Richiesta 13 (Visualizzatore lista):
 Quando qualcuno premerà sul nome della lista di qualcuno, si aprirà la sua lista in un'altra pagina visulizzando solo il nome della persona che l'ha portata (sarà un link alla pagina profilo utente della richiesta 10), il torneo in cui è stata portata (link alla pagina torneo della richiesta 12), il risultato che ha fatto (se alla fine del torneo ha fatto 2 vittorie, 1 sconfitta e un pareggio allora stamperà 2-1-1 in ordine) e la lista in formato testo (tutto quello scritto nella text area al momento dell'Upload).
-
-Richiesta 14 (Modifica Navbar):
-Inseriscimi nella navbar dei link per le pagine Home e "Vedi tutti i tornei", poi mi devi inserire a destra il menù laterale già presente del profilo e la foto profilo dell'utente.
-Inoltre inseriscimi una foto profilo di Default per chi non ce l'ha. 
-Essa verrà anche visualizzata nelle classifiche dei tornei (e nella lista delle partecipazioni) a sinistra rispetto al nome.
-
-Richiesta 15 (Aggiunta tema scuro):
-Nelle impostazioni utente, sotto il pulsante del profilo creami il pulsante Aspetto dove puoi selezionare tra modalità scura e modalità chiara (tramite uno switch).

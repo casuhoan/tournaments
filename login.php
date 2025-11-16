@@ -1,10 +1,8 @@
 <?php
-ob_start();
 session_start();
-require_once 'helpers.php';
 // Se l'utente è già loggato, reindirizza alla dashboard
 if (isset($_SESSION['user_id'])) {
-    header('Location: home.php');
+    header('Location: dashboard.php');
     exit();
 }
 
@@ -47,9 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login - Gestione Tornei</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
-    <?php load_theme(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body>
     <header class="modern-header">
         <h1>Login</h1>
     </header>
@@ -80,4 +77,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 </body>
 </html>
-<?php ob_end_flush(); ?>

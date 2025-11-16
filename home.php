@@ -8,17 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$current_user = get_current_user();
-if (!is_array($current_user)) {
-    // Potrebbe succedere se l'utente viene eliminato ma la sessione è ancora attiva
-    session_unset();
-    session_destroy();
-    header('Location: login.php');
-    exit();
-}
-
-$logged_in_username = $current_user['username'];
-$avatar_path = $current_user['avatar'];
+$logged_in_username = $_SESSION['username'];
 
 // Gestione del logout
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
@@ -52,6 +42,12 @@ $total_tournaments = count($tournaments);
 $completed_tournaments = count($tournaments); // Per ora, tutti i tornei sono considerati completati
 $user_total_tournaments = count($user_tournaments);
 $user_completed_tournaments = count($user_tournaments); // Per ora, tutti i tornei dell'utente sono considerati completati
+
+$users = read_json('data/users.json');
+$current_user = find_user_by_id($users, $_SESSION['user_id']);
+$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
+    ? $current_user['avatar'] 
+    : 'img/default_avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -63,43 +59,29 @@ $user_completed_tournaments = count($user_tournaments); // Per ora, tutti i torn
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
-    <?php load_theme(); ?>
 </head>
-<body <?php body_class(); ?>>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="home.php">Gestione Tornei</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="home.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="all_tournaments.php">Vedi tutti i tornei</a>
-                    </li>
-                </ul>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
-                        <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end text-small shadow">
-                        <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                        <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
-                        <?php if ($_SESSION['role'] === 'admin'): ?>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
-                        <?php endif; ?>
+<body>
+    <header class="modern-header">
+        <div class="header-content">
+            <h1>Home</h1>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                    <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                    <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                    <?php if ($_SESSION['role'] === 'admin'): ?>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
-                    </ul>
-                </div>
+                        <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                    <?php endif; ?>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                </ul>
             </div>
         </div>
-    </nav>
+    </header>
 
     <main class="modern-main">
         <section id="dashboard-actions" class="card">
