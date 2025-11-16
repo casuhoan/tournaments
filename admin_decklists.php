@@ -1,6 +1,6 @@
 <?php
 // Questo file viene incluso in admin_panel.php
-
+//Test
 $tournaments = read_json('data/tournaments.json');
 $users = read_json('data/users.json');
 $user_map = [];
