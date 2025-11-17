@@ -139,7 +139,7 @@ foreach ($tournaments as $tournament) {
                 ? $user_data['avatar'] 
                 : 'img/default_avatar.png';
             ?>
-            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar-large">
+            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
             <h2><?php echo htmlspecialchars($user_data['username']); ?></h2>
         </section>
 
@@ -184,5 +184,7 @@ foreach ($tournaments as $tournament) {
     <footer>
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

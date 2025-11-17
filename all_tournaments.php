@@ -206,5 +206,6 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
