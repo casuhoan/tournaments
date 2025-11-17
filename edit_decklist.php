@@ -71,7 +71,7 @@ $formats = ['Pauper', 'Pioneer', 'Standard', 'Modern', 'Commander'];
             <div class="user-menu">
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
                         <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -124,5 +124,6 @@ $formats = ['Pauper', 'Pioneer', 'Standard', 'Modern', 'Commander'];
     <footer>
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
-</html>

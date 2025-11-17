@@ -84,7 +84,7 @@ usort($participants, function($a, $b) {
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -146,7 +146,7 @@ usort($participants, function($a, $b) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
-                                <img src="<?php echo $avatar_map[$p['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                                <img src="<?php echo $avatar_map[$p['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                                 <a href="view_profile.php?uid=<?php echo $p['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
@@ -171,5 +171,7 @@ usort($participants, function($a, $b) {
     <footer>
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

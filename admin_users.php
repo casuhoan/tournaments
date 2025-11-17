@@ -35,7 +35,7 @@ $users = read_json('data/users.json');
                 ?>
                 <tr>
                     <td><?php echo htmlspecialchars($user['id']); ?></td>
-                    <td><img src="<?php echo $avatar; ?>" alt="Avatar" class="player-avatar"></td>
+                    <td><img src="<?php echo $avatar; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar"></td>
                     <td><?php echo htmlspecialchars($user['username']); ?></td>
                     <td><?php echo htmlspecialchars($user['email']); ?></td>
                     <td><?php echo htmlspecialchars($user['role'] ?? 'player'); ?></td>

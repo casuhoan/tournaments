@@ -49,7 +49,7 @@ foreach ($tournaments as $tournament) {
                 <tr>
                     <td><?php echo htmlspecialchars($item['tournament_name']); ?></td>
                     <td class="player-cell">
-                        <img src="<?php echo $avatar_map[$item['user_id']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                        <img src="<?php echo $avatar_map[$item['user_id']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                         <span><?php echo htmlspecialchars($item['player_name']); ?></span>
                     </td>
                     <td><pre><?php echo htmlspecialchars(substr($item['decklist'], 0, 100)); ?>...</pre></td>

@@ -79,7 +79,7 @@ foreach ($users as $user) {
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -328,7 +328,7 @@ foreach ($users as $user) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
-                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                                 <a href="view_profile.php?uid=<?php echo $player['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
@@ -347,7 +347,7 @@ foreach ($users as $user) {
                 <ul>
                     <?php foreach ($tournament['participants'] as $participant): ?>
                         <li class="player-list-item">
-                            <img src="<?php echo $avatar_map[$participant['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                            <img src="<?php echo $avatar_map[$participant['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                             <span><?php echo htmlspecialchars($user_map[$participant['userId']] ?? 'Utente Sconosciuto'); ?></span>
                         </li>
                     <?php endforeach; ?>

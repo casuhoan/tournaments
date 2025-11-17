@@ -98,7 +98,7 @@ $wld_score = "$wins-$losses-$draws";
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -126,7 +126,7 @@ $wld_score = "$wins-$losses-$draws";
             <ul class="list-group">
                 <li class="list-group-item player-cell">
                     <strong>Giocatore:</strong> 
-                    <img src="<?php echo $player_avatar; ?>" alt="Avatar" class="player-avatar ms-2">
+                    <img src="<?php echo $player_avatar; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar ms-2">
                     <a href="view_profile.php?uid=<?php echo $user_id; ?>"><?php echo htmlspecialchars($player_name); ?></a>
                 </li>
                 <li class="list-group-item">
@@ -150,5 +150,7 @@ $wld_score = "$wins-$losses-$draws";
     <footer>
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
