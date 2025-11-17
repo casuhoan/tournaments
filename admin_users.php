@@ -16,6 +16,7 @@ $users = read_json('data/users.json');
     <thead>
         <tr>
             <th>ID</th>
+            <th>Avatar</th>
             <th>Username</th>
             <th>Email</th>
             <th>Ruolo</th>
@@ -25,12 +26,16 @@ $users = read_json('data/users.json');
     <tbody>
         <?php if (empty($users)): ?>
             <tr>
-                <td colspan="5">Nessun utente trovato.</td>
+                <td colspan="6">Nessun utente trovato.</td>
             </tr>
         <?php else: ?>
             <?php foreach ($users as $user): ?>
+                <?php
+                    $avatar = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
+                ?>
                 <tr>
                     <td><?php echo htmlspecialchars($user['id']); ?></td>
+                    <td><img src="<?php echo $avatar; ?>" alt="Avatar" class="player-avatar"></td>
                     <td><?php echo htmlspecialchars($user['username']); ?></td>
                     <td><?php echo htmlspecialchars($user['email']); ?></td>
                     <td><?php echo htmlspecialchars($user['role'] ?? 'player'); ?></td>

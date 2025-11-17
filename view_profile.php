@@ -2,6 +2,21 @@
 session_start();
 require_once 'helpers.php';
 
+// User data retrieval for header
+$header_avatar_path = 'img/default_avatar.png';
+$logged_in_username = null;
+if (isset($_SESSION['user_id'])) {
+    $users_data_for_header = read_json('data/users.json');
+    $current_user_for_header = find_user_by_id($users_data_for_header, $_SESSION['user_id']);
+    if ($current_user_for_header) {
+        $header_avatar_path = !empty($current_user_for_header['avatar']) && file_exists($current_user_for_header['avatar']) 
+            ? $current_user_for_header['avatar'] 
+            : 'img/default_avatar.png';
+    }
+    $logged_in_username = $_SESSION['username'];
+}
+
+
 $user_id_to_view = $_GET['uid'] ?? null;
 
 if (!$user_id_to_view) {
@@ -86,8 +101,34 @@ foreach ($tournaments as $tournament) {
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1>Profilo di <?php echo htmlspecialchars($user_data['username']); ?></h1>
-            <a href="home.php" class="btn-modern">Torna alla Home</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="<?php echo $header_avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                <?php endif; ?>
+            </div>
         </div>
     </header>
 

@@ -2,6 +2,20 @@
 session_start();
 require_once 'helpers.php';
 
+// User data retrieval for header
+$avatar_path = 'img/default_avatar.png';
+$logged_in_username = null;
+if (isset($_SESSION['user_id'])) {
+    $users_data = read_json('data/users.json');
+    $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
+    if ($current_user) {
+        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
+            ? $current_user['avatar'] 
+            : 'img/default_avatar.png';
+    }
+    $logged_in_username = $_SESSION['username'];
+}
+
 $tournament_id = $_GET['tid'] ?? null;
 
 if (!$tournament_id) {
@@ -11,8 +25,10 @@ if (!$tournament_id) {
 $tournaments = read_json('data/tournaments.json');
 $users = read_json('data/users.json');
 $user_map = [];
+$avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
 }
 
 $tournament_data = null;
@@ -59,8 +75,34 @@ usort($participants, function($a, $b) {
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1><?php echo htmlspecialchars($tournament_data['name']); ?></h1>
-            <a href="home.php" class="btn-modern">Torna alla Home</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                <?php endif; ?>
+            </div>
         </div>
     </header>
 
@@ -103,7 +145,8 @@ usort($participants, function($a, $b) {
                         ?>
                         <tr>
                             <td><?php echo $index + 1; ?></td>
-                            <td>
+                            <td class="player-cell">
+                                <img src="<?php echo $avatar_map[$p['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
                                 <a href="view_profile.php?uid=<?php echo $p['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
                                 </a>

@@ -2,6 +2,20 @@
 session_start();
 require_once 'helpers.php';
 
+// User data retrieval for header
+$avatar_path = 'img/default_avatar.png';
+$logged_in_username = null;
+if (isset($_SESSION['user_id'])) {
+    $users_data = read_json('data/users.json');
+    $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
+    if ($current_user) {
+        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
+            ? $current_user['avatar'] 
+            : 'img/default_avatar.png';
+    }
+    $logged_in_username = $_SESSION['username'];
+}
+
 $tournament_id = $_GET['tid'] ?? null;
 $user_id = $_GET['uid'] ?? null;
 
@@ -14,7 +28,6 @@ $users = read_json('data/users.json');
 
 $tournament_data = null;
 $participant_data = null;
-$player_name = 'Sconosciuto';
 
 // Trova il torneo e il partecipante
 foreach ($tournaments as $t) {
@@ -30,10 +43,13 @@ foreach ($tournaments as $t) {
     }
 }
 
-// Trova il nome del giocatore
+// Trova il nome e l'avatar del giocatore
 $player = find_user_by_id($users, $user_id);
+$player_name = 'Sconosciuto';
+$player_avatar = 'img/default_avatar.png';
 if ($player) {
     $player_name = $player['username'];
+    $player_avatar = !empty($player['avatar']) && file_exists($player['avatar']) ? $player['avatar'] : 'img/default_avatar.png';
 }
 
 if ($tournament_data === null || $participant_data === null) {
@@ -73,8 +89,34 @@ $wld_score = "$wins-$losses-$draws";
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1><?php echo htmlspecialchars($participant_data['decklist_name'] ?: 'N/D'); ?></h1>
-            <a href="home.php" class="btn-modern">Torna alla Home</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                <?php endif; ?>
+            </div>
         </div>
     </header>
 
@@ -82,8 +124,9 @@ $wld_score = "$wins-$losses-$draws";
         <section class="card">
             <h2>Dettagli Lista</h2>
             <ul class="list-group">
-                <li class="list-group-item">
+                <li class="list-group-item player-cell">
                     <strong>Giocatore:</strong> 
+                    <img src="<?php echo $player_avatar; ?>" alt="Avatar" class="player-avatar ms-2">
                     <a href="view_profile.php?uid=<?php echo $user_id; ?>"><?php echo htmlspecialchars($player_name); ?></a>
                 </li>
                 <li class="list-group-item">

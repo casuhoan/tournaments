@@ -4,8 +4,10 @@
 $tournaments = read_json('data/tournaments.json');
 $users = read_json('data/users.json');
 $user_map = [];
+$avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
 }
 
 $unnamed_decklists = [];
@@ -46,7 +48,10 @@ foreach ($tournaments as $tournament) {
             <?php foreach ($unnamed_decklists as $item): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($item['tournament_name']); ?></td>
-                    <td><?php echo htmlspecialchars($item['player_name']); ?></td>
+                    <td class="player-cell">
+                        <img src="<?php echo $avatar_map[$item['user_id']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                        <span><?php echo htmlspecialchars($item['player_name']); ?></span>
+                    </td>
                     <td><pre><?php echo htmlspecialchars(substr($item['decklist'], 0, 100)); ?>...</pre></td>
                     <td class="actions">
                         <a href="edit_decklist.php?tid=<?php echo $item['tournament_id']; ?>&uid=<?php echo $item['user_id']; ?>" class="action-edit">

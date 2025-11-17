@@ -1,10 +1,25 @@
 <?php
 session_start();
+require_once 'helpers.php';
 
 // Controlla se l'utente è loggato e ha i permessi (admin o moderator)
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'moderator')) {
     // Potresti mostrare un messaggio di errore o reindirizzare
     die('Accesso negato. Devi essere un amministratore o un moderatore per creare un torneo.');
+}
+
+// User data retrieval for header
+$avatar_path = 'img/default_avatar.png';
+$logged_in_username = null;
+if (isset($_SESSION['user_id'])) {
+    $users_data = read_json('data/users.json');
+    $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
+    if ($current_user) {
+        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
+            ? $current_user['avatar'] 
+            : 'img/default_avatar.png';
+    }
+    $logged_in_username = $_SESSION['username'];
 }
 
 $success_message = '';
@@ -71,8 +86,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1>Crea Nuovo Torneo</h1>
-            <a href="home.php" class="btn-modern">Torna alla Home</a>
+            <a href="home.php" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="home.php">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                        <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                        <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                        <?php if ($_SESSION['role'] === 'admin'): ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                        <?php endif; ?>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </header>
 

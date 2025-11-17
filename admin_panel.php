@@ -37,11 +37,14 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1>Pannello di Amministrazione</h1>
-            <div class="d-flex align-items-center">
-                <a href="home.php" class="btn btn-light me-3">Torna alla Home</a>
+            <a href="home.php" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="home.php">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
                         <span class="username"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     </a>

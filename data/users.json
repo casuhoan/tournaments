@@ -5,7 +5,7 @@
         "email": "player3@example.com",
         "password": "password3",
         "role": "player",
-        "avatar": ""
+        "avatar": "img/default_avatar.png"
     },
     {
         "id": 4,
@@ -13,7 +13,7 @@
         "email": "player4@example.com",
         "password": "password4",
         "role": "player",
-        "avatar": ""
+        "avatar": "img/default_avatar.png"
     },
     {
         "id": 5,
@@ -21,7 +21,7 @@
         "email": "player5@example.com",
         "password": "password5",
         "role": "player",
-        "avatar": ""
+        "avatar": "img/default_avatar.png"
     },
     {
         "id": 6,
@@ -29,7 +29,7 @@
         "email": "player6@example.com",
         "password": "password6",
         "role": "player",
-        "avatar": ""
+        "avatar": "img/default_avatar.png"
     },
     {
         "id": 7,
@@ -37,7 +37,7 @@
         "email": "casuhoan@gmail.com",
         "password": "grandius",
         "role": "admin",
-        "avatar": ""
+        "avatar": "img/default_avatar.png"
     },
     {
         "id": 8,
@@ -45,6 +45,6 @@
         "email": "test@gmail.com",
         "password": "grandius",
         "role": "player",
-        "avatar": ""
+        "avatar": "img/default_avatar.png"
     }
 ]

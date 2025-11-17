@@ -27,9 +27,6 @@ header.modern-header {
     color: var(--dark-gray);
     padding: 1rem 2rem;
     box-shadow: var(--box-shadow);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
     box-sizing: border-box;
 }
@@ -306,4 +303,96 @@ main.modern-main {
 
 .tournament-list .tournament-card h3 a:hover {
     color: var(--primary-color);
+}
+
+/* New Header Styles */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.site-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.main-nav {
+    display: flex;
+    gap: 1.5rem;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--dark-gray);
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.main-nav a:hover, .main-nav a.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .main-nav {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .site-brand {
+        order: 1;
+    }
+
+    .user-menu {
+        order: 3;
+    }
+}
+
+/* Standings with Avatars */
+.standings-table .player-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.standings-table .player-avatar, .player-list-item .player-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.player-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
 }

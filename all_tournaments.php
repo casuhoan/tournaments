@@ -2,11 +2,27 @@
 session_start();
 require_once 'helpers.php';
 
+// User data retrieval for header
+$avatar_path = 'img/default_avatar.png';
+$logged_in_username = null;
+if (isset($_SESSION['user_id'])) {
+    $users_data = read_json('data/users.json');
+    $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
+    if ($current_user) {
+        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
+            ? $current_user['avatar'] 
+            : 'img/default_avatar.png';
+    }
+    $logged_in_username = $_SESSION['username'];
+}
+
 $all_tournaments = read_json('data/tournaments.json');
 $users = read_json('data/users.json');
 $user_map = [];
+$avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
 }
 
 // Filtri
@@ -59,12 +75,52 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
+    <style>
+        .player-list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .player-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1>Tutti i Tornei</h1>
-            <a href="home.php" class="btn btn-light">Torna alla Home</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                <?php endif; ?>
+            </div>
         </div>
     </header>
 
@@ -120,11 +176,14 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
                     ?>
                     <ol>
                         <?php foreach ($top_players as $index => $player): ?>
-                            <li>
-                                <a href="view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?></a>
-                                <?php if (!empty($player['decklist_name'])): ?>
-                                    - <a href="view_decklist.php?tid=<?php echo $tournament['id']; ?>&uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($player['decklist_name']); ?></a>
-                                <?php endif; ?>
+                            <li class="player-list-item">
+                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                                <div>
+                                    <a href="view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?></a>
+                                    <?php if (!empty($player['decklist_name'])): ?>
+                                        - <a href="view_decklist.php?tid=<?php echo $tournament['id']; ?>&uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($player['decklist_name']); ?></a>
+                                    <?php endif; ?>
+                                </div>
                             </li>
                         <?php endforeach; ?>
                     </ol>

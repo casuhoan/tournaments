@@ -48,6 +48,7 @@ This file summarizes the state of the tournament management project to allow for
 - [x] FEATURE: Implement "Edit Tournament" functionality for admins.
 - [x] FEATURE: Implement user avatar uploads.
 - [x] BUG FIX: Investigate and fix "Edit Tournament" functionality.
+- [x] FEATURE: Add default avatar for users without one.
 
 ## Project Summary
 

@@ -2,6 +2,20 @@
 session_start();
 require_once 'helpers.php'; // Include il file delle funzioni helper
 
+// User data retrieval for header
+$avatar_path = 'img/default_avatar.png';
+$logged_in_username = null;
+if (isset($_SESSION['user_id'])) {
+    $users_data = read_json('data/users.json');
+    $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
+    if ($current_user) {
+        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
+            ? $current_user['avatar'] 
+            : 'img/default_avatar.png';
+    }
+    $logged_in_username = $_SESSION['username'];
+}
+
 // --- Funzioni Helper Specifiche per questa pagina ---
 function is_user_registered($user_id, $tournament) {
     if (!isset($tournament['participants'])) return false;
@@ -33,11 +47,13 @@ $user_id = $_SESSION['user_id'] ?? null;
 $is_registered = $is_logged_in ? is_user_registered($user_id, $tournament) : false;
 $is_organizer = $is_logged_in && isset($tournament['organizerId']) && $tournament['organizerId'] === $user_id;
 
-// Carica i nomi degli utenti per la visualizzazione
+// Carica i nomi e gli avatar degli utenti per la visualizzazione
 $users = read_json('data/users.json');
 $user_map = [];
+$avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
 }
 
 ?>
@@ -54,8 +70,34 @@ foreach ($users as $user) {
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <h1><?php echo htmlspecialchars($tournament['name']); ?></h1>
-            <a href="home.php" class="btn-modern">Home</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <nav class="main-nav">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+            </nav>
+            <div class="user-menu">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="<?php echo $avatar_path; ?>" alt="User Avatar" class="user-avatar me-2">
+                            <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                <?php endif; ?>
+            </div>
         </div>
     </header>
 
@@ -279,13 +321,14 @@ foreach ($users as $user) {
                             <th>GWP</th>
                         </tr>
                     </thead>
-                    <tbody>
+                        <tbody>
                         <?php foreach ($standings as $index => $player): 
                             $gwp = ($player['games_won'] + $player['games_lost'] > 0) ? $player['games_won'] / ($player['games_won'] + $player['games_lost']) : 0;
                         ?>
                         <tr>
                             <td><?php echo $index + 1; ?></td>
-                            <td>
+                            <td class="player-cell">
+                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
                                 <a href="view_profile.php?uid=<?php echo $player['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
@@ -303,7 +346,10 @@ foreach ($users as $user) {
                 <h3>Partecipanti Iscritti (<?php echo count($tournament['participants']); ?>)</h3>
                 <ul>
                     <?php foreach ($tournament['participants'] as $participant): ?>
-                        <li><?php echo htmlspecialchars($user_map[$participant['userId']] ?? 'Utente Sconosciuto'); ?></li>
+                        <li class="player-list-item">
+                            <img src="<?php echo $avatar_map[$participant['userId']] ?? 'img/default_avatar.png'; ?>" alt="Avatar" class="player-avatar">
+                            <span><?php echo htmlspecialchars($user_map[$participant['userId']] ?? 'Utente Sconosciuto'); ?></span>
+                        </li>
                     <?php endforeach; ?>
                 </ul>
             </section>

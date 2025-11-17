@@ -114,6 +114,11 @@ switch ($action) {
 
         write_json($users_file, $users);
 
+        if (empty($users[$user_key]['avatar'])) {
+            $users[$user_key]['avatar'] = 'img/default_avatar.png';
+            write_json($users_file, $users);
+        }
+
         $_SESSION['feedback'] = 'Profilo aggiornato con successo.';
         header('Location: ../settings.php?page=profile');
         exit();
