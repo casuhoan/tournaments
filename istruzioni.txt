@@ -120,3 +120,4 @@ TO DO:
 1. Migliorare la pagina del torneo
 2. Migliorare la leggibilità della pagina di creazione del torneo
 3. Visibilità da cellulare
+4. Migliorare l'organizzazione delle cartelle
