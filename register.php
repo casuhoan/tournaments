@@ -57,8 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'email' => $email,
                 'password' => $password, // In un'applicazione reale, hashare la password!
                 'role' => 'player', // Assegna il ruolo di default
-                'avatar' => 'img/default_avatar.png', // Campo avatar di default (piccolo)
-                'avatar_large' => 'img/default_avatar_large.png' // Campo avatar di default (grande)
+                'avatar' => 'img/default_avatar.png' // Campo avatar di default
             ];
 
             $users[] = $new_user;

@@ -127,130 +127,60 @@ switch ($action) {
         $users_file = '../data/users.json';
         $users = read_json($users_file);
         $updated = false;
-        $new_avatar_path = null;
-        $new_avatar_large_path = null;
-
-        $target_small_width = 40;
-        $target_small_height = 40;
-        $target_large_width = 120;
-        $target_large_height = 120;
-
         // Gestione dell'upload dell'avatar
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-            $avatar_tmp_path = $_FILES['avatar']['tmp_name'];
-            $avatar_name = basename($_FILES['avatar']['name']);
-            $avatar_ext = strtolower(pathinfo($avatar_name, PATHINFO_EXTENSION));
-            $allowed_exts = ['jpg', 'jpeg', 'png', 'gif'];
+            $file = $_FILES['avatar'];
+            $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+            $max_size = 5 * 1024 * 1024; // 5 MB
 
-            if (in_array($avatar_ext, $allowed_exts)) {
-                // Genera nomi file unici per le due dimensioni
-                $base_filename = 'avatar_' . $user_id_post . '_' . time();
-                $target_small_filename = $base_filename . '.' . $avatar_ext;
-                $target_large_filename = $base_filename . '_large.' . $avatar_ext;
-
-                $target_upload_small_path = '../data/avatars/' . $target_small_filename;
-                $target_upload_large_path = '../data/avatars/' . $target_large_filename;
-
-                // Move the uploaded original file to a temporary location to process
-                $temp_original_path = sys_get_temp_dir() . '/' . uniqid('avatar_orig_') . '.' . $avatar_ext;
-                if (!move_uploaded_file($avatar_tmp_path, $temp_original_path)) {
-                    $_SESSION['error'] = 'Errore nel caricamento del file originale.';
-                    header('Location: ../edit_user.php?id=' . $user_id_post);
-                    exit();
+            if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
+                $upload_dir = '../data/avatars/';
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
                 }
+                $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $new_filename = 'avatar_' . $user_id_post . '_' . time() . '.' . $extension;
 
-                list($original_width, $original_height) = getimagesize($temp_original_path);
-
-                // Funzione per il ridimensionamento
-                $resize_image = function($source_file, $target_file, $width, $height, $ext) {
-                    $image_p = imagecreatetruecolor($width, $height);
-                    $image = null;
-                    switch ($ext) {
-                        case 'jpg':
-                        case 'jpeg':
-                            $image = imagecreatefromjpeg($source_file);
-                            break;
-                        case 'png':
-                            $image = imagecreatefrompng($source_file);
-                            imagealphablending($image_p, false);
-                            imagesavealpha($image_p, true);
-                            break;
-                        case 'gif':
-                            $image = imagecreatefromgif($source_file);
-                            break;
-                    }
-
-                    if ($image) {
-                        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, imagesx($image), imagesy($image));
-                        switch ($ext) {
-                            case 'jpg':
-                            case 'jpeg':
-                                imagejpeg($image_p, $target_file, 90);
-                                break;
-                            case 'png':
-                                imagepng($image_p, $target_file);
-                                break;
-                            case 'gif':
-                                imagegif($image_p, $target_file);
-                                break;
+                // Trova l'utente per eliminare il vecchio avatar
+                foreach ($users as &$user_to_update) {
+                    if ($user_to_update['id'] == $user_id_post) {
+                        if (!empty($user_to_update['avatar']) && $user_to_update['avatar'] !== 'img/default_avatar.png' && file_exists('../' . $user_to_update['avatar'])) {
+                            unlink('../' . $user_to_update['avatar']);
                         }
-                        imagedestroy($image_p);
-                        imagedestroy($image);
-                        return true;
+                        if (!empty($user_to_update['avatar_large']) && $user_to_update['avatar_large'] !== 'img/default_avatar_large.png' && file_exists('../' . $user_to_update['avatar_large'])) {
+                           unlink('../' . $user_to_update['avatar_large']);
+                        }
+                        break;
                     }
-                    return false;
-                };
-
-                // Ridimensiona e salva l'avatar piccolo
-                if ($resize_image($temp_original_path, $target_upload_small_path, $target_small_width, $target_small_height, $avatar_ext)) {
-                    $new_avatar_path = 'data/avatars/' . $target_small_filename;
-                } else {
-                    $_SESSION['error'] = 'Errore nel ridimensionamento dell\'avatar piccolo.';
-                    unlink($temp_original_path);
-                    header('Location: ../edit_user.php?id=' . $user_id_post);
-                    exit();
                 }
-
-                // Ridimensiona e salva l'avatar grande
-                if ($resize_image($temp_original_path, $target_upload_large_path, $target_large_width, $target_large_height, $avatar_ext)) {
-                    $new_avatar_large_path = 'data/avatars/' . $target_large_filename;
-                } else {
-                    $_SESSION['error'] = 'Errore nel ridimensionamento dell\'avatar grande.';
-                    unlink($temp_original_path);
-                    // Elimina anche il piccolo se già creato
-                    if (file_exists($target_upload_small_path)) unlink($target_upload_small_path);
-                    header('Location: ../edit_user.php?id=' . $user_id_post);
-                    exit();
-                }
-                unlink($temp_original_path); // Elimina il file temporaneo originale
                 
+                if (move_uploaded_file($file['tmp_name'], $upload_dir . $new_filename)) {
+                    // Aggiorna il percorso dell'avatar per l'utente corrente
+                     foreach ($users as &$user_to_update_path) {
+                        if ($user_to_update_path['id'] == $user_id_post) {
+                            $user_to_update_path['avatar'] = 'data/avatars/' . $new_filename;
+                            unset($user_to_update_path['avatar_large']);
+                            break;
+                        }
+                    }
+                } else {
+                     $_SESSION['error'] = 'Errore durante il caricamento del file.';
+                    header('Location: ../edit_user.php?id=' . $user_id_post);
+                    exit();
+                }
             } else {
-                $_SESSION['error'] = 'Formato file non supportato per l\'avatar.';
+                $_SESSION['error'] = 'Tipo di file non valido o dimensione eccessiva (max 5MB).';
                 header('Location: ../edit_user.php?id=' . $user_id_post);
                 exit();
             }
         }
 
+        // Aggiorna gli altri dati
         foreach ($users as &$user) {
             if ($user['id'] == $user_id_post) {
-                // Elimina i vecchi avatar se ne vengono caricati di nuovi
-                if ($new_avatar_path) {
-                    if (!empty($user['avatar']) && $user['avatar'] !== 'img/default_avatar.png' && file_exists('../' . $user['avatar'])) {
-                        unlink('../' . $user['avatar']);
-                    }
-                    if (!empty($user['avatar_large']) && $user['avatar_large'] !== 'img/default_avatar_large.png' && file_exists('../' . $user['avatar_large'])) {
-                        unlink('../' . $user['avatar_large']);
-                    }
-                }
-
-                // Aggiorna i dati
                 $user['username'] = $username;
                 $user['email'] = $email;
                 $user['role'] = $role;
-                if ($new_avatar_path) {
-                    $user['avatar'] = $new_avatar_path;
-                    $user['avatar_large'] = $new_avatar_large_path;
-                }
                 $updated = true;
                 break;
             }
@@ -311,8 +241,7 @@ switch ($action) {
                 'email' => $email,
                 'password' => $password, // In un'applicazione reale, hashare la password!
                 'role' => $role,
-                'avatar' => 'img/default_avatar.png',
-                'avatar_large' => 'img/default_avatar_large.png'
+                'avatar' => 'img/default_avatar.png'
             ];
 
             $users[] = $new_user;

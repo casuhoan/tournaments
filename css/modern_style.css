@@ -172,6 +172,7 @@ main.modern-main {
     margin-bottom: 1rem;
     border: 4px solid var(--white);
     box-shadow: var(--box-shadow);
+    object-fit: cover;
 }
 
 /* Decklist Box */

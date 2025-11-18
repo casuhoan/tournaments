@@ -121,3 +121,4 @@ TO DO:
 2. Migliorare la leggibilità della pagina di creazione del torneo
 3. Visibilità da cellulare
 4. Migliorare l'organizzazione delle cartelle
+5. Prevenire le Injection alla creazione account.
