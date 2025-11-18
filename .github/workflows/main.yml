@@ -10,6 +10,10 @@ on:
   # Permette di eseguire questo workflow manualmente dalla tab "Actions" di GitHub
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+  
 jobs:
   # Definisce un singolo job chiamato "build-and-push"
   build-and-push:
