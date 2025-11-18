@@ -110,8 +110,13 @@ Quando qualcuno premerà sul nome della lista di qualcuno, si aprirà la sua lis
 
 Richiesta 14 (Modifica Navbar):
 Inseriscimi nella navbar dei link per le pagine Home e "Vedi tutti i tornei", poi mi devi inserire a destra il menù laterale già presente del profilo e la foto profilo dell'utente.
-Inoltre inseriscimi una foto profilo di Default per chi non ce l'ha. - FATTO
+Inoltre inseriscimi una foto profilo di Default per chi non ce l'ha.
 Essa verrà anche visualizzata nelle classifiche dei tornei (e nella lista delle partecipazioni) a sinistra rispetto al nome.
 
 Richiesta 15 (Aggiunta tema scuro):
 Nelle impostazioni utente, sotto il pulsante del profilo creami il pulsante Aspetto dove puoi selezionare tra modalità scura e modalità chiara (tramite uno switch).
+
+TO DO:
+1. Migliorare la pagina del torneo
+2. Migliorare la leggibilità della pagina di creazione del torneo
+3. Visibilità da cellulare

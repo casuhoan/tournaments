@@ -21,34 +21,13 @@ if (isset($_SESSION['user_id'])) {
     $logged_in_username = $_SESSION['username'];
 }
 
-$tournament_id = $_GET['id'] ?? null;
-
-if (!$tournament_id) {
-    die('ID torneo mancante.');
-}
-
-$tournaments = read_json('data/tournaments.json');
-$tournament_data = null;
-
-// Trova il torneo specifico
-foreach ($tournaments as $t) {
-    if ($t['id'] == $tournament_id) {
-        $tournament_data = $t;
-        break;
-    }
-}
-
-if ($tournament_data === null) {
-    die('Dati del torneo non trovati.');
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifica Torneo</title>
+    <title>Crea Utente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modern_style.css">
@@ -65,7 +44,7 @@ if ($tournament_data === null) {
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
-                        <span class="username me-2"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
@@ -84,24 +63,34 @@ if ($tournament_data === null) {
 
     <main class="modern-main">
         <section class="card">
-            <h2>Modifica Dati Torneo</h2>
+            <h2>Crea Nuovo Utente</h2>
             <form action="api/admin_actions.php" method="POST" class="modern-form">
-                <input type="hidden" name="action" value="update_tournament">
-                <input type="hidden" name="tournament_id" value="<?php echo htmlspecialchars($tournament_id); ?>">
+                <input type="hidden" name="action" value="create_user">
 
                 <div class="form-group mb-3">
-                    <label for="name" class="form-label">Nome Torneo:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($tournament_data['name']); ?>" required>
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="date" class="form-label">Data:</label>
-                    <input type="date" class="form-control" id="date" name="date" value="<?php echo htmlspecialchars($tournament_data['date']); ?>" required>
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
                 </div>
                 
-                <p class="text-muted">Nota: al momento è possibile modificare solo il nome e la data del torneo.</p>
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
 
-                <button type="submit" class="btn-modern">Salva Modifiche</button>
+                <div class="form-group mb-3">
+                    <label for="role" class="form-label">Ruolo:</label>
+                    <select class="form-control" id="role" name="role">
+                        <option value="player" selected>Player</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-modern">Crea Utente</button>
             </form>
         </section>
     </main>
@@ -112,3 +101,4 @@ if ($tournament_data === null) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
 </body>
+</html>

@@ -396,3 +396,7 @@ main.modern-main {
     gap: 10px;
     margin-bottom: 5px;
 }
+
+.modern-header .user-menu .username {
+    color: var(--dark-gray) !important;
+}

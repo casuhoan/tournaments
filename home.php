@@ -92,10 +92,12 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
     <main class="modern-main">
         <section id="dashboard-actions" class="card">
             <h2>Azioni Rapide</h2>
-            <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'moderator'): ?>
-                <a href="create_tournament.php" class="btn-modern me-2">Crea Nuovo Torneo</a>
-            <?php endif; ?>
-            <a href="all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
+            <div class="d-flex justify-content-center gap-2">
+                <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'moderator'): ?>
+                    <a href="create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
+                <?php endif; ?>
+                <a href="all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
+            </div>
         </section>
 
         <section id="summary" class="card">

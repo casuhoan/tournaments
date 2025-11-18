@@ -139,7 +139,7 @@ foreach ($tournaments as $tournament) {
                 ? $user_data['avatar'] 
                 : 'img/default_avatar.png';
             ?>
-            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
+            <img src="<?php echo (!empty($user_data['avatar_large']) && file_exists($user_data['avatar_large'])) ? $user_data['avatar_large'] : 'img/default_avatar_large.png'; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
             <h2><?php echo htmlspecialchars($user_data['username']); ?></h2>
         </section>
 
