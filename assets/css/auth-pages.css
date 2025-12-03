@@ -1,0 +1,99 @@
+/* Additional fixes for login/register pages */
+
+/* Ensure proper background */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Login/Register specific styling */
+.modern-header {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.modern-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Card improvements */
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}
+
+/* Form improvements */
+.modern-form .form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.modern-form .form-label {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+.modern-form .form-input,
+.modern-form input[type="text"],
+.modern-form input[type="email"],
+.modern-form input[type="password"] {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    width: 100%;
+    transition: all var(--transition-fast);
+}
+
+.modern-form .form-input:focus,
+.modern-form input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-alpha);
+}
+
+/* Button improvements */
+.btn,
+.btn-modern,
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn:hover,
+.btn-modern:hover,
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Links */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary-light);
+}
+
+/* Footer */
+footer {
+    background: var(--color-surface);
+    padding: var(--spacing-lg);
+    text-align: center;
+    color: var(--color-text-tertiary);
+    border-top: 1px solid var(--color-border);
+}

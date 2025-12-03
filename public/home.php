@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funz
 
 // Se l'utente non è loggato, reindirizza alla pagina di login
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../public/login.php');
+    header('Location: /login.php');
     exit();
 }
 
@@ -14,7 +14,7 @@ $logged_in_username = $_SESSION['username'];
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_unset(); // Rimuove tutte le variabili di sessione
     session_destroy(); // Distrugge la sessione
-    header('Location: ../public/index.php'); // Reindirizza alla pagina principale
+    header('Location: /index.php'); // Reindirizza alla pagina principale
     exit();
 }
 
@@ -22,7 +22,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 $tournaments = read_json(__DIR__ . '/../data/tournaments.json');
 
 // Filtra i tornei a cui l'utente loggato ha partecipato (per ora, solo un esempio)
-$user_tournaments = array_filter($tournaments, function($tournament) use ($logged_in_username) {
+$user_tournaments = array_filter($tournaments, function ($tournament) use ($logged_in_username) {
     foreach ($tournament['participants'] as $participant) {
         // Per questo esempio, assumiamo che il nome utente sia direttamente nel partecipante
         // In futuro, useremo l'ID utente e la user_map
@@ -45,43 +45,55 @@ $user_completed_tournaments = count($user_tournaments); // Per ora, tutti i torn
 
 $users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
-$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
-    ? $current_user['avatar'] 
+$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar'])
+    ? $current_user['avatar']
     : 'data/avatars/default_avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Gestione Tornei</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>
+
 <body>
     <header class="modern-header">
         <div class="header-content">
             <a href="home.php" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="home.php">Home</a>
-                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar"
+                            class="user-avatar me-2">
                         <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                        <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
+                        <li><a class="dropdown-item"
+                                href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a>
+                        </li>
+                        <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                         <?php endif; ?>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
                     </ul>
                 </div>
@@ -94,9 +106,9 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>Azioni Rapide</h2>
             <div class="d-flex justify-content-center gap-2">
                 <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'moderator'): ?>
-                    <a href="../forms/create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
+                    <a href="/forms/create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
                 <?php endif; ?>
-                <a href="../views/all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
+                <a href="/views/all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
             </div>
         </section>
 
@@ -104,12 +116,16 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>Riepilogo Generale</h2>
             <div class="summary-boxes">
                 <div class="summary-box">
-                    <h3><a href="all_tournaments.php?filter=in_progress_participating">Tornei in corso (a cui partecipo)</a></h3>
-                    <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'in_progress' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?></p>
+                    <h3><a href="all_tournaments.php?filter=in_progress_participating">Tornei in corso (a cui
+                            partecipo)</a></h3>
+                    <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'in_progress' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?>
+                    </p>
                 </div>
                 <div class="summary-box">
-                    <h3><a href="all_tournaments.php?filter=completed_participating">Tornei completati (che hai fatto)</a></h3>
-                    <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'completed' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?></p>
+                    <h3><a href="all_tournaments.php?filter=completed_participating">Tornei completati (che hai
+                            fatto)</a></h3>
+                    <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'completed' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?>
+                    </p>
                 </div>
             </div>
         </section>
@@ -118,7 +134,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>I tuoi tornei</h2>
             <div class="tournament-list">
                 <?php
-                $user_tournaments = array_filter($tournaments, function($t) {
+                $user_tournaments = array_filter($tournaments, function ($t) {
                     return in_array($_SESSION['user_id'], array_column($t['participants'], 'userId'));
                 });
                 // Ordina per data più recente
@@ -131,7 +147,8 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                     <?php foreach ($latest_tournaments as $tournament): ?>
                         <div class="tournament-card">
                             <h3>
-                                <a href="tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
+                                <a
+                                    href="tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
                                 <?php if ($tournament['status'] === 'in_progress'): ?>
                                     <span class="badge bg-warning">In Corso</span>
                                 <?php endif; ?>
@@ -142,9 +159,10 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                 <?php endif; ?>
             </div>
             <?php if (count($user_tournaments) > 10): ?>
-            <div class="text-center mt-3">
-                <a href="all_tournaments.php?filter=completed_participating" class="btn btn-secondary">Visualizza altri</a>
-            </div>
+                <div class="text-center mt-3">
+                    <a href="all_tournaments.php?filter=completed_participating" class="btn btn-secondary">Visualizza
+                        altri</a>
+                </div>
             <?php endif; ?>
         </section>
     </main>
@@ -157,4 +175,5 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
 </body>
+
 </html>

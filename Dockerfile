@@ -8,8 +8,6 @@ WORKDIR /var/www/html
 COPY . .
 
 # Apache ha bisogno dei permessi per scrivere nella cartella 'data'
-# Cambiamo il proprietario della cartella 'data' all'utente con cui gira Apache (www-data)
-# e ci assicuriamo che abbia i permessi di scrittura.
 RUN chown -R www-data:www-data data && chmod -R 775 data
 
 # Crea la cartella avatars se non esiste
@@ -18,8 +16,18 @@ RUN mkdir -p data/avatars && chown -R www-data:www-data data/avatars && chmod -R
 # Configura Apache per servire da public/ come document root
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Crea un alias per servire assets dalla root
-RUN echo 'Alias /assets /var/www/html/assets' >> /etc/apache2/sites-available/000-default.conf
+# Configura Apache per servire le altre directory come alias
+RUN echo '<Directory /var/www/html>' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    Options Indexes FollowSymLinks' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '</Directory>' >> /etc/apache2/sites-available/000-default.conf && \
+    echo 'Alias /assets /var/www/html/assets' >> /etc/apache2/sites-available/000-default.conf && \
+    echo 'Alias /views /var/www/html/views' >> /etc/apache2/sites-available/000-default.conf && \
+    echo 'Alias /forms /var/www/html/forms' >> /etc/apache2/sites-available/000-default.conf && \
+    echo 'Alias /admin /var/www/html/admin' >> /etc/apache2/sites-available/000-default.conf && \
+    echo 'Alias /api /var/www/html/api' >> /etc/apache2/sites-available/000-default.conf && \
+    echo 'Alias /data /var/www/html/data' >> /etc/apache2/sites-available/000-default.conf
 
 # Abilita mod_rewrite per Apache
 RUN a2enmod rewrite

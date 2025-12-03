@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funz
 
 // L'utente deve essere loggato per accedere a questa pagina
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../public/login.php');
+    header('Location: /login.php');
     exit();
 }
 
