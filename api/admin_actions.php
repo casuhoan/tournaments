@@ -1,7 +1,7 @@
 <?php
 ob_start(); // Start output buffering
 session_start();
-require_once '../helpers.php'; // Include il file delle funzioni helper
+require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
 // --- Logica Principale ---
 
@@ -26,23 +26,23 @@ if (empty($action)) {
 switch ($action) {
     case 'delete_tournament':
         if (empty($id)) die('ID non specificato.');
-        $tournaments_file = '../data/tournaments.json';
+        $tournaments_file = __DIR__ . '/../data/tournaments.json';
         $tournaments = read_json($tournaments_file);
         $tournaments_after_delete = array_values(array_filter($tournaments, fn($t) => $t['id'] != $id));
         write_json($tournaments_file, $tournaments_after_delete);
         $_SESSION['feedback'] = 'Torneo ID ' . htmlspecialchars($id) . ' eliminato con successo.';
-        header('Location: ../admin_panel.php?page=tournaments');
+        header('Location: ../admin/index.php?page=tournaments');
         exit();
 
     case 'delete_user':
         if (empty($id)) die('ID non specificato.');
         if ($id == $_SESSION['user_id']) die('Non puoi eliminare te stesso.');
-        $users_file = '../data/users.json';
+        $users_file = __DIR__ . '/../data/users.json';
         $users = read_json($users_file);
         $users_after_delete = array_values(array_filter($users, fn($u) => $u['id'] != $id));
         write_json($users_file, $users_after_delete);
         $_SESSION['feedback'] = 'Utente ID ' . htmlspecialchars($id) . ' eliminato con successo.';
-        header('Location: ../admin_panel.php?page=users');
+        header('Location: ../admin/index.php?page=users');
         exit();
 
     case 'update_decklist':
@@ -55,7 +55,7 @@ switch ($action) {
             die('Dati mancanti per aggiornare la lista.');
         }
 
-        $tournaments_file = '../data/tournaments.json';
+        $tournaments_file = __DIR__ . '/../data/tournaments.json';
         $tournaments = read_json($tournaments_file);
         $updated = false;
 
@@ -79,7 +79,7 @@ switch ($action) {
             $_SESSION['error'] = 'Impossibile trovare la lista da aggiornare.';
         }
         
-        header('Location: ../admin_panel.php?page=decklists');
+        header('Location: ../admin/index.php?page=decklists');
         exit();
 
     case 'update_tournament':
@@ -91,7 +91,7 @@ switch ($action) {
             die('Dati mancanti per aggiornare il torneo.');
         }
 
-        $tournaments_file = '../data/tournaments.json';
+        $tournaments_file = __DIR__ . '/../data/tournaments.json';
         $tournaments = read_json($tournaments_file);
         $updated = false;
 
@@ -111,7 +111,7 @@ switch ($action) {
             $_SESSION['error'] = 'Impossibile trovare il torneo da aggiornare.';
         }
         
-        header('Location: ../admin_panel.php?page=tournaments');
+        header('Location: ../admin/index.php?page=tournaments');
         exit();
 
     case 'update_user':
@@ -124,7 +124,7 @@ switch ($action) {
             die('Dati mancanti per aggiornare l\'utente.');
         }
 
-        $users_file = '../data/users.json';
+        $users_file = __DIR__ . '/../data/users.json';
         $users = read_json($users_file);
         $updated = false;
         // Gestione dell'upload dell'avatar
@@ -165,12 +165,12 @@ switch ($action) {
                     }
                 } else {
                      $_SESSION['error'] = 'Errore durante il caricamento del file.';
-                    header('Location: ../edit_user.php?id=' . $user_id_post);
+                    header('Location: ../forms/edit_user.php?id=' . $user_id_post);
                     exit();
                 }
             } else {
                 $_SESSION['error'] = 'Tipo di file non valido o dimensione eccessiva (max 5MB).';
-                header('Location: ../edit_user.php?id=' . $user_id_post);
+                header('Location: ../forms/edit_user.php?id=' . $user_id_post);
                 exit();
             }
         }
@@ -193,7 +193,7 @@ switch ($action) {
             $_SESSION['error'] = 'Impossibile trovare l\'utente da aggiornare.';
         }
         
-        header('Location: ../admin_panel.php?page=users');
+        header('Location: ../admin/index.php?page=users');
         exit();
         
     case 'create_user':
@@ -204,11 +204,11 @@ switch ($action) {
 
         if (empty($username) || empty($email) || empty($password)) {
             $_SESSION['error'] = 'Tutti i campi sono obbligatori.';
-            header('Location: ../create_user.php');
+            header('Location: ../forms/create_user.php');
             exit();
         }
 
-        $users_file = '../data/users.json';
+        $users_file = __DIR__ . '/../data/users.json';
         $users = read_json($users_file);
 
         $email_exists = false;
@@ -226,11 +226,11 @@ switch ($action) {
 
         if ($email_exists) {
             $_SESSION['error'] = 'Questa email è già registrata.';
-            header('Location: ../create_user.php');
+            header('Location: ../forms/create_user.php');
             exit();
         } elseif ($username_exists) {
             $_SESSION['error'] = 'Questo username è già in uso.';
-            header('Location: ../create_user.php');
+            header('Location: ../forms/create_user.php');
             exit();
         } else {
             $new_user_id = count($users) > 0 ? max(array_column($users, 'id')) + 1 : 1;
@@ -248,7 +248,7 @@ switch ($action) {
             write_json($users_file, $users);
 
             $_SESSION['feedback'] = 'Nuovo utente creato con successo.';
-            header('Location: ../admin_panel.php?page=users');
+            header('Location: ../admin/index.php?page=users');
             exit();
         }
         break;

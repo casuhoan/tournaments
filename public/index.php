@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'helpers.php'; // Include il file delle funzioni helper
+require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
 // Leggi i dati
-$users = read_json('data/users.json');
-$tournaments = read_json('data/tournaments.json');
+$users = read_json(__DIR__ . '/../data/users.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
 
 // Crea una mappa da userId a username per un accesso rapido
 $user_map = [];
@@ -27,8 +27,8 @@ $recent_tournaments = array_slice($tournaments, 0, 3);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Tornei</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -108,6 +108,6 @@ $recent_tournaments = array_slice($tournaments, 0, 3);
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

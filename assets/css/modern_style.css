@@ -1,30 +1,13 @@
-/* Modern Stylesheet */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* Modern Stylesheet - Enhanced with Premium Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+/* Legacy variable support - maps to new design system */
 :root {
-    --primary-color: #007bff;
-    --primary-hover: #0056b3;
-    --secondary-color: #6c757d;
-    --light-gray: #f8f9fa;
-    --dark-gray: #343a40;
-    --white: #ffffff;
-    --text-color: #212529;
-    --border-radius: 8px;
-    --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: var(--light-gray);
-    color: var(--text-color);
-}
-
-header.modern-header {
-    background: var(--white);
-    color: var(--dark-gray);
+    --primary-color: var(--color-primary, hsl(220, 90%, 56%));
+    --primary-hover: var(--color-primary-light, hsl(220, 90%, 65%));
+    --secondary-color: var(--color-text-secondary, hsl(220, 15%, 40%));
+    --light-gray: var(--color-bg-tertiary, hsl(220, 20%, 97%));
+    --dark-gray: var(--color-text-primary, hsl(220, 20%, 15%));
     padding: 1rem 2rem;
     box-shadow: var(--box-shadow);
     width: 100%;
@@ -149,7 +132,8 @@ main.modern-main {
     margin-top: 1.5rem;
 }
 
-.standings-table th, .standings-table td {
+.standings-table th,
+.standings-table td {
     border-bottom: 1px solid #dee2e6;
     padding: 1rem;
     text-align: left;
@@ -208,7 +192,7 @@ main.modern-main {
 
 .btn-modern:hover {
     background-color: var(--primary-hover);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn-modern-secondary {
@@ -337,7 +321,8 @@ main.modern-main {
     transition: border-color 0.2s;
 }
 
-.main-nav a:hover, .main-nav a.active {
+.main-nav a:hover,
+.main-nav a.active {
     color: var(--primary-color);
     border-bottom-color: var(--primary-color);
 }
@@ -367,7 +352,7 @@ main.modern-main {
         justify-content: center;
         margin-top: 1rem;
     }
-    
+
     .site-brand {
         order: 1;
     }
@@ -384,7 +369,8 @@ main.modern-main {
     gap: 10px;
 }
 
-.standings-table .player-avatar, .player-list-item .player-avatar {
+.standings-table .player-avatar,
+.player-list-item .player-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;

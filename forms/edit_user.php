@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'helpers.php';
+require_once __DIR__ . '/../includes/helpers.php';
 
 // Solo gli admin possono accedere
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
@@ -8,17 +8,38 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // User data retrieval for header
-$avatar_path = 'img/default_avatar.png';
+$avatar_path = 'data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
-    $users_data = read_json('data/users.json');
+    $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'img/default_avatar.png';
+            : 'data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
+}
+
+$user_id = $_GET['id'] ?? null;
+
+if (!$user_id) {
+    die('ID utente mancante.');
+}
+
+$users = read_json(__DIR__ . '/../data/users.json');
+$user_data = null;
+
+// Trova l'utente specifico
+foreach ($users as $u) {
+    if ($u['id'] == $user_id) {
+        $user_data = $u;
+        break;
+    }
+}
+
+if ($user_data === null) {
+    die('Dati utente non trovati.');
 }
 
 ?>
@@ -27,10 +48,10 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crea Utente</title>
+    <title>Modifica Utente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -63,34 +84,40 @@ if (isset($_SESSION['user_id'])) {
 
     <main class="modern-main">
         <section class="card">
-            <h2>Crea Nuovo Utente</h2>
-            <form action="api/admin_actions.php" method="POST" class="modern-form">
-                <input type="hidden" name="action" value="create_user">
+            <h2>Modifica Dati Utente</h2>
+            <form action="api/admin_actions.php" method="POST" class="modern-form" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="update_user">
+                <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user_id); ?>">
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Avatar Attuale:</label>
+                    <img src="<?php echo !empty($user_data['avatar']) && file_exists($user_data['avatar']) ? $user_data['avatar'] : 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar mb-2">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="avatar" class="form-label">Nuovo Avatar:</label>
+                    <input type="file" class="form-control" id="avatar" name="avatar">
+                </div>
 
                 <div class="form-group mb-3">
                     <label for="username" class="form-label">Username:</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
+                    <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($user_data['username']); ?>" required>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user_data['email']); ?>" required>
                 </div>
                 
                 <div class="form-group mb-3">
-                    <label for="password" class="form-label">Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-
-                <div class="form-group mb-3">
                     <label for="role" class="form-label">Ruolo:</label>
                     <select class="form-control" id="role" name="role">
-                        <option value="player" selected>Player</option>
-                        <option value="admin">Admin</option>
+                        <option value="player" <?php echo ($user_data['role'] ?? 'player') === 'player' ? 'selected' : ''; ?>>Player</option>
+                        <option value="admin" <?php echo ($user_data['role'] ?? '') === 'admin' ? 'selected' : ''; ?>>Admin</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-modern">Crea Utente</button>
+                <button type="submit" class="btn-modern">Salva Modifiche</button>
             </form>
         </section>
     </main>
@@ -99,6 +126,6 @@ if (isset($_SESSION['user_id'])) {
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

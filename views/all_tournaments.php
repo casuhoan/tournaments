@@ -1,28 +1,28 @@
 <?php
 session_start();
-require_once 'helpers.php';
+require_once __DIR__ . '/../includes/helpers.php';
 
 // User data retrieval for header
-$avatar_path = 'img/default_avatar.png';
+$avatar_path = 'data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
-    $users_data = read_json('data/users.json');
+    $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'img/default_avatar.png';
+            : 'data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
 
-$all_tournaments = read_json('data/tournaments.json');
-$users = read_json('data/users.json');
+$all_tournaments = read_json(__DIR__ . '/../data/tournaments.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
-    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'data/avatars/default_avatar.png';
 }
 
 // Filtri
@@ -73,8 +73,8 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutti i Tornei</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
     <style>
         .player-list-item {
             display: flex;
@@ -177,7 +177,7 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
                     <ol>
                         <?php foreach ($top_players as $index => $player): ?>
                             <li class="player-list-item">
-                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                                 <div>
                                     <a href="view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?></a>
                                     <?php if (!empty($player['decklist_name'])): ?>
@@ -206,6 +206,6 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

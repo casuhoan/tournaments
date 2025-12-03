@@ -1,17 +1,17 @@
 <?php
 session_start();
-require_once 'helpers.php';
+require_once __DIR__ . '/../includes/helpers.php';
 
 // User data retrieval for header
-$avatar_path = 'img/default_avatar.png';
+$avatar_path = 'data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
-    $users_data = read_json('data/users.json');
+    $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'img/default_avatar.png';
+            : 'data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -22,13 +22,13 @@ if (!$tournament_id) {
     die('ID torneo mancante.');
 }
 
-$tournaments = read_json('data/tournaments.json');
-$users = read_json('data/users.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
-    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'data/avatars/default_avatar.png';
 }
 
 $tournament_data = null;
@@ -69,8 +69,8 @@ usort($participants, function($a, $b) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza Torneo: <?php echo htmlspecialchars($tournament_data['name']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -146,7 +146,7 @@ usort($participants, function($a, $b) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
-                                <img src="<?php echo $avatar_map[$p['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                                <img src="<?php echo $avatar_map[$p['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                                 <a href="view_profile.php?uid=<?php echo $p['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
@@ -172,6 +172,6 @@ usort($participants, function($a, $b) {
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

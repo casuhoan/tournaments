@@ -1,17 +1,17 @@
 <?php
 session_start();
-require_once 'helpers.php'; // Include il file delle funzioni helper
+require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
 // User data retrieval for header
-$avatar_path = 'img/default_avatar.png';
+$avatar_path = 'data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
-    $users_data = read_json('data/users.json');
+    $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'img/default_avatar.png';
+            : 'data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -34,7 +34,7 @@ if (empty($link)) {
     die('Link del torneo non specificato.');
 }
 
-$tournaments = read_json('data/tournaments.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
 $tournament = find_tournament_by_link($link, $tournaments);
 
 if ($tournament === null) {
@@ -48,12 +48,12 @@ $is_registered = $is_logged_in ? is_user_registered($user_id, $tournament) : fal
 $is_organizer = $is_logged_in && isset($tournament['organizerId']) && $tournament['organizerId'] === $user_id;
 
 // Carica i nomi e gli avatar degli utenti per la visualizzazione
-$users = read_json('data/users.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
-    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'img/default_avatar.png';
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'data/avatars/default_avatar.png';
 }
 
 ?>
@@ -64,8 +64,8 @@ foreach ($users as $user) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($tournament['name']); ?> - Gestione Tornei</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -73,7 +73,7 @@ foreach ($users as $user) {
             <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
-                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -83,11 +83,11 @@ foreach ($users as $user) {
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                            <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                            <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                                <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
@@ -278,7 +278,7 @@ foreach ($users as $user) {
 
                 <?php else: // 'completed' ?>
                     <p>Il torneo è concluso. Grazie per aver partecipato!</p>
-                    <a href="view_tournament.php?tid=<?php echo $tournament['id']; ?>" class="btn btn-primary">Vedi Dettagli Torneo</a>
+                    <a href="../views/view_tournament.php?tid=<?php echo $tournament['id']; ?>" class="btn btn-primary">Vedi Dettagli Torneo</a>
                     <?php // Qui verrà visualizzata la classifica finale ?>
                 <?php endif; ?>
             </section>
@@ -328,8 +328,8 @@ foreach ($users as $user) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
-                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
-                                <a href="view_profile.php?uid=<?php echo $player['userId']; ?>">
+                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                                <a href="../views/view_profile.php?uid=<?php echo $player['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
                             </td>
@@ -347,7 +347,7 @@ foreach ($users as $user) {
                 <ul>
                     <?php foreach ($tournament['participants'] as $participant): ?>
                         <li class="player-list-item">
-                            <img src="<?php echo $avatar_map[$participant['userId']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                            <img src="<?php echo $avatar_map[$participant['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                             <span><?php echo htmlspecialchars($user_map[$participant['userId']] ?? 'Utente Sconosciuto'); ?></span>
                         </li>
                     <?php endforeach; ?>
@@ -362,6 +362,6 @@ foreach ($users as $user) {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

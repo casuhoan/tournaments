@@ -1,17 +1,17 @@
 <?php
 session_start();
-require_once 'helpers.php';
+require_once __DIR__ . '/../includes/helpers.php';
 
 // User data retrieval for header
-$avatar_path = 'img/default_avatar.png';
+$avatar_path = 'data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
-    $users_data = read_json('data/users.json');
+    $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'img/default_avatar.png';
+            : 'data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -23,8 +23,8 @@ if (!$tournament_id || !$user_id) {
     die('ID torneo o utente mancanti.');
 }
 
-$tournaments = read_json('data/tournaments.json');
-$users = read_json('data/users.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 
 $tournament_data = null;
 $participant_data = null;
@@ -46,10 +46,10 @@ foreach ($tournaments as $t) {
 // Trova il nome e l'avatar del giocatore
 $player = find_user_by_id($users, $user_id);
 $player_name = 'Sconosciuto';
-$player_avatar = 'img/default_avatar.png';
+$player_avatar = 'data/avatars/default_avatar.png';
 if ($player) {
     $player_name = $player['username'];
-    $player_avatar = !empty($player['avatar']) && file_exists($player['avatar']) ? $player['avatar'] : 'img/default_avatar.png';
+    $player_avatar = !empty($player['avatar']) && file_exists($player['avatar']) ? $player['avatar'] : 'data/avatars/default_avatar.png';
 }
 
 if ($tournament_data === null || $participant_data === null) {
@@ -83,8 +83,8 @@ $wld_score = "$wins-$losses-$draws";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza Lista: <?php echo htmlspecialchars($participant_data['decklist_name'] ?: 'N/D'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -151,6 +151,6 @@ $wld_score = "$wins-$losses-$draws";
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

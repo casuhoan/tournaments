@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'helpers.php';
+require_once __DIR__ . '/../includes/helpers.php';
 
 // Solo gli admin possono accedere
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
@@ -8,38 +8,38 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // User data retrieval for header
-$avatar_path = 'img/default_avatar.png';
+$avatar_path = 'data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
-    $users_data = read_json('data/users.json');
+    $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'img/default_avatar.png';
+            : 'data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
 
-$user_id = $_GET['id'] ?? null;
+$tournament_id = $_GET['id'] ?? null;
 
-if (!$user_id) {
-    die('ID utente mancante.');
+if (!$tournament_id) {
+    die('ID torneo mancante.');
 }
 
-$users = read_json('data/users.json');
-$user_data = null;
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
+$tournament_data = null;
 
-// Trova l'utente specifico
-foreach ($users as $u) {
-    if ($u['id'] == $user_id) {
-        $user_data = $u;
+// Trova il torneo specifico
+foreach ($tournaments as $t) {
+    if ($t['id'] == $tournament_id) {
+        $tournament_data = $t;
         break;
     }
 }
 
-if ($user_data === null) {
-    die('Dati utente non trovati.');
+if ($tournament_data === null) {
+    die('Dati del torneo non trovati.');
 }
 
 ?>
@@ -48,10 +48,10 @@ if ($user_data === null) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifica Utente</title>
+    <title>Modifica Torneo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -65,7 +65,7 @@ if ($user_data === null) {
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
-                        <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
+                        <span class="username me-2"><?php echo htmlspecialchars($logged_in_username); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
@@ -84,38 +84,22 @@ if ($user_data === null) {
 
     <main class="modern-main">
         <section class="card">
-            <h2>Modifica Dati Utente</h2>
-            <form action="api/admin_actions.php" method="POST" class="modern-form" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="update_user">
-                <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user_id); ?>">
+            <h2>Modifica Dati Torneo</h2>
+            <form action="api/admin_actions.php" method="POST" class="modern-form">
+                <input type="hidden" name="action" value="update_tournament">
+                <input type="hidden" name="tournament_id" value="<?php echo htmlspecialchars($tournament_id); ?>">
 
                 <div class="form-group mb-3">
-                    <label class="form-label">Avatar Attuale:</label>
-                    <img src="<?php echo !empty($user_data['avatar']) && file_exists($user_data['avatar']) ? $user_data['avatar'] : 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar mb-2">
+                    <label for="name" class="form-label">Nome Torneo:</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($tournament_data['name']); ?>" required>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="avatar" class="form-label">Nuovo Avatar:</label>
-                    <input type="file" class="form-control" id="avatar" name="avatar">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="username" class="form-label">Username:</label>
-                    <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($user_data['username']); ?>" required>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user_data['email']); ?>" required>
+                    <label for="date" class="form-label">Data:</label>
+                    <input type="date" class="form-control" id="date" name="date" value="<?php echo htmlspecialchars($tournament_data['date']); ?>" required>
                 </div>
                 
-                <div class="form-group mb-3">
-                    <label for="role" class="form-label">Ruolo:</label>
-                    <select class="form-control" id="role" name="role">
-                        <option value="player" <?php echo ($user_data['role'] ?? 'player') === 'player' ? 'selected' : ''; ?>>Player</option>
-                        <option value="admin" <?php echo ($user_data['role'] ?? '') === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                    </select>
-                </div>
+                <p class="text-muted">Nota: al momento è possibile modificare solo il nome e la data del torneo.</p>
 
                 <button type="submit" class="btn-modern">Salva Modifiche</button>
             </form>
@@ -126,6 +110,5 @@ if ($user_data === null) {
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
-</html>

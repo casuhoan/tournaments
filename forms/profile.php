@@ -2,7 +2,7 @@
 // Questo file viene incluso in settings.php, quindi la sessione è già avviata
 // e l'utente è loggato. Le funzioni helper sono già incluse.
 
-$users = read_json('data/users.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
 
 ?>

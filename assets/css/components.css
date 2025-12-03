@@ -1,0 +1,105 @@
+/* Alert Messages */
+.alert {
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: hsl(142, 71%, 95%);
+    border-color: var(--color-success);
+    color: hsl(142, 71%, 25%);
+}
+
+[data-theme="dark"] .alert-success {
+    background-color: hsl(142, 71%, 15%);
+    color: hsl(142, 71%, 85%);
+}
+
+.alert-danger,
+.error-message {
+    background-color: hsl(0, 84%, 95%);
+    border-color: var(--color-danger);
+    color: hsl(0, 84%, 30%);
+}
+
+[data-theme="dark"] .alert-danger,
+[data-theme="dark"] .error-message {
+    background-color: hsl(0, 84%, 15%);
+    color: hsl(0, 84%, 85%);
+}
+
+.success-message {
+    background-color: hsl(142, 71%, 95%);
+    border-color: var(--color-success);
+    color: hsl(142, 71%, 25%);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+[data-theme="dark"] .success-message {
+    background-color: hsl(142, 71%, 15%);
+    color: hsl(142, 71%, 85%);
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 1.2rem;
+}
+
+#theme-toggle:hover {
+    background: var(--color-bg-tertiary);
+    transform: scale(1.1);
+}
+
+/* Mobile Responsive Improvements */
+@media (max-width: 768px) {
+    .modern-header {
+        padding: 1rem;
+    }
+
+    .modern-main {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .btn,
+    .btn-modern,
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+}

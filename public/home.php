@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'helpers.php'; // Include il file delle funzioni helper
+require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
 // Se l'utente non è loggato, reindirizza alla pagina di login
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../public/login.php');
     exit();
 }
 
@@ -14,19 +14,19 @@ $logged_in_username = $_SESSION['username'];
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_unset(); // Rimuove tutte le variabili di sessione
     session_destroy(); // Distrugge la sessione
-    header('Location: index.php'); // Reindirizza alla pagina principale
+    header('Location: ../public/index.php'); // Reindirizza alla pagina principale
     exit();
 }
 
 // Leggi i dati dei tornei per la dashboard
-$tournaments = read_json('data/tournaments.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
 
 // Filtra i tornei a cui l'utente loggato ha partecipato (per ora, solo un esempio)
 $user_tournaments = array_filter($tournaments, function($tournament) use ($logged_in_username) {
     foreach ($tournament['participants'] as $participant) {
         // Per questo esempio, assumiamo che il nome utente sia direttamente nel partecipante
         // In futuro, useremo l'ID utente e la user_map
-        $users = read_json('data/users.json');
+        $users = read_json(__DIR__ . '/../data/users.json');
         $user_map = [];
         foreach ($users as $user) {
             $user_map[$user['id']] = $user['username'];
@@ -43,11 +43,11 @@ $completed_tournaments = count($tournaments); // Per ora, tutti i tornei sono co
 $user_total_tournaments = count($user_tournaments);
 $user_completed_tournaments = count($user_tournaments); // Per ora, tutti i tornei dell'utente sono considerati completati
 
-$users = read_json('data/users.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
 $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
     ? $current_user['avatar'] 
-    : 'img/default_avatar.png';
+    : 'data/avatars/default_avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -57,8 +57,8 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
     <title>Home - Gestione Tornei</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -66,7 +66,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <a href="home.php" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="home.php">Home</a>
-                <a href="all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <div class="dropdown">
@@ -75,11 +75,11 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                         <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                        <li><a class="dropdown-item" href="settings.php">Impostazioni</a></li>
+                        <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                        <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="admin_panel.php">Pannello Admin</a></li>
+                            <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
                         <?php endif; ?>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
@@ -94,9 +94,9 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>Azioni Rapide</h2>
             <div class="d-flex justify-content-center gap-2">
                 <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'moderator'): ?>
-                    <a href="create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
+                    <a href="../forms/create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
                 <?php endif; ?>
-                <a href="all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
+                <a href="../views/all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
             </div>
         </section>
 
@@ -155,6 +155,6 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
 </html>

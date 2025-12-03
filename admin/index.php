@@ -1,35 +1,38 @@
 <?php
 session_start();
-require_once 'helpers.php'; // Include il file delle funzioni helper
+require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
-// L'utente deve essere loggato per accedere a questa pagina
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
+// Solo gli admin possono accedere a questa pagina
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    die('Accesso negato.');
 }
 
 // Determina quale pagina caricare
-$page = $_GET['page'] ?? 'profile'; // Pagina di default
-$page_title = 'Modifica Profilo';
+$page = $_GET['page'] ?? 'tournaments'; // Pagina di default
+$page_title = 'Amministrazione Tornei';
+if ($page === 'users') {
+    $page_title = 'Gestione Utenti';
+} elseif ($page === 'decklists') {
+    $page_title = 'Gestione Liste';
+}
 
-$users = read_json('data/users.json');
-$tournaments = read_json('data/tournaments.json'); // Carica i dati dei tornei
+$users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
 $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
     ? $current_user['avatar'] 
-    : 'img/default_avatar.png';
+    : 'data/avatars/default_avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impostazioni - <?php echo $page_title; ?></title>
+    <title>Pannello Admin - <?php echo $page_title; ?></title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/modern_style.css">
-    <link rel="stylesheet" href="css/modern_admin_style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modern_style.css">
+    <link rel="stylesheet" href="../assets/css/modern_admin_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -64,21 +67,21 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
         <aside class="admin-sidebar">
             <nav>
                 <ul>
-                    <li><a href="settings.php?page=profile" class="<?php echo $page === 'profile' ? 'active' : ''; ?>">Profilo</a></li>
-                    <!-- Aggiungere qui altri link per le impostazioni future -->
+                    <li><a href="admin_panel.php?page=tournaments" class="<?php echo $page === 'tournaments' ? 'active' : ''; ?>">Gestione Tornei</a></li>
+                    <li><a href="admin_panel.php?page=users" class="<?php echo $page === 'users' ? 'active' : ''; ?>">Gestione Utenti</a></li>
+                    <li><a href="admin_panel.php?page=decklists" class="<?php echo $page === 'decklists' ? 'active' : ''; ?>">Gestione Liste</a></li>
                 </ul>
             </nav>
         </aside>
         <main class="admin-content">
             <?php
             // Carica la pagina richiesta
-            if ($page === 'profile') {
-                // Il file profile.php non esiste ancora, lo creiamo subito dopo
-                if (file_exists('profile.php')) {
-                    include 'profile.php';
-                } else {
-                    echo '<h2>Pagina Profilo in costruzione</h2>';
-                }
+            if ($page === 'tournaments') {
+                include 'admin_tournaments.php';
+            } elseif ($page === 'users') {
+                include 'admin_users.php';
+            } elseif ($page === 'decklists') {
+                include 'admin_decklists.php';
             } else {
                 echo '<p>Pagina non trovata.</p>';
             }
@@ -92,6 +95,5 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
-</html>

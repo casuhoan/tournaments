@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../helpers.php'; // Include il file delle funzioni helper
+require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
 function find_tournament_by_id(&$tournaments, $id) {
     foreach ($tournaments as $key => &$tournament) {
@@ -29,7 +29,7 @@ if (empty($action) || empty($tournament_id)) {
     die('Azione o ID torneo non specificato.');
 }
 
-$tournaments_file = '../data/tournaments.json';
+$tournaments_file = __DIR__ . '/../data/tournaments.json';
 $tournaments = read_json($tournaments_file);
 
 $tournament_key = find_tournament_by_id($tournaments, $tournament_id);
@@ -406,5 +406,5 @@ switch ($action) {
 write_json($tournaments_file, $tournaments);
 
 // Reindirizza l'utente alla pagina del torneo
-header('Location: ../tournament.php?link=' . $redirect_link);
+header('Location: ../public/tournament.php?link=' . $redirect_link);
 exit();
