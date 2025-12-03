@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tournaments[] = $new_tournament;
         file_put_contents($tournaments_file, json_encode($tournaments, JSON_PRETTY_PRINT));
 
-        $success_message = 'Torneo creato con successo! Link diretto: <a href="http://torneo.grandius.it/tournament.php?link=' . htmlspecialchars($custom_link) . '" target="_blank">http://torneo.grandius.it/tournament.php?link=' . htmlspecialchars($custom_link) . '</a>';
+        $success_message = 'Torneo creato con successo! Link diretto: <a href="http://halloffame.grandius.it/tournament.php?link=' . htmlspecialchars($custom_link) . '" target="_blank">http://halloffame.grandius.it/tournament.php?link=' . htmlspecialchars($custom_link) . '</a>';
     }
 }
 ?>

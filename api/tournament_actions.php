@@ -159,7 +159,7 @@ switch ($action) {
                 if ($next_round_num > $tournament['settings']['rounds']) {
                     $tournament['status'] = 'completed'; // Superato il numero di round
                 } else {
-                    $participants = $tournament['participants'];
+                    $available_participants = $tournament['participants'];
                     // Ordina i partecipanti secondo le nuove regole di spareggio
                     usort($available_participants, function($a, $b) {
                         // 1. Punteggio (decrescente)
