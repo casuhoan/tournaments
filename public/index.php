@@ -27,8 +27,8 @@ $recent_tournaments = array_slice($tournaments, 0, 3);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Tornei</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/modern_style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>
 <body>
     <header class="modern-header">
@@ -108,6 +108,6 @@ $recent_tournaments = array_slice($tournaments, 0, 3);
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
 
-    <script src="../assets/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

@@ -18,4 +18,10 @@ RUN mkdir -p data/avatars && chown -R www-data:www-data data/avatars && chmod -R
 # Configura Apache per servire da public/ come document root
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
+# Crea un alias per servire assets dalla root
+RUN echo 'Alias /assets /var/www/html/assets' >> /etc/apache2/sites-available/000-default.conf
+
+# Abilita mod_rewrite per Apache
+RUN a2enmod rewrite
+
 # Il server Apache verrà avviato automaticamente quando il container parte

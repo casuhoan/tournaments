@@ -77,10 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Gestione Tornei</title>
-    <link rel="stylesheet" href="../assets/css/premium_design.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/modern_style.css">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>
 
 <body>
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>&copy; 2025 Gestione Tornei</p>
     </footer>
 
-    <script src="../assets/js/theme-toggle.js"></script>
+    <script src="/assets/js/theme-toggle.js"></script>
 </body>
 
 </html>
