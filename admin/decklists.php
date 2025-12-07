@@ -1,8 +1,8 @@
 <?php
 // Questo file viene incluso in admin_panel.php
 
-$tournaments = read_json('data/tournaments.json');
-$users = read_json('data/users.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
+$users = read_json(__DIR__ . '/../data/users.json');
 $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
@@ -49,13 +49,17 @@ foreach ($tournaments as $tournament) {
                 <tr>
                     <td><?php echo htmlspecialchars($item['tournament_name']); ?></td>
                     <td class="player-cell">
-                        <img src="<?php echo $avatar_map[$item['user_id']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                        <img src="<?php echo $avatar_map[$item['user_id']] ?? 'img/default_avatar.png'; ?>?t=<?php echo time(); ?>"
+                            alt="Avatar" class="player-avatar">
                         <span><?php echo htmlspecialchars($item['player_name']); ?></span>
                     </td>
-                    <td><pre><?php echo htmlspecialchars(substr($item['decklist'], 0, 100)); ?>...</pre></td>
+                    <td>
+                        <pre><?php echo htmlspecialchars(substr($item['decklist'], 0, 100)); ?>...</pre>
+                    </td>
                     <td class="actions">
-                        <a href="/forms/edit_decklist.php?tid=<?php echo $item['tournament_id']; ?>&uid=<?php echo $item['user_id']; ?>" class="action-edit">
-                           Categorizza
+                        <a href="/forms/edit_decklist.php?tid=<?php echo $item['tournament_id']; ?>&uid=<?php echo $item['user_id']; ?>"
+                            class="action-edit">
+                            Categorizza
                         </a>
                     </td>
                 </tr>

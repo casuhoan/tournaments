@@ -2,10 +2,10 @@
 // Questo file viene incluso in admin_panel.php, quindi la sessione è già avviata
 // e i permessi sono già stati controllati.
 
-$tournaments = read_json('data/tournaments.json');
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
 
 // Ordina i tornei per data, dal più recente al più vecchio
-usort($tournaments, function($a, $b) {
+usort($tournaments, function ($a, $b) {
     return strtotime($b['date']) - strtotime($a['date']);
 });
 
@@ -15,7 +15,8 @@ usort($tournaments, function($a, $b) {
 
 <?php
 if (isset($_SESSION['feedback'])): ?>
-    <p class="success-message"><?php echo $_SESSION['feedback']; unset($_SESSION['feedback']); ?></p>
+    <p class="success-message"><?php echo $_SESSION['feedback'];
+    unset($_SESSION['feedback']); ?></p>
 <?php endif; ?>
 
 <table class="admin-table">
@@ -43,11 +44,12 @@ if (isset($_SESSION['feedback'])): ?>
                     <td><?php echo htmlspecialchars($tournament['status'] ?? 'N/A'); ?></td>
                     <td><?php echo count($tournament['participants']); ?></td>
                     <td class="actions">
-                        <a href="/forms/edit_tournament.php?id=<?php echo $tournament['id']; ?>" class="action-edit">Modifica</a>
-                        <a href="/api/admin_actions.php?action=delete_tournament&id=<?php echo $tournament['id']; ?>" 
-                           class="action-delete" 
-                           onclick="return confirm('Sei sicuro di voler eliminare questo torneo? L\'azione è irreversibile.');">
-                           Elimina
+                        <a href="/forms/edit_tournament.php?id=<?php echo $tournament['id']; ?>"
+                            class="action-edit">Modifica</a>
+                        <a href="/api/admin_actions.php?action=delete_tournament&id=<?php echo $tournament['id']; ?>"
+                            class="action-delete"
+                            onclick="return confirm('Sei sicuro di voler eliminare questo torneo? L\'azione è irreversibile.');">
+                            Elimina
                         </a>
                     </td>
                 </tr>
