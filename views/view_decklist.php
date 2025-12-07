@@ -92,7 +92,7 @@ $wld_score = "$wins-$losses-$draws";
             <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
-                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -102,19 +102,19 @@ $wld_score = "$wins-$losses-$draws";
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                            <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
+                            <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
+                                <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                    <a href="/login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/register.php" class="btn btn-primary">Registrati</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -127,11 +127,11 @@ $wld_score = "$wins-$losses-$draws";
                 <li class="list-group-item player-cell">
                     <strong>Giocatore:</strong> 
                     <img src="<?php echo $player_avatar; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar ms-2">
-                    <a href="../views/view_profile.php?uid=<?php echo $user_id; ?>"><?php echo htmlspecialchars($player_name); ?></a>
+                    <a href="/views/view_profile.php?uid=<?php echo $user_id; ?>"><?php echo htmlspecialchars($player_name); ?></a>
                 </li>
                 <li class="list-group-item">
                     <strong>Torneo:</strong> 
-                    <a href="../views/view_tournament.php?tid=<?php echo $tournament_id; ?>"><?php echo htmlspecialchars($tournament_data['name']); ?></a>
+                    <a href="/views/view_tournament.php?tid=<?php echo $tournament_id; ?>"><?php echo htmlspecialchars($tournament_data['name']); ?></a>
                 </li>
                 <li class="list-group-item">
                     <strong>Formato:</strong> <?php echo htmlspecialchars($participant_data['decklist_format'] ?: 'N/D'); ?>

@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/helpers.php';
 
 // Se l'utente è già loggato, reindirizza alla dashboard
 if (isset($_SESSION['user_id'])) {
-    header('Location: home.php');
+    header('Location: /home.php');
     exit();
 }
 
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="btn btn-primary">Registrati</button>
             </form>
-            <p class="mt-3">Hai già un account? <a href="login.php">Accedi qui</a></p>
+            <p class="mt-3">Hai già un account? <a href="/login.php">Accedi qui</a></p>
         </section>
     </main>
 

@@ -9,7 +9,7 @@ $users = read_json('data/users.json');
 <h2>Gestione Utenti</h2>
 
 <p>
-    <a href="../forms/create_user.php" class="button">Crea Nuovo Utente</a>
+    <a href="/forms/create_user.php" class="button">Crea Nuovo Utente</a>
 </p>
 
 <table class="admin-table">
@@ -40,7 +40,7 @@ $users = read_json('data/users.json');
                     <td><?php echo htmlspecialchars($user['email']); ?></td>
                     <td><?php echo htmlspecialchars($user['role'] ?? 'player'); ?></td>
                     <td class="actions">
-                        <a href="../forms/edit_user.php?id=<?php echo $user['id']; ?>" class="action-edit">Modifica</a>
+                        <a href="/forms/edit_user.php?id=<?php echo $user['id']; ?>" class="action-edit">Modifica</a>
                         <a href="api/admin_actions.php?action=delete_user&id=<?php echo $user['id']; ?>" 
                            class="action-delete"
                            onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">

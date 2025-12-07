@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/helpers.php';
 
 // Se l'utente è già loggato, reindirizza alla dashboard
 if (isset($_SESSION['user_id'])) {
-    header('Location: home.php');
+    header('Location: /home.php');
     exit();
 }
 
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Reset rate limit on successful login
                         reset_rate_limit($email);
 
-                        header('Location: home.php');
+                        header('Location: /home.php');
                         exit();
                     }
                     break;
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="btn btn-primary">Accedi</button>
             </form>
-            <p class="mt-3">Non hai un account? <a href="register.php">Registrati qui</a></p>
+            <p class="mt-3">Non hai un account? <a href="/register.php">Registrati qui</a></p>
         </section>
     </main>
 

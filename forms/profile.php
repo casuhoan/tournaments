@@ -131,12 +131,12 @@ $current_user = find_user_by_id($users, $_SESSION['user_id']);
         <?php else: ?>
             <?php foreach ($participated_tournaments as $participation): ?>
                 <tr>
-                    <td><a href="../views/view_tournament.php?tid=<?php echo $participation['tournament_id']; ?>"><?php echo htmlspecialchars($participation['tournament_name']); ?></a></td>
+                    <td><a href="/views/view_tournament.php?tid=<?php echo $participation['tournament_id']; ?>"><?php echo htmlspecialchars($participation['tournament_name']); ?></a></td>
                     <td><?php echo $participation['rank']; ?></td>
                     <td><?php echo htmlspecialchars($participation['wld']); ?></td>
                     <td>
                         <?php if ($participation['decklist_name'] !== 'N/D'): ?>
-                            <a href="../views/view_decklist.php?tid=<?php echo $participation['tournament_id']; ?>&uid=<?php echo $_SESSION['user_id']; ?>">
+                            <a href="/views/view_decklist.php?tid=<?php echo $participation['tournament_id']; ?>&uid=<?php echo $_SESSION['user_id']; ?>">
                                 <?php echo htmlspecialchars($participation['decklist_name']); ?>
                             </a>
                             <small class="text-muted">(<?php echo htmlspecialchars($participation['decklist_format']); ?>)</small>

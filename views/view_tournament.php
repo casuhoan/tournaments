@@ -78,7 +78,7 @@ usort($participants, function($a, $b) {
             <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
-                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -88,19 +88,19 @@ usort($participants, function($a, $b) {
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                            <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
+                            <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
+                                <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                    <a href="/login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/register.php" class="btn btn-primary">Registrati</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -147,14 +147,14 @@ usort($participants, function($a, $b) {
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
                                 <img src="<?php echo $avatar_map[$p['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
-                                <a href="../views/view_profile.php?uid=<?php echo $p['userId']; ?>">
+                                <a href="/views/view_profile.php?uid=<?php echo $p['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
                             </td>
                             <td><?php echo $wld_score; ?></td>
                             <td>
                                 <?php if (!empty($p['decklist_name'])): ?>
-                                    <a href="../views/view_decklist.php?tid=<?php echo $tournament_id; ?>&uid=<?php echo $p['userId']; ?>">
+                                    <a href="/views/view_decklist.php?tid=<?php echo $tournament_id; ?>&uid=<?php echo $p['userId']; ?>">
                                         <?php echo htmlspecialchars($p['decklist_name']); ?>
                                     </a>
                                 <?php else: ?>
