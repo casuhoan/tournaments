@@ -64,7 +64,7 @@ if (isset($_SESSION['user_id'])) {
     <main class="modern-main">
         <section class="card">
             <h2>Crea Nuovo Utente</h2>
-            <form action="api/admin_actions.php" method="POST" class="modern-form">
+            <form action="/api/admin_actions.php" method="POST" class="modern-form">
                 <input type="hidden" name="action" value="create_user">
 
                 <div class="form-group mb-3">

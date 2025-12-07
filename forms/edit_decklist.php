@@ -92,7 +92,7 @@ $formats = ['Pauper', 'Pioneer', 'Standard', 'Modern', 'Commander'];
     <main class="modern-main">
         <section class="card">
             <h2>Modifica Dettagli Lista</h2>
-            <form action="api/admin_actions.php" method="POST" class="modern-form">
+            <form action="/api/admin_actions.php" method="POST" class="modern-form">
                 <input type="hidden" name="action" value="update_decklist">
                 <input type="hidden" name="tournament_id" value="<?php echo htmlspecialchars($tournament_id); ?>">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user_id); ?>">

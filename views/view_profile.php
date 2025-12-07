@@ -101,9 +101,9 @@ foreach ($tournaments as $tournament) {
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? '/home.php' : '/index.php'; ?>" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? '/home.php' : '/index.php'; ?>">Home</a>
                 <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">

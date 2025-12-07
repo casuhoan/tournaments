@@ -85,7 +85,7 @@ if ($user_data === null) {
     <main class="modern-main">
         <section class="card">
             <h2>Modifica Dati Utente</h2>
-            <form action="api/admin_actions.php" method="POST" class="modern-form" enctype="multipart/form-data">
+            <form action="/api/admin_actions.php" method="POST" class="modern-form" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="update_user">
                 <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user_id); ?>">
 

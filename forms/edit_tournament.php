@@ -85,7 +85,7 @@ if ($tournament_data === null) {
     <main class="modern-main">
         <section class="card">
             <h2>Modifica Dati Torneo</h2>
-            <form action="api/admin_actions.php" method="POST" class="modern-form">
+            <form action="/api/admin_actions.php" method="POST" class="modern-form">
                 <input type="hidden" name="action" value="update_tournament">
                 <input type="hidden" name="tournament_id" value="<?php echo htmlspecialchars($tournament_id); ?>">
 

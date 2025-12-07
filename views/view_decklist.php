@@ -9,8 +9,8 @@ if (isset($_SESSION['user_id'])) {
     $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
-        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
-            ? $current_user['avatar'] 
+        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar'])
+            ? $current_user['avatar']
             : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
@@ -78,6 +78,7 @@ $wld_score = "$wins-$losses-$draws";
 ?>
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,29 +87,38 @@ $wld_score = "$wins-$losses-$draws";
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>
+
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? '/home.php' : '/index.php'; ?>"
+                class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? '/home.php' : '/index.php'; ?>">Home</a>
                 <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar"
+                                class="user-avatar me-2">
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item"
+                                    href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
                             <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
                             <?php if ($_SESSION['role'] === 'admin'): ?>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                         </ul>
                     </div>
@@ -125,16 +135,20 @@ $wld_score = "$wins-$losses-$draws";
             <h2>Dettagli Lista</h2>
             <ul class="list-group">
                 <li class="list-group-item player-cell">
-                    <strong>Giocatore:</strong> 
-                    <img src="<?php echo $player_avatar; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar ms-2">
-                    <a href="/views/view_profile.php?uid=<?php echo $user_id; ?>"><?php echo htmlspecialchars($player_name); ?></a>
+                    <strong>Giocatore:</strong>
+                    <img src="<?php echo $player_avatar; ?>?t=<?php echo time(); ?>" alt="Avatar"
+                        class="player-avatar ms-2">
+                    <a
+                        href="/views/view_profile.php?uid=<?php echo $user_id; ?>"><?php echo htmlspecialchars($player_name); ?></a>
                 </li>
                 <li class="list-group-item">
-                    <strong>Torneo:</strong> 
-                    <a href="/views/view_tournament.php?tid=<?php echo $tournament_id; ?>"><?php echo htmlspecialchars($tournament_data['name']); ?></a>
+                    <strong>Torneo:</strong>
+                    <a
+                        href="/views/view_tournament.php?tid=<?php echo $tournament_id; ?>"><?php echo htmlspecialchars($tournament_data['name']); ?></a>
                 </li>
                 <li class="list-group-item">
-                    <strong>Formato:</strong> <?php echo htmlspecialchars($participant_data['decklist_format'] ?: 'N/D'); ?>
+                    <strong>Formato:</strong>
+                    <?php echo htmlspecialchars($participant_data['decklist_format'] ?: 'N/D'); ?>
                 </li>
                 <li class="list-group-item">
                     <strong>Risultato:</strong> <?php echo $wld_score; ?>
@@ -153,4 +167,5 @@ $wld_score = "$wins-$losses-$draws";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
 </body>
+
 </html>

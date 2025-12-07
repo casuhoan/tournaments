@@ -18,12 +18,13 @@ if ($page === 'users') {
 
 $users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
-$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
-    ? $current_user['avatar'] 
+$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar'])
+    ? $current_user['avatar']
     : '/data/avatars/default_avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +35,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
     <link rel="stylesheet" href="/assets/css/modern_style.css">
     <link rel="stylesheet" href="/assets/css/modern_admin_style.css">
 </head>
+
 <body>
     <header class="modern-header">
         <div class="header-content">
@@ -44,18 +46,25 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             </nav>
             <div class="user-menu">
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar"
+                            class="user-avatar me-2">
                         <span class="username"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                        <li><a class="dropdown-item"
+                                href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
                         <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                         <?php endif; ?>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                     </ul>
                 </div>
@@ -67,9 +76,12 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
         <aside class="admin-sidebar">
             <nav>
                 <ul>
-                    <li><a href="/admin/index.php?page=tournaments" class="<?php echo $page === 'tournaments' ? 'active' : ''; ?>">Gestione Tornei</a></li>
-                    <li><a href="/admin/index.php?page=users" class="<?php echo $page === 'users' ? 'active' : ''; ?>">Gestione Utenti</a></li>
-                    <li><a href="/admin/index.php?page=decklists" class="<?php echo $page === 'decklists' ? 'active' : ''; ?>">Gestione Liste</a></li>
+                    <li><a href="/admin/index.php?page=tournaments"
+                            class="<?php echo $page === 'tournaments' ? 'active' : ''; ?>">Gestione Tornei</a></li>
+                    <li><a href="/admin/index.php?page=users"
+                            class="<?php echo $page === 'users' ? 'active' : ''; ?>">Gestione Utenti</a></li>
+                    <li><a href="/admin/index.php?page=decklists"
+                            class="<?php echo $page === 'decklists' ? 'active' : ''; ?>">Gestione Liste</a></li>
                 </ul>
             </nav>
         </aside>
@@ -77,11 +89,11 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <?php
             // Carica la pagina richiesta
             if ($page === 'tournaments') {
-                include 'admin_tournaments.php';
+                include __DIR__ . '/tournaments.php';
             } elseif ($page === 'users') {
-                include 'admin_users.php';
+                include __DIR__ . '/users.php';
             } elseif ($page === 'decklists') {
-                include 'admin_decklists.php';
+                include __DIR__ . '/decklists.php';
             } else {
                 echo '<p>Pagina non trovata.</p>';
             }

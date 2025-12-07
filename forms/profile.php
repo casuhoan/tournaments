@@ -17,7 +17,7 @@ $current_user = find_user_by_id($users, $_SESSION['user_id']);
 <?php endif; ?>
 
 
-<form action="api/user_actions.php" method="POST" enctype="multipart/form-data" class="modern-form">
+<form action="/api/user_actions.php" method="POST" enctype="multipart/form-data" class="modern-form">
     <input type="hidden" name="action" value="update_profile">
     
     <fieldset>
