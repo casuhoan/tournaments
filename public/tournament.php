@@ -90,12 +90,12 @@ foreach ($users as $user) {
                                 <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="register.php" class="btn btn-primary">Registrati</a>
+                    <a href="/login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/register.php" class="btn btn-primary">Registrati</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -106,14 +106,14 @@ foreach ($users as $user) {
             <section id="login-to-join" class="card">
                 <h2>Torneo Trovato!</h2>
                 <p>Per partecipare a questo torneo o vederne i dettagli, devi prima accedere.</p>
-                <a href="login.php" class="btn-modern">Accedi per Partecipare</a>
+                <a href="/login.php" class="btn-modern">Accedi per Partecipare</a>
             </section>
         <?php elseif ($tournament['status'] !== 'pending' && !$is_registered): ?>
             <section id="spectator-mode" class="card">
                 <h2>Modalità Spettatore</h2>
                 <p>Stai guardando questo torneo come spettatore.</p>
                 <?php if (!$is_logged_in): ?>
-                    <p><a href="login.php">Accedi</a> per iscriverti ad altri tornei.</p>
+                    <p><a href="/login.php">Accedi</a> per iscriverti ad altri tornei.</p>
                 <?php endif; ?>
             </section>
         <?php else: // Logged in and (is_registered OR tournament is pending) ?>
@@ -274,7 +274,7 @@ foreach ($users as $user) {
                             <p>Hai un turno di riposo (BYE) o il tuo match non è stato ancora generato. Ricarica tra poco.</p>
                         <?php endif; ?>
                     </div>
-                    <a href="tournament.php?link=<?php echo $link; ?>" class="btn-modern">Ricarica Pagina</a>
+                    <a href="/tournament.php?link=<?php echo $link; ?>" class="btn-modern">Ricarica Pagina</a>
 
                 <?php else: // 'completed' ?>
                     <p>Il torneo è concluso. Grazie per aver partecipato!</p>

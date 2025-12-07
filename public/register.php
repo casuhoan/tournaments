@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php echo htmlspecialchars($success_message); ?>
                 </div>
             <?php endif; ?>
-            <form action="register.php" method="POST" class="modern-form">
+            <form action="/register.php" method="POST" class="modern-form">
                 <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <label for="username" class="form-label">Username:</label>
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="btn btn-primary">Registrati</button>
             </form>
-            <p class="mt-3">Hai già un account? <a href="login.php">Accedi qui</a></p>
+            <p class="mt-3">Hai già un account? <a href="/login.php">Accedi qui</a></p>
         </section>
     </main>
 

@@ -43,7 +43,7 @@ if (isset($_SESSION['feedback'])): ?>
                     <td><?php echo htmlspecialchars($tournament['status'] ?? 'N/A'); ?></td>
                     <td><?php echo count($tournament['participants']); ?></td>
                     <td class="actions">
-                        <a href="edit_tournament.php?id=<?php echo $tournament['id']; ?>" class="action-edit">Modifica</a>
+                        <a href="/forms/edit_tournament.php?id=<?php echo $tournament['id']; ?>" class="action-edit">Modifica</a>
                         <a href="api/admin_actions.php?action=delete_tournament&id=<?php echo $tournament['id']; ?>" 
                            class="action-delete" 
                            onclick="return confirm('Sei sicuro di voler eliminare questo torneo? L\'azione è irreversibile.');">

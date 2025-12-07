@@ -54,7 +54,7 @@ foreach ($tournaments as $tournament) {
                     </td>
                     <td><pre><?php echo htmlspecialchars(substr($item['decklist'], 0, 100)); ?>...</pre></td>
                     <td class="actions">
-                        <a href="edit_decklist.php?tid=<?php echo $item['tournament_id']; ?>&uid=<?php echo $item['user_id']; ?>" class="action-edit">
+                        <a href="/forms/edit_decklist.php?tid=<?php echo $item['tournament_id']; ?>&uid=<?php echo $item['user_id']; ?>" class="action-edit">
                            Categorizza
                         </a>
                     </td>

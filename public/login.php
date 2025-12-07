@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php echo htmlspecialchars($error_message); ?>
                 </div>
             <?php endif; ?>
-            <form action="login.php" method="POST" class="modern-form">
+            <form action="/login.php" method="POST" class="modern-form">
                 <?php echo csrf_field(); ?>
                 <div class="form-group">
                     <label for="email" class="form-label">Email o Username:</label>
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="btn btn-primary">Accedi</button>
             </form>
-            <p class="mt-3">Non hai un account? <a href="register.php">Registrati qui</a></p>
+            <p class="mt-3">Non hai un account? <a href="/register.php">Registrati qui</a></p>
         </section>
     </main>
 

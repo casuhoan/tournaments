@@ -67,9 +67,9 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <a href="home.php" class="site-brand">Gestione Tornei</a>
+            <a href="/home.php" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
-                <a href="home.php">Home</a>
+                <a href="/home.php">Home</a>
                 <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
@@ -94,7 +94,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="home.php?action=logout">Logout</a></li>
+                        <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -116,13 +116,13 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>Riepilogo Generale</h2>
             <div class="summary-boxes">
                 <div class="summary-box">
-                    <h3><a href="all_tournaments.php?filter=in_progress_participating">Tornei in corso (a cui
+                    <h3><a href="/views/all_tournaments.php?filter=in_progress_participating">Tornei in corso (a cui
                             partecipo)</a></h3>
                     <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'in_progress' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?>
                     </p>
                 </div>
                 <div class="summary-box">
-                    <h3><a href="all_tournaments.php?filter=completed_participating">Tornei completati (che hai
+                    <h3><a href="/views/all_tournaments.php?filter=completed_participating">Tornei completati (che hai
                             fatto)</a></h3>
                     <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'completed' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?>
                     </p>
@@ -148,7 +148,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                         <div class="tournament-card">
                             <h3>
                                 <a
-                                    href="tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
+                                    href="/tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
                                 <?php if ($tournament['status'] === 'in_progress'): ?>
                                     <span class="badge bg-warning">In Corso</span>
                                 <?php endif; ?>
@@ -160,7 +160,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             </div>
             <?php if (count($user_tournaments) > 10): ?>
                 <div class="text-center mt-3">
-                    <a href="all_tournaments.php?filter=completed_participating" class="btn btn-secondary">Visualizza
+                    <a href="/views/all_tournaments.php?filter=completed_participating" class="btn btn-secondary">Visualizza
                         altri</a>
                 </div>
             <?php endif; ?>
