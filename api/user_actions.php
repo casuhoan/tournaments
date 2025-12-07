@@ -40,18 +40,18 @@ switch ($action) {
             $max_size = 5 * 1024 * 1024; // 5 MB
 
             if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
-                $upload_dir = '../data/avatars/';
+                $upload_dir = __DIR__ . '/../data/avatars/';
                 if (!is_dir($upload_dir)) {
                     mkdir($upload_dir, 0777, true);
                 }
                 $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $new_filename = 'avatar_' . $user_id . '_' . time() . '.' . $extension;
-                
+
                 // Rimuovi i vecchi avatar se esistono
                 if (!empty($users[$user_key]['avatar']) && $users[$user_key]['avatar'] !== 'img/default_avatar.png' && file_exists('../' . $users[$user_key]['avatar'])) {
                     unlink('../' . $users[$user_key]['avatar']);
                 }
-                 if (!empty($users[$user_key]['avatar_large']) && $users[$user_key]['avatar_large'] !== 'img/default_avatar_large.png' && file_exists('../' . $users[$user_key]['avatar_large'])) {
+                if (!empty($users[$user_key]['avatar_large']) && $users[$user_key]['avatar_large'] !== 'img/default_avatar_large.png' && file_exists('../' . $users[$user_key]['avatar_large'])) {
                     unlink('../' . $users[$user_key]['avatar_large']);
                 }
 
@@ -61,12 +61,12 @@ switch ($action) {
                     unset($users[$user_key]['avatar_large']);
                 } else {
                     $_SESSION['error'] = 'Errore durante il caricamento del file.';
-                    header('Location: ../forms/settings.php?page=profile');
+                    header('Location: /forms/settings.php?page=profile');
                     exit();
                 }
             } else {
                 $_SESSION['error'] = 'Tipo di file non valido o dimensione eccessiva (max 5MB).';
-                header('Location: ../forms/settings.php?page=profile');
+                header('Location: /forms/settings.php?page=profile');
                 exit();
             }
         }
@@ -80,17 +80,17 @@ switch ($action) {
             if ($key !== $user_key) {
                 if ($user['username'] === $new_username) {
                     $_SESSION['error'] = 'Questo username è già in uso.';
-                    header('Location: ../forms/settings.php?page=profile');
+                    header('Location: /forms/settings.php?page=profile');
                     exit();
                 }
                 if ($user['email'] === $new_email) {
                     $_SESSION['error'] = 'Questa email è già in uso.';
-                    header('Location: ../forms/settings.php?page=profile');
+                    header('Location: /forms/settings.php?page=profile');
                     exit();
                 }
             }
         }
-        
+
         $users[$user_key]['username'] = $new_username;
         $users[$user_key]['email'] = $new_email;
         $_SESSION['username'] = $new_username;
@@ -103,14 +103,14 @@ switch ($action) {
         if (!empty($current_password) || !empty($new_password) || !empty($confirm_new_password)) {
             if (empty($current_password) || empty($new_password) || empty($confirm_new_password)) {
                 $_SESSION['error'] = 'Per cambiare la password, devi compilare tutti i campi relativi.';
-                header('Location: ../forms/settings.php?page=profile');
+                header('Location: /forms/settings.php?page=profile');
                 exit();
             }
             // La logica di verifica della password attuale è stata rimossa perché la password salvata è hashata
             // In un'applicazione reale, useremmo password_verify()
             if ($new_password !== $confirm_new_password) {
                 $_SESSION['error'] = 'La nuova password e la sua conferma non corrispondono.';
-                header('Location: ../forms/settings.php?page=profile');
+                header('Location: /forms/settings.php?page=profile');
                 exit();
             }
             $users[$user_key]['password'] = password_hash($new_password, PASSWORD_DEFAULT);
@@ -124,7 +124,7 @@ switch ($action) {
         }
 
         $_SESSION['feedback'] = 'Profilo aggiornato con successo.';
-        header('Location: ../forms/settings.php?page=profile');
+        header('Location: /forms/settings.php?page=profile');
         exit();
 
     default:
