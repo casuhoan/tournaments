@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
 // User data retrieval for header
-$avatar_path = 'data/avatars/default_avatar.png';
+$avatar_path = '/data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
     $users_data = read_json(__DIR__ . '/../data/users.json');
@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])) {
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'data/avatars/default_avatar.png';
+            : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -53,7 +53,7 @@ $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
-    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'data/avatars/default_avatar.png';
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : '/data/avatars/default_avatar.png';
 }
 
 ?>
@@ -328,7 +328,7 @@ foreach ($users as $user) {
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
-                                <img src="<?php echo $avatar_map[$player['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                                <img src="<?php echo $avatar_map[$player['userId']] ?? '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                                 <a href="/views/view_profile.php?uid=<?php echo $player['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
@@ -347,7 +347,7 @@ foreach ($users as $user) {
                 <ul>
                     <?php foreach ($tournament['participants'] as $participant): ?>
                         <li class="player-list-item">
-                            <img src="<?php echo $avatar_map[$participant['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
+                            <img src="<?php echo $avatar_map[$participant['userId']] ?? '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                             <span><?php echo htmlspecialchars($user_map[$participant['userId']] ?? 'Utente Sconosciuto'); ?></span>
                         </li>
                     <?php endforeach; ?>

@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . '/../includes/helpers.php';
 
 // User data retrieval for header
-$header_avatar_path = 'data/avatars/default_avatar.png';
+$header_avatar_path = '/data/avatars/default_avatar.png';
 $logged_in_username = null;
 if (isset($_SESSION['user_id'])) {
     $users_data_for_header = read_json(__DIR__ . '/../data/users.json');
@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])) {
     if ($current_user_for_header) {
         $header_avatar_path = !empty($current_user_for_header['avatar']) && file_exists($current_user_for_header['avatar']) 
             ? $current_user_for_header['avatar'] 
-            : 'data/avatars/default_avatar.png';
+            : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -134,7 +134,7 @@ foreach ($tournaments as $tournament) {
 
     <main class="modern-main">
         <section class="card text-center mb-4">
-            <img src="<?php echo (!empty($user_data['avatar']) && file_exists($user_data['avatar'])) ? $user_data['avatar'] : 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
+            <img src="<?php echo (!empty($user_data['avatar']) && file_exists($user_data['avatar'])) ? $user_data['avatar'] : '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
             <h2><?php echo htmlspecialchars($user_data['username']); ?></h2>
         </section>
 

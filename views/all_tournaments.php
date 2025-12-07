@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'])) {
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'data/avatars/default_avatar.png';
+            : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -22,7 +22,7 @@ $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
-    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : 'data/avatars/default_avatar.png';
+    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : '/data/avatars/default_avatar.png';
 }
 
 // Filtri

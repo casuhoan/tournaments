@@ -1,25 +1,3 @@
-/* Modern Stylesheet - Enhanced with Premium Design System */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-/* Legacy variable support - maps to new design system */
-:root {
-    --primary-color: var(--color-primary, hsl(220, 90%, 56%));
-    --primary-hover: var(--color-primary-light, hsl(220, 90%, 65%));
-    --secondary-color: var(--color-text-secondary, hsl(220, 15%, 40%));
-    --light-gray: var(--color-bg-tertiary, hsl(220, 20%, 97%));
-    --dark-gray: var(--color-text-primary, hsl(220, 20%, 15%));
-    padding: 1rem 2rem;
-    box-shadow: var(--box-shadow);
-    width: 100%;
-    box-sizing: border-box;
-}
-
-header.modern-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
 main.modern-main {
     padding: 2rem;
     max-width: 1200px;

@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'email' => $email,
                     'password' => hash_password($password), // Hash password with bcrypt
                     'role' => 'player', // Assegna il ruolo di default
-                    'avatar' => 'data/avatars/default_avatar.png', // Updated path
+                    'avatar' => '/data/avatars/default_avatar.png', // Updated path
                     'theme' => 'light' // Default theme preference
                 ];
 

@@ -16,7 +16,7 @@ if (isset($_SESSION['user_id'])) {
     if ($current_user) {
         $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
             ? $current_user['avatar'] 
-            : 'data/avatars/default_avatar.png';
+            : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }
@@ -91,7 +91,7 @@ if ($user_data === null) {
 
                 <div class="form-group mb-3">
                     <label class="form-label">Avatar Attuale:</label>
-                    <img src="<?php echo !empty($user_data['avatar']) && file_exists($user_data['avatar']) ? $user_data['avatar'] : 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar mb-2">
+                    <img src="<?php echo !empty($user_data['avatar']) && file_exists($user_data['avatar']) ? $user_data['avatar'] : '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar mb-2">
                 </div>
 
                 <div class="form-group mb-3">
