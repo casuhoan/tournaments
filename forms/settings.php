@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funz
 
 // L'utente deve essere loggato per accedere a questa pagina
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /login.php');
+    header('Location: login.php');
     exit();
 }
 
@@ -34,10 +34,10 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <a href="/home.php" class="site-brand">Gestione Tornei</a>
+            <a href="home.php" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
-                <a href="/home.php">Home</a>
-                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="home.php">Home</a>
+                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <div class="dropdown">
@@ -46,11 +46,11 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                         <span class="username"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                        <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
+                        <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                        <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
+                            <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
                         <?php endif; ?>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
@@ -64,7 +64,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
         <aside class="admin-sidebar">
             <nav>
                 <ul>
-                    <li><a href="/forms/settings.php?page=profile" class="<?php echo $page === 'profile' ? 'active' : ''; ?>">Profilo</a></li>
+                    <li><a href="../forms/settings.php?page=profile" class="<?php echo $page === 'profile' ? 'active' : ''; ?>">Profilo</a></li>
                     <!-- Aggiungere qui altri link per le impostazioni future -->
                 </ul>
             </nav>

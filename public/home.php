@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funz
 
 // Se l'utente non è loggato, reindirizza alla pagina di login
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /login.php');
+    header('Location: login.php');
     exit();
 }
 
@@ -14,7 +14,7 @@ $logged_in_username = $_SESSION['username'];
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     session_unset(); // Rimuove tutte le variabili di sessione
     session_destroy(); // Distrugge la sessione
-    header('Location: /index.php'); // Reindirizza alla pagina principale
+    header('Location: index.php'); // Reindirizza alla pagina principale
     exit();
 }
 
@@ -67,10 +67,10 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
 <body>
     <header class="modern-header">
         <div class="header-content">
-            <a href="/home.php" class="site-brand">Gestione Tornei</a>
+            <a href="home.php" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
-                <a href="/home.php">Home</a>
-                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="home.php">Home</a>
+                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <div class="dropdown">
@@ -82,14 +82,14 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         <li><a class="dropdown-item"
-                                href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a>
+                                href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a>
                         </li>
-                        <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
+                        <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
+                            <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
                         <?php endif; ?>
                         <li>
                             <hr class="dropdown-divider">
@@ -106,9 +106,9 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>Azioni Rapide</h2>
             <div class="d-flex justify-content-center gap-2">
                 <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'moderator'): ?>
-                    <a href="/forms/create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
+                    <a href="../forms/create_tournament.php" class="btn-modern">Crea Nuovo Torneo</a>
                 <?php endif; ?>
-                <a href="/views/all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
+                <a href="../views/all_tournaments.php" class="btn-modern btn-modern-secondary">Vedi Tutti i Tornei</a>
             </div>
         </section>
 
@@ -116,13 +116,13 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <h2>Riepilogo Generale</h2>
             <div class="summary-boxes">
                 <div class="summary-box">
-                    <h3><a href="/views/all_tournaments.php?filter=in_progress_participating">Tornei in corso (a cui
+                    <h3><a href="../views/all_tournaments.php?filter=in_progress_participating">Tornei in corso (a cui
                             partecipo)</a></h3>
                     <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'in_progress' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?>
                     </p>
                 </div>
                 <div class="summary-box">
-                    <h3><a href="/views/all_tournaments.php?filter=completed_participating">Tornei completati (che hai
+                    <h3><a href="../views/all_tournaments.php?filter=completed_participating">Tornei completati (che hai
                             fatto)</a></h3>
                     <p><?php echo count(array_filter($tournaments, fn($t) => $t['status'] === 'completed' && in_array($_SESSION['user_id'], array_column($t['participants'], 'userId')))); ?>
                     </p>
@@ -148,7 +148,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
                         <div class="tournament-card">
                             <h3>
                                 <a
-                                    href="/tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
+                                    href="tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
                                 <?php if ($tournament['status'] === 'in_progress'): ?>
                                     <span class="badge bg-warning">In Corso</span>
                                 <?php endif; ?>
@@ -160,7 +160,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             </div>
             <?php if (count($user_tournaments) > 10): ?>
                 <div class="text-center mt-3">
-                    <a href="/views/all_tournaments.php?filter=completed_participating" class="btn btn-secondary">Visualizza
+                    <a href="../views/all_tournaments.php?filter=completed_participating" class="btn btn-secondary">Visualizza
                         altri</a>
                 </div>
             <?php endif; ?>

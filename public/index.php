@@ -92,14 +92,14 @@ $recent_tournaments = array_slice($tournaments, 0, 3);
             <section id="login-prompt" class="card">
                 <h2>Accedi per Gestire</h2>
                 <p>Accedi o registrati per creare i tuoi tornei, partecipare e vedere le classifiche complete.</p>
-                <a href="/login.php" class="btn-modern">Accedi</a>
-                <a href="/register.php" class="btn-modern">Registrati</a>
+                <a href="login.php" class="btn-modern">Accedi</a>
+                <a href="register.php" class="btn-modern">Registrati</a>
             </section>
         <?php else: ?>
             <section id="dashboard-link" class="card">
                 <h2>Bentornato, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
                 <p>Vai alla tua home per gestire i tornei.</p>
-                <a href="/home.php" class="btn-modern">Vai alla Home</a>
+                <a href="home.php" class="btn-modern">Vai alla Home</a>
             </section>
         <?php endif; ?>
     </main>

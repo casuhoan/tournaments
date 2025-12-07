@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <button type="submit" class="btn btn-primary">Accedi</button>
             </form>
-            <p class="mt-3">Non hai un account? <a href="/register.php">Registrati qui</a></p>
+            <p class="mt-3">Non hai un account? <a href="register.php">Registrati qui</a></p>
         </section>
     </main>
 

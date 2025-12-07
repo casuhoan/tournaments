@@ -96,7 +96,7 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
             <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
-                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -106,19 +106,19 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                            <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
+                            <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
+                                <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="/login.php" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="/register.php" class="btn btn-primary">Registrati</a>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -148,7 +148,7 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
             <?php foreach ($paginated_tournaments as $tournament): ?>
                 <div class="tournament-card">
                     <h3>
-                        <a href="/tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
+                        <a href="tournament.php?link=<?php echo $tournament['link']; ?>"><?php echo htmlspecialchars($tournament['name']); ?></a>
                         <?php if ($tournament['status'] === 'in_progress'): ?>
                             <span class="badge bg-warning">In Corso</span>
                         <?php endif; ?>
@@ -179,9 +179,9 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
                             <li class="player-list-item">
                                 <img src="<?php echo $avatar_map[$player['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
                                 <div>
-                                    <a href="/views/view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?></a>
+                                    <a href="../views/view_profile.php?uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?></a>
                                     <?php if (!empty($player['decklist_name'])): ?>
-                                        - <a href="/views/view_decklist.php?tid=<?php echo $tournament['id']; ?>&uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($player['decklist_name']); ?></a>
+                                        - <a href="../views/view_decklist.php?tid=<?php echo $tournament['id']; ?>&uid=<?php echo $player['userId']; ?>"><?php echo htmlspecialchars($player['decklist_name']); ?></a>
                                     <?php endif; ?>
                                 </div>
                             </li>

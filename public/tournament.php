@@ -73,7 +73,7 @@ foreach ($users as $user) {
             <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>" class="site-brand">Gestione Tornei</a>
             <nav class="main-nav">
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'home.php' : 'index.php'; ?>">Home</a>
-                <a href="/views/all_tournaments.php">Vedi tutti i tornei</a>
+                <a href="../views/all_tournaments.php">Vedi tutti i tornei</a>
             </nav>
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
@@ -83,19 +83,19 @@ foreach ($users as $user) {
                             <span class="username"><?php echo htmlspecialchars($logged_in_username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
-                            <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
+                            <li><a class="dropdown-item" href="../views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                            <li><a class="dropdown-item" href="../forms/settings.php">Impostazioni</a></li>
                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
+                                <li><a class="dropdown-item" href="../admin/index.php">Pannello Admin</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="/login.php" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="/register.php" class="btn btn-primary">Registrati</a>
+                    <a href="login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="register.php" class="btn btn-primary">Registrati</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -106,14 +106,14 @@ foreach ($users as $user) {
             <section id="login-to-join" class="card">
                 <h2>Torneo Trovato!</h2>
                 <p>Per partecipare a questo torneo o vederne i dettagli, devi prima accedere.</p>
-                <a href="/login.php" class="btn-modern">Accedi per Partecipare</a>
+                <a href="login.php" class="btn-modern">Accedi per Partecipare</a>
             </section>
         <?php elseif ($tournament['status'] !== 'pending' && !$is_registered): ?>
             <section id="spectator-mode" class="card">
                 <h2>Modalità Spettatore</h2>
                 <p>Stai guardando questo torneo come spettatore.</p>
                 <?php if (!$is_logged_in): ?>
-                    <p><a href="/login.php">Accedi</a> per iscriverti ad altri tornei.</p>
+                    <p><a href="login.php">Accedi</a> per iscriverti ad altri tornei.</p>
                 <?php endif; ?>
             </section>
         <?php else: // Logged in and (is_registered OR tournament is pending) ?>
@@ -274,11 +274,11 @@ foreach ($users as $user) {
                             <p>Hai un turno di riposo (BYE) o il tuo match non è stato ancora generato. Ricarica tra poco.</p>
                         <?php endif; ?>
                     </div>
-                    <a href="/tournament.php?link=<?php echo $link; ?>" class="btn-modern">Ricarica Pagina</a>
+                    <a href="tournament.php?link=<?php echo $link; ?>" class="btn-modern">Ricarica Pagina</a>
 
                 <?php else: // 'completed' ?>
                     <p>Il torneo è concluso. Grazie per aver partecipato!</p>
-                    <a href="/views/view_tournament.php?tid=<?php echo $tournament['id']; ?>" class="btn btn-primary">Vedi Dettagli Torneo</a>
+                    <a href="../views/view_tournament.php?tid=<?php echo $tournament['id']; ?>" class="btn btn-primary">Vedi Dettagli Torneo</a>
                     <?php // Qui verrà visualizzata la classifica finale ?>
                 <?php endif; ?>
             </section>
@@ -329,7 +329,7 @@ foreach ($users as $user) {
                             <td><?php echo $index + 1; ?></td>
                             <td class="player-cell">
                                 <img src="<?php echo $avatar_map[$player['userId']] ?? '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="Avatar" class="player-avatar">
-                                <a href="/views/view_profile.php?uid=<?php echo $player['userId']; ?>">
+                                <a href="../views/view_profile.php?uid=<?php echo $player['userId']; ?>">
                                     <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
                                 </a>
                             </td>
