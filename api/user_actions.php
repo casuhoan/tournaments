@@ -34,7 +34,11 @@ switch ($action) {
         }
 
         // Gestione upload avatar
+        error_log("DEBUG: Processing update_profile action");
+        error_log("DEBUG: FILES array: " . print_r($_FILES, true));
+
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            error_log("DEBUG: Avatar file received, processing upload");
             $file = $_FILES['avatar'];
             $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
             $max_size = 5 * 1024 * 1024; // 5 MB
@@ -56,10 +60,12 @@ switch ($action) {
                 }
 
                 if (move_uploaded_file($file['tmp_name'], $upload_dir . $new_filename)) {
+                    error_log("DEBUG: File uploaded successfully to: " . $upload_dir . $new_filename);
                     $users[$user_key]['avatar'] = 'data/avatars/' . $new_filename;
                     // Rimuovi il campo avatar_large se esiste
                     unset($users[$user_key]['avatar_large']);
                 } else {
+                    error_log("DEBUG: File upload FAILED. Target: " . $upload_dir . $new_filename);
                     $_SESSION['error'] = 'Errore durante il caricamento del file.';
                     header('Location: /forms/settings.php?page=profile');
                     exit();
