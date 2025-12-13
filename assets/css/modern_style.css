@@ -300,104 +300,155 @@ main.modern-main {
     font-weight: bold;
 }
 
-.tournament-list .tournament-card h3 a:hover {
-    color: var(--primary-color);
+.tournament-list .tournament-card .badges {
+    margin-top: 0.5rem;
 }
 
-/* New Header Styles */
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    color: #fff;
 }
 
-.site-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-decoration: none;
+.badge-success {
+    background-color: #28a745;
 }
 
-.main-nav {
-    display: flex;
-    gap: 1.5rem;
-    flex-grow: 1;
-    justify-content: center;
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
 }
 
-.main-nav a {
-    text-decoration: none;
-    color: var(--dark-gray);
-    font-weight: 500;
-    padding: 0.5rem 0;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s;
+.badge-primary {
+    background-color: #007bff;
 }
 
-.main-nav a:hover,
-.main-nav a.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+.badge-secondary {
+    background-color: #6c757d;
 }
 
-.user-menu {
-    display: flex;
-    align-items: center;
-}
 
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+/* ==========================================================================
+   Mobile Responsiveness
+   ========================================================================== */
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
+
+    /* 1. Layout & Spacing */
+    main.modern-main {
+        padding: 1rem;
+        /* Ridotto il padding laterale */
+        width: 100%;
+        max-width: 100%;
     }
 
-    .main-nav {
-        order: 2;
-        width: 100%;
-        justify-content: center;
-        margin-top: 1rem;
+    .card {
+        padding: 1.5rem 1rem;
+        /* Meno padding interno nelle card */
+        margin-bottom: 1.5rem;
+        border-radius: var(--radius-sm);
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        /* Titoli leggermente più piccoli */
+        margin-bottom: 1.5rem;
+    }
+
+    /* 2. Header & Navigation */
+    .header-content {
+        flex-direction: column;
+        /* Impila logo, nav e user-menu */
+        gap: 1rem;
+        text-align: center;
+        padding: 1rem;
     }
 
     .site-brand {
-        order: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .main-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
     }
 
     .user-menu {
-        order: 3;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 0.5rem;
     }
-}
 
-/* Standings with Avatars */
-.standings-table .player-cell {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    /* 3. Tables (Horizontal Scroll) */
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        /* Scroll fluido su iOS */
+    }
 
-.standings-table .player-avatar,
-.player-list-item .player-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+    .standings-table {
+        min-width: 600px;
+        /* Forza una larghezza minima per attivare lo scroll */
+    }
 
-.player-list-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 5px;
-}
+    /* 4. Score Submission UI */
+    .score-ui {
+        flex-direction: column;
+        gap: 2rem;
+    }
 
-.modern-header .user-menu .username {
-    color: var(--dark-gray) !important;
+    .player-score {
+        width: 100%;
+    }
+
+    .score-display {
+        font-size: 2rem;
+    }
+
+    /* 5. Buttons */
+    .btn-modern {
+        width: 100%;
+        /* Bottoni a tutta larghezza su mobile */
+        padding: 0.8rem 1rem;
+        display: block;
+        box-sizing: border-box;
+        margin-bottom: 0.5rem;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    /* 6. Typography */
+    body {
+        font-size: 14px;
+        /* Testo base leggermente più piccolo */
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
 }

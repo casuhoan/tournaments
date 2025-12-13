@@ -132,62 +132,64 @@ usort($participants, function ($a, $b) {
         </section>
         <section class="card">
             <h3>Classifica Finale</h3>
-            <table class="standings-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Giocatore</th>
-                        <th>Risultato (V-S-P)</th>
-                        <th>Mazzo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($participants as $index => $p): ?>
-                        <?php
-                        // Calcola W-L-D per questo giocatore
-                        $wins = 0;
-                        $losses = 0;
-                        $draws = 0;
-                        if (isset($tournament_data['matches']) && is_array($tournament_data['matches'])) {
-                            foreach ($tournament_data['matches'] as $round) {
-                                foreach ($round as $match) {
-                                    if ($match['player1'] == $p['userId'] || $match['player2'] == $p['userId']) {
-                                        if ($match['winner'] === 'draw')
-                                            $draws++;
-                                        elseif ($match['winner'] == $p['userId'])
-                                            $wins++;
-                                        elseif ($match['winner'] !== null)
-                                            $losses++;
+            <div class="table-responsive">
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Giocatore</th>
+                            <th>Risultato (V-S-P)</th>
+                            <th>Mazzo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($participants as $index => $p): ?>
+                            <?php
+                            // Calcola W-L-D per questo giocatore
+                            $wins = 0;
+                            $losses = 0;
+                            $draws = 0;
+                            if (isset($tournament_data['matches']) && is_array($tournament_data['matches'])) {
+                                foreach ($tournament_data['matches'] as $round) {
+                                    foreach ($round as $match) {
+                                        if ($match['player1'] == $p['userId'] || $match['player2'] == $p['userId']) {
+                                            if ($match['winner'] === 'draw')
+                                                $draws++;
+                                            elseif ($match['winner'] == $p['userId'])
+                                                $wins++;
+                                            elseif ($match['winner'] !== null)
+                                                $losses++;
+                                        }
                                     }
                                 }
                             }
-                        }
-                        $wld_score = "$wins-$losses-$draws";
-                        ?>
-                        <tr>
-                            <td><?php echo $index + 1; ?></td>
-                            <td class="player-cell">
-                                <img src="<?php echo $avatar_map[$p['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>"
-                                    alt="Avatar" class="player-avatar">
-                                <a href="/views/view_profile.php?uid=<?php echo $p['userId']; ?>">
-                                    <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
-                                </a>
-                            </td>
-                            <td><?php echo $wld_score; ?></td>
-                            <td>
-                                <?php if (!empty($p['decklist_name'])): ?>
-                                    <a
-                                        href="/views/view_decklist.php?tid=<?php echo $tournament_id; ?>&uid=<?php echo $p['userId']; ?>">
-                                        <?php echo htmlspecialchars($p['decklist_name']); ?>
+                            $wld_score = "$wins-$losses-$draws";
+                            ?>
+                            <tr>
+                                <td><?php echo $index + 1; ?></td>
+                                <td class="player-cell">
+                                    <img src="<?php echo $avatar_map[$p['userId']] ?? 'data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>"
+                                        alt="Avatar" class="player-avatar">
+                                    <a href="/views/view_profile.php?uid=<?php echo $p['userId']; ?>">
+                                        <?php echo htmlspecialchars($user_map[$p['userId']] ?? 'Sconosciuto'); ?>
                                     </a>
-                                <?php else: ?>
-                                    N/D
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                                </td>
+                                <td><?php echo $wld_score; ?></td>
+                                <td>
+                                    <?php if (!empty($p['decklist_name'])): ?>
+                                        <a
+                                            href="/views/view_decklist.php?tid=<?php echo $tournament_id; ?>&uid=<?php echo $p['userId']; ?>">
+                                            <?php echo htmlspecialchars($p['decklist_name']); ?>
+                                        </a>
+                                    <?php else: ?>
+                                        N/D
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 

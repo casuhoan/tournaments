@@ -67,6 +67,9 @@ foreach ($users as $user) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($tournament['name']); ?> - Gestione Tornei</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>
@@ -325,40 +328,42 @@ foreach ($users as $user) {
                         return $a['malus'] - $b['malus'];
                     }
 
-                    // 4. Casuale
-                    return rand(-1, 1);
+                    // 4. Deterministic fallback
+                    return $a['userId'] - $b['userId'];
                 });
                 ?>
                 <section id="standings" class="card">
                     <h3>Classifica Parziale</h3>
-                    <table class="standings-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Giocatore</th>
-                                <th>Punti</th>
-                                <th>GWP</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($standings as $index => $player):
-                                $gwp = ($player['games_won'] + $player['games_lost'] > 0) ? $player['games_won'] / ($player['games_won'] + $player['games_lost']) : 0;
-                                ?>
+                    <div class="table-responsive">
+                        <table class="standings-table">
+                            <thead>
                                 <tr>
-                                    <td><?php echo $index + 1; ?></td>
-                                    <td class="player-cell">
-                                        <img src="<?php echo $avatar_map[$player['userId']] ?? '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>"
-                                            alt="Avatar" class="player-avatar">
-                                        <a href="/views/view_profile.php?uid=<?php echo $player['userId']; ?>">
-                                            <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
-                                        </a>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($player['score']); ?></td>
-                                    <td><?php echo round($gwp * 100, 2); ?>%</td>
+                                    <th>Rank</th>
+                                    <th>Giocatore</th>
+                                    <th>Punti</th>
+                                    <th>GWP</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($standings as $index => $player):
+                                    $gwp = ($player['games_won'] + $player['games_lost'] > 0) ? $player['games_won'] / ($player['games_won'] + $player['games_lost']) : 0;
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $index + 1; ?></td>
+                                        <td class="player-cell">
+                                            <img src="<?php echo $avatar_map[$player['userId']] ?? '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>"
+                                                alt="Avatar" class="player-avatar">
+                                            <a href="/views/view_profile.php?uid=<?php echo $player['userId']; ?>">
+                                                <?php echo htmlspecialchars($user_map[$player['userId']] ?? 'Sconosciuto'); ?>
+                                            </a>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($player['score']); ?></td>
+                                        <td><?php echo round($gwp * 100, 2); ?>%</td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
             <?php } ?>
 

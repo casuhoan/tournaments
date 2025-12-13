@@ -2,7 +2,8 @@
 session_start();
 require_once __DIR__ . '/../includes/helpers.php'; // Include il file delle funzioni helper
 
-function find_tournament_by_id(&$tournaments, $id) {
+function find_tournament_by_id(&$tournaments, $id)
+{
     foreach ($tournaments as $key => &$tournament) {
         if ($tournament['id'] == $id) {
             return $key;
@@ -66,7 +67,7 @@ switch ($action) {
         break;
 
     case 'leave_tournament':
-        $tournament['participants'] = array_filter($tournament['participants'], function($participant) use ($user_id) {
+        $tournament['participants'] = array_filter($tournament['participants'], function ($participant) use ($user_id) {
             return $participant['userId'] !== $user_id;
         });
         break;
@@ -85,11 +86,11 @@ switch ($action) {
         // Solo l'organizzatore può avviare il torneo
         if ($tournament['organizerId'] === $user_id && $tournament['status'] === 'pending' && count($tournament['participants']) >= 2) {
             $tournament['status'] = 'in_progress';
-            
+
             // Logica di abbinamento casuale per il primo turno
             $participants = $tournament['participants'];
             shuffle($participants);
-            
+
             $round = 1;
             $matches = [];
             for ($i = 0; $i < count($participants); $i += 2) {
@@ -135,11 +136,11 @@ switch ($action) {
         }
 
         $current_round_key = !empty($tournament['matches']) ? array_key_last($tournament['matches']) : null;
-        
+
         // Verifica che tutti i match del round corrente siano conclusi
         $all_matches_done = true;
         if ($current_round_key) {
-            foreach($tournament['matches'][$current_round_key] as $match) {
+            foreach ($tournament['matches'][$current_round_key] as $match) {
                 if ($match['winner'] === null) {
                     $all_matches_done = false;
                     break;
@@ -150,7 +151,7 @@ switch ($action) {
         }
 
         if ($all_matches_done) {
-            $next_round_num = (int)str_replace('round_', '', $current_round_key) + 1;
+            $next_round_num = (int) str_replace('round_', '', $current_round_key) + 1;
             $next_round_key = 'round_' . $next_round_num;
             $matches = [];
 
@@ -160,13 +161,14 @@ switch ($action) {
                     $tournament['status'] = 'completed'; // Superato il numero di round
                 } else {
                     $available_participants = $tournament['participants'];
+                    shuffle($available_participants); // Shuffle for random tie-breaking
                     // Ordina i partecipanti secondo le nuove regole di spareggio
-                    usort($available_participants, function($a, $b) {
+                    usort($available_participants, function ($a, $b) {
                         // 1. Punteggio (decrescente)
                         if ($a['score'] !== $b['score']) {
                             return $b['score'] - $a['score'];
                         }
-                        
+
                         // 2. Game Win Percentage (decrescente)
                         $gwp_a = ($a['games_won'] + $a['games_lost'] > 0) ? $a['games_won'] / ($a['games_won'] + $a['games_lost']) : 0;
                         $gwp_b = ($b['games_won'] + $b['games_lost'] > 0) ? $b['games_won'] / ($b['games_won'] + $b['games_lost']) : 0;
@@ -179,20 +181,23 @@ switch ($action) {
                             return $a['malus'] - $b['malus'];
                         }
 
-                        // 4. Casuale
-                        return rand(-1, 1);
+                        // 4. Deterministic fallback
+                        return $a['userId'] - $b['userId'];
                     });
 
                     $paired_user_ids = [];
                     $table_num = 1;
 
                     foreach ($available_participants as $p1_key => $p1) {
-                        if (in_array($p1['userId'], $paired_user_ids)) continue;
+                        if (in_array($p1['userId'], $paired_user_ids))
+                            continue;
 
                         $p2_found = false;
                         foreach ($available_participants as $p2_key => $p2) {
-                            if (in_array($p2['userId'], $paired_user_ids)) continue;
-                            if ($p1['userId'] === $p2['userId']) continue; // Non può giocare contro se stesso
+                            if (in_array($p2['userId'], $paired_user_ids))
+                                continue;
+                            if ($p1['userId'] === $p2['userId'])
+                                continue; // Non può giocare contro se stesso
 
                             // Verifica se hanno già giocato
                             if (!in_array($p2['userId'], $p1['played_opponents'])) {
@@ -208,8 +213,10 @@ switch ($action) {
                         // Se non è stato trovato un avversario che non ha giocato, accoppia con il primo disponibile
                         if (!$p2_found) {
                             foreach ($available_participants as $p2_key => $p2) {
-                                if (in_array($p2['userId'], $paired_user_ids)) continue;
-                                if ($p1['userId'] === $p2['userId']) continue;
+                                if (in_array($p2['userId'], $paired_user_ids))
+                                    continue;
+                                if ($p1['userId'] === $p2['userId'])
+                                    continue;
 
                                 $matches[] = ['round' => $next_round_num, 'player1' => $p1['userId'], 'player2' => $p2['userId'], 'score1' => null, 'score2' => null, 'winner' => null, 'table' => $table_num++];
                                 $paired_user_ids[] = $p1['userId'];
@@ -221,69 +228,71 @@ switch ($action) {
                     }
 
                     // Gestione del BYE se c'è un numero dispari di partecipanti non accoppiati
-                    $unpaired_participants = array_filter($available_participants, function($p) use ($paired_user_ids) {
+                    $unpaired_participants = array_filter($available_participants, function ($p) use ($paired_user_ids) {
                         return !in_array($p['userId'], $paired_user_ids);
                     });
 
-                                        if (!empty($unpaired_participants)) {
+                    if (!empty($unpaired_participants)) {
 
-                                            $bye_player = reset($unpaired_participants); // Prende il primo non accoppiato
+                        $bye_player = reset($unpaired_participants); // Prende il primo non accoppiato
 
-                                            foreach ($tournament['participants'] as &$p) {
+                        foreach ($tournament['participants'] as &$p) {
 
-                                                if ($p['userId'] === $bye_player['userId']) {
+                            if ($p['userId'] === $bye_player['userId']) {
 
-                                                    $p['score'] += 3; // Punti per il BYE
+                                $p['score'] += 3; // Punti per il BYE
 
-                                                    $p['games_won'] += 1;
+                                $p['games_won'] += 1;
 
-                                                    break;
+                                break;
 
-                                                }
+                            }
 
-                                            }
+                        }
 
-                                            // Aggiunge un match fittizio per il BYE
+                        // Aggiunge un match fittizio per il BYE
 
-                                            $matches[] = [
+                        $matches[] = [
 
-                                                'round' => $next_round_num,
+                            'round' => $next_round_num,
 
-                                                'player1' => $bye_player['userId'],
+                            'player1' => $bye_player['userId'],
 
-                                                'player2' => 'BYE',
+                            'player2' => 'BYE',
 
-                                                'score1' => 1,
+                            'score1' => 1,
 
-                                                "score2" => 0,
+                            "score2" => 0,
 
-                                                'winner' => $bye_player['userId'],
+                            'winner' => $bye_player['userId'],
 
-                                                'table' => 'BYE'
+                            'table' => 'BYE'
 
-                                            ];
+                        ];
 
-                                        }
+                    }
 
-                                        
 
-                                        // Se non sono stati generati match ma ci sono ancora partecipanti, il torneo termina
 
-                                        if (empty($matches) && count($available_participants) > 1) {
+                    // Se non sono stati generati match ma ci sono ancora partecipanti, il torneo termina
 
-                                            $tournament['status'] = 'completed';
+                    if (empty($matches) && count($available_participants) > 1) {
 
-                                        } else {
+                        $tournament['status'] = 'completed';
 
-                                            $tournament['matches'][$next_round_key] = $matches;
+                    } else {
 
-                                            if ($next_round_num == $tournament['settings']['rounds']) { $tournament['status'] = 'completed'; }
+                        $tournament['matches'][$next_round_key] = $matches;
 
-                                        }
+                        if ($next_round_num == $tournament['settings']['rounds']) {
+                            $tournament['status'] = 'completed';
+                        }
 
-                                    }
+                    }
 
-                                }
+                }
+
+            }
             // Logica per Torneo a Eliminazione Diretta
             elseif ($tournament['settings']['tournament_type'] === 'elimination') {
                 $winners = [];
@@ -292,7 +301,7 @@ switch ($action) {
                         $winners[] = $match['winner'];
                     }
                 }
-                
+
                 if (count($winners) === 1) {
                     $tournament['status'] = 'completed'; // Abbiamo un vincitore finale
                 } else {
@@ -314,8 +323,8 @@ switch ($action) {
         $round_key = $_POST['round_key'] ?? null;
         $p1_id = $_POST['player1_id'] ?? null;
         $p2_id = $_POST['player2_id'] ?? null;
-        $score1 = (int)($_POST['score1'] ?? 0);
-        $score2 = (int)($_POST['score2'] ?? 0);
+        $score1 = (int) ($_POST['score1'] ?? 0);
+        $score2 = (int) ($_POST['score2'] ?? 0);
         $is_draw = isset($_POST['is_draw']);
 
         if (!$round_key || !$p1_id || !$p2_id) {
@@ -406,5 +415,5 @@ switch ($action) {
 write_json($tournaments_file, $tournaments);
 
 // Reindirizza l'utente alla pagina del torneo
-header('Location: ../public/tournament.php?link=' . $redirect_link);
+header('Location: /tournament.php?link=' . $redirect_link);
 exit();

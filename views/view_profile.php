@@ -136,7 +136,7 @@ foreach ($tournaments as $tournament) {
 
     <main class="modern-main">
         <section class="card text-center mb-4">
-            <img src="<?php echo (!empty($user_data['avatar']) && file_exists($user_data['avatar'])) ? $user_data['avatar'] : '/data/avatars/default_avatar.png'; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
+            <img src="<?php echo (!empty($user_data['avatar']) ? '/' . $user_data['avatar'] : '/data/avatars/default_avatar.png'); ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar-large">
             <h2><?php echo htmlspecialchars($user_data['username']); ?></h2>
         </section>
 
