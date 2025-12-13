@@ -15,12 +15,13 @@ $page_title = 'Modifica Profilo';
 $users = read_json(__DIR__ . '/../data/users.json');
 $tournaments = read_json(__DIR__ . '/../data/tournaments.json'); // Carica i dati dei tornei
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
-$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
-    ? $current_user['avatar'] 
+$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar'])
+    ? $current_user['avatar']
     : '/data/avatars/default_avatar.png';
 ?>
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,6 +32,7 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
     <link rel="stylesheet" href="/assets/css/modern_style.css">
     <link rel="stylesheet" href="/assets/css/modern_admin_style.css">
 </head>
+
 <body>
     <header class="modern-header">
         <div class="header-content">
@@ -41,18 +43,25 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             </nav>
             <div class="user-menu">
                 <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar" class="user-avatar me-2">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<?php echo $avatar_path; ?>?t=<?php echo time(); ?>" alt="User Avatar"
+                            class="user-avatar me-2">
                         <span class="username"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
+                        <li><a class="dropdown-item"
+                                href="/views/view_profile.php?uid=<?php echo $_SESSION['user_id']; ?>">Profilo</a></li>
                         <li><a class="dropdown-item" href="/forms/settings.php">Impostazioni</a></li>
                         <?php if ($_SESSION['role'] === 'admin'): ?>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="/admin/index.php">Pannello Admin</a></li>
                         <?php endif; ?>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" href="/home.php?action=logout">Logout</a></li>
                     </ul>
                 </div>
@@ -64,7 +73,8 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
         <aside class="admin-sidebar">
             <nav>
                 <ul>
-                    <li><a href="/forms/settings.php?page=profile" class="<?php echo $page === 'profile' ? 'active' : ''; ?>">Profilo</a></li>
+                    <li><a href="/forms/settings.php?page=profile"
+                            class="<?php echo $page === 'profile' ? 'active' : ''; ?>">Profilo</a></li>
                     <!-- Aggiungere qui altri link per le impostazioni future -->
                 </ul>
             </nav>
@@ -73,9 +83,8 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
             <?php
             // Carica la pagina richiesta
             if ($page === 'profile') {
-                // Il file profile.php non esiste ancora, lo creiamo subito dopo
-                if (file_exists('profile.php')) {
-                    include 'profile.php';
+                if (file_exists(__DIR__ . '/profile.php')) {
+                    include __DIR__ . '/profile.php';
                 } else {
                     echo '<h2>Pagina Profilo in costruzione</h2>';
                 }
@@ -94,4 +103,5 @@ $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['ava
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/main.js"></script>
 </body>
+
 </html>
