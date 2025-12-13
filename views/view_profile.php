@@ -9,8 +9,8 @@ if (isset($_SESSION['user_id'])) {
     $users_data_for_header = read_json(__DIR__ . '/../data/users.json');
     $current_user_for_header = find_user_by_id($users_data_for_header, $_SESSION['user_id']);
     if ($current_user_for_header) {
-        $header_avatar_path = !empty($current_user_for_header['avatar']) && file_exists($current_user_for_header['avatar']) 
-            ? $current_user_for_header['avatar'] 
+        $header_avatar_path = !empty($current_user_for_header['avatar']) 
+            ? '/' . $current_user_for_header['avatar'] 
             : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
@@ -95,6 +95,8 @@ foreach ($tournaments as $tournament) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profilo di <?php echo htmlspecialchars($user_data['username']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>

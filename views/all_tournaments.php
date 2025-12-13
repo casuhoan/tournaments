@@ -73,6 +73,8 @@ $paginated_tournaments = array_slice($filtered_tournaments, $offset, $per_page);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutti i Tornei</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
     <style>

@@ -4,6 +4,18 @@ main.modern-main {
     margin: 0 auto;
 }
 
+:root {
+    /* Mappa le variabili originali al nuovo tema premium */
+    --primary-color: var(--color-primary);
+    --primary-hover: var(--color-primary-dark);
+    --secondary-color: var(--color-secondary);
+    --white: var(--color-text-inverse);
+    --light-gray: var(--color-bg-secondary);
+    --dark-gray: var(--color-text-primary);
+    --border-radius: var(--radius-md);
+    --box-shadow: var(--shadow-md);
+}
+
 .card {
     background: var(--white);
     margin-bottom: 2rem;
@@ -152,7 +164,8 @@ main.modern-main {
 /* Modern Buttons */
 .btn-modern {
     display: inline-block;
-    font-weight: 400;
+    font-weight: 600;
+    /* Più grassetto */
     line-height: 1.5;
     color: var(--white);
     text-align: center;
@@ -160,21 +173,44 @@ main.modern-main {
     vertical-align: middle;
     cursor: pointer;
     user-select: none;
-    background-color: var(--primary-color);
+    background: var(--gradient-primary);
+    /* Usa il gradiente premium */
     border: 1px solid transparent;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    /* Più grandi */
+    font-size: 1.1rem;
+    /* Testo più grande */
     border-radius: var(--border-radius);
-    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: var(--shadow-md);
+    /* Ombra più marcata */
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+    /* Più visibili */
+    letter-spacing: 0.5px;
 }
 
 .btn-modern:hover {
-    background-color: var(--primary-hover);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, hsl(220, 90%, 50%) 0%, hsl(280, 70%, 55%) 100%);
+    /* Hover più scuro */
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    /* Effetto sollevamento */
+    color: var(--white);
+}
+
+.btn-modern:active {
+    transform: translateY(0);
 }
 
 .btn-modern-secondary {
-    background-color: var(--secondary-color);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.btn-modern-secondary:hover {
+    background: var(--color-primary);
+    color: var(--white);
 }
 
 /* Pagination */

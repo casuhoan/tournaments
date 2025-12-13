@@ -26,7 +26,7 @@ $user_map = [];
 $avatar_map = [];
 foreach ($users as $user) {
     $user_map[$user['id']] = $user['username'];
-    $avatar_map[$user['id']] = !empty($user['avatar']) && file_exists($user['avatar']) ? $user['avatar'] : '/data/avatars/default_avatar.png';
+    $avatar_map[$user['id']] = !empty($user['avatar']) ? '/' . $user['avatar'] : '/data/avatars/default_avatar.png';
 }
 
 $tournament_data = null;
@@ -71,6 +71,8 @@ usort($participants, function ($a, $b) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza Torneo: <?php echo htmlspecialchars($tournament_data['name']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>

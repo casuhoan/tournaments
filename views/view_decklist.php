@@ -47,7 +47,7 @@ $player_name = 'Sconosciuto';
 $player_avatar = 'data/avatars/default_avatar.png';
 if ($player) {
     $player_name = $player['username'];
-    $player_avatar = !empty($player['avatar']) && file_exists($player['avatar']) ? $player['avatar'] : '/data/avatars/default_avatar.png';
+    $player_avatar = !empty($player['avatar']) ? '/' . $player['avatar'] : '/data/avatars/default_avatar.png';
 }
 
 if ($tournament_data === null || $participant_data === null) {
@@ -82,6 +82,8 @@ $wld_score = "$wins-$losses-$draws";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizza Lista: <?php echo htmlspecialchars($participant_data['decklist_name'] ?: 'N/D'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/premium_design.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/modern_style.css">
 </head>
