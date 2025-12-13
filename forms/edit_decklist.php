@@ -14,9 +14,7 @@ if (isset($_SESSION['user_id'])) {
     $users_data = read_json(__DIR__ . '/../data/users.json');
     $current_user = find_user_by_id($users_data, $_SESSION['user_id']);
     if ($current_user) {
-        $avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar']) 
-            ? $current_user['avatar'] 
-            : '/data/avatars/default_avatar.png';
+        $avatar_path = !empty($current_user['avatar']) ? '/' . $current_user['avatar'] : '/data/avatars/default_avatar.png';
     }
     $logged_in_username = $_SESSION['username'];
 }

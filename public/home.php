@@ -45,8 +45,8 @@ $user_completed_tournaments = count($user_tournaments); // Per ora, tutti i torn
 
 $users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
-$avatar_path = !empty($current_user['avatar']) && file_exists($current_user['avatar'])
-    ? $current_user['avatar']
+$avatar_path = !empty($current_user['avatar'])
+    ? '/' . $current_user['avatar']
     : '/data/avatars/default_avatar.png';
 ?>
 <!DOCTYPE html>
