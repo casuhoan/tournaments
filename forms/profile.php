@@ -1,30 +1,35 @@
 <?php
-// Questo file viene incluso in settings.php, quindi la sessione è già avviata
-// e l'utente è loggato. Le funzioni helper sono già incluse.
-
+// Questo file viene incluso in settings.php
 $users = read_json(__DIR__ . '/../data/users.json');
 $current_user = find_user_by_id($users, $_SESSION['user_id']);
-
+$tournaments = read_json(__DIR__ . '/../data/tournaments.json');
 ?>
 
 <h2>Modifica Profilo</h2>
 
 <?php if (isset($_SESSION['feedback'])): ?>
-    <p class="success-message"><?php echo $_SESSION['feedback']; unset($_SESSION['feedback']); ?></p>
-<?php endif; ?>
-<?php if (isset($_SESSION['error'])): ?>
-    <p class="error-message"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></p>
+    <div class="alert alert-success">
+        <?php echo htmlspecialchars($_SESSION['feedback']);
+        unset($_SESSION['feedback']); ?>
+    </div>
 <?php endif; ?>
 
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger">
+        <?php echo htmlspecialchars($_SESSION['error']);
+        unset($_SESSION['error']); ?>
+    </div>
+<?php endif; ?>
 
 <form action="/api/user_actions.php" method="POST" enctype="multipart/form-data" class="modern-form">
     <input type="hidden" name="action" value="update_profile">
-    
+
     <fieldset>
         <legend>Immagine del Profilo</legend>
         <div class="form-group">
             <label for="avatar">Carica un nuovo avatar:</label>
-            <input type="file" id="avatar" name="avatar" class="form-control">
+            <input type="file" id="avatar" name="avatar" class="form-control" accept="image/*">
+            <small class="form-text text-muted">Formati supportati: JPG, PNG, GIF, WebP. Massimo 5MB.</small>
         </div>
     </fieldset>
 
@@ -32,27 +37,29 @@ $current_user = find_user_by_id($users, $_SESSION['user_id']);
         <legend>Informazioni Personali</legend>
         <div class="form-group">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($current_user['username']); ?>" required>
+            <input type="text" id="username" name="username"
+                value="<?php echo htmlspecialchars($current_user['username']); ?>" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($current_user['email']); ?>" required>
+            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($current_user['email']); ?>"
+                class="form-control" required>
         </div>
     </fieldset>
 
     <fieldset>
-        <legend>Cambia Password (lasciare vuoto per non modificare)</legend>
+        <legend>Cambia Password (opzionale)</legend>
         <div class="form-group">
             <label for="current_password">Password Attuale:</label>
-            <input type="password" id="current_password" name="current_password">
+            <input type="password" id="current_password" name="current_password" class="form-control">
         </div>
         <div class="form-group">
             <label for="new_password">Nuova Password:</label>
-            <input type="password" id="new_password" name="new_password">
+            <input type="password" id="new_password" name="new_password" class="form-control">
         </div>
         <div class="form-group">
             <label for="confirm_new_password">Conferma Nuova Password:</label>
-            <input type="password" id="confirm_new_password" name="confirm_new_password">
+            <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control">
         </div>
     </fieldset>
 
@@ -86,14 +93,19 @@ $current_user = find_user_by_id($users, $_SESSION['user_id']);
 
             if ($found_participant) {
                 // Calcola W-L-D
-                $wins = 0; $losses = 0; $draws = 0;
+                $wins = 0;
+                $losses = 0;
+                $draws = 0;
                 if (isset($tournament['matches']) && is_array($tournament['matches'])) {
                     foreach ($tournament['matches'] as $round) {
                         foreach ($round as $match) {
                             if ($match['player1'] == $_SESSION['user_id'] || $match['player2'] == $_SESSION['user_id']) {
-                                if ($match['winner'] === 'draw') $draws++;
-                                elseif ($match['winner'] == $_SESSION['user_id']) $wins++;
-                                elseif ($match['winner'] !== null) $losses++;
+                                if ($match['winner'] === 'draw')
+                                    $draws++;
+                                elseif ($match['winner'] == $_SESSION['user_id'])
+                                    $wins++;
+                                elseif ($match['winner'] !== null)
+                                    $losses++;
                             }
                         }
                     }
@@ -101,16 +113,19 @@ $current_user = find_user_by_id($users, $_SESSION['user_id']);
 
                 // Calcola la classifica
                 $sorted_participants = $tournament['participants'];
-                usort($sorted_participants, function($a, $b) {
+                usort($sorted_participants, function ($a, $b) {
                     $a_score = $a['score'] ?? 0;
                     $b_score = $b['score'] ?? 0;
-                    if ($a_score !== $b_score) return $b_score - $a_score;
+                    if ($a_score !== $b_score)
+                        return $b_score - $a_score;
                     $a_gwp = ($a['games_won'] + $a['games_lost'] > 0) ? $a['games_won'] / ($a['games_won'] + $a['games_lost']) : 0;
                     $b_gwp = ($b['games_won'] + $b['games_lost'] > 0) ? $b['games_won'] / ($b['games_won'] + $b['games_lost']) : 0;
-                    if (abs($a_gwp - $b_gwp) > 0.0001) return $b_gwp > $a_gwp ? 1 : -1;
+                    if (abs($a_gwp - $b_gwp) > 0.0001)
+                        return $b_gwp > $a_gwp ? 1 : -1;
                     $a_malus = $a['malus'] ?? 0;
                     $b_malus = $b['malus'] ?? 0;
-                    if ($a_malus !== $b_malus) return $a_malus - $b_malus;
+                    if ($a_malus !== $b_malus)
+                        return $a_malus - $b_malus;
                     return rand(-1, 1);
                 });
                 $rank = array_search($_SESSION['user_id'], array_column($sorted_participants, 'userId')) + 1;
@@ -127,16 +142,21 @@ $current_user = find_user_by_id($users, $_SESSION['user_id']);
         }
         ?>
         <?php if (empty($participated_tournaments)): ?>
-            <tr><td colspan="4">Non hai partecipato a nessun torneo.</td></tr>
+            <tr>
+                <td colspan="4">Non hai partecipato a nessun torneo.</td>
+            </tr>
         <?php else: ?>
             <?php foreach ($participated_tournaments as $participation): ?>
                 <tr>
-                    <td><a href="/views/view_tournament.php?tid=<?php echo $participation['tournament_id']; ?>"><?php echo htmlspecialchars($participation['tournament_name']); ?></a></td>
+                    <td><a
+                            href="/views/view_tournament.php?tid=<?php echo $participation['tournament_id']; ?>"><?php echo htmlspecialchars($participation['tournament_name']); ?></a>
+                    </td>
                     <td><?php echo $participation['rank']; ?></td>
                     <td><?php echo htmlspecialchars($participation['wld']); ?></td>
                     <td>
                         <?php if ($participation['decklist_name'] !== 'N/D'): ?>
-                            <a href="/views/view_decklist.php?tid=<?php echo $participation['tournament_id']; ?>&uid=<?php echo $_SESSION['user_id']; ?>">
+                            <a
+                                href="/views/view_decklist.php?tid=<?php echo $participation['tournament_id']; ?>&uid=<?php echo $_SESSION['user_id']; ?>">
                                 <?php echo htmlspecialchars($participation['decklist_name']); ?>
                             </a>
                             <small class="text-muted">(<?php echo htmlspecialchars($participation['decklist_format']); ?>)</small>
