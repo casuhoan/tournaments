@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+    <div class="glass-panel">
+        <h1><i class="fas fa-users"></i> Gestione Utenti</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Ruolo</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(u=> { %>
+                    <tr>
+                        <td>
+                            <%= u.id %>
+                        </td>
+                        <td>
+                            <%= u.username %>
+                        </td>
+                        <td>
+                            <%= u.email %>
+                        </td>
+                        <td>
+                            <%= u.role %>
+                        </td>
+                        <td>
+                            <a href="/profile/<%= u.username %>" class="btn">Profilo</a>
+                            <a href="/admin/users/<%= u.id %>/edit" class="btn"
+                                style="background: var(--primary); color: white; padding: 5px 10px;"><i
+                                    class="fas fa-edit"></i></a>
+                            <% if(u.role !=='admin' ) { %>
+                                <form action="/admin/users/<%= u.id %>/delete" method="POST" style="display:inline;"
+                                    onsubmit="return confirm('Eliminare utente?');">
+                                    <button class="btn"
+                                        style="background:red; color:white; padding: 5px 10px;">X</button>
+                                </form>
+                                <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <%- include('../partials/footer') %>

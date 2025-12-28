@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+    <div class="glass-panel">
+        <h1>Gestione Liste da Categorizzare</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Giocatore</th>
+                    <th>Torneo</th>
+                    <th>Mazzo</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% let count=0; tournaments.forEach(t=> {
+                    t.participants.forEach(p => {
+                    if (p.decklist && !p.decklist_name) {
+                    count++;
+                    %>
+                    <tr>
+                        <td>
+                            <%= (typeof usersMap !=='undefined' && usersMap[p.userId]) ? usersMap[p.userId].username :
+                                p.userId %>
+                        </td>
+                        <td>
+                            <%= t.name %>
+                        </td>
+                        <td>
+                            <details>
+                                <summary>Vedi Lista</summary>
+                                <pre><%= p.decklist %></pre>
+                            </details>
+                        </td>
+                        <td>
+                            <form action="/admin/decklists/categorize" method="POST" style="display:flex; gap: 5px;">
+                                <input type="hidden" name="tournamentId" value="<%= t.id %>">
+                                <input type="hidden" name="userId" value="<%= p.userId %>">
+                                <input type="text" name="deckName" placeholder="Nome Mazzo" class="form-control"
+                                    required style="padding: 5px;">
+                                <select name="format" class="form-control" style="width:auto; padding: 5px;">
+                                    <option value="Pauper">Pauper</option>
+                                    <option value="Standard">Standard</option>
+                                    <option value="Modern">Modern</option>
+                                    <option value="Commander">Commander</option>
+                                    <option value="Pioneer">Pioneer</option>
+                                </select>
+                                <button class="btn btn-primary" style="padding: 5px 10px;">Salva</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% } }); }); if (count===0) { %>
+                        <tr>
+                            <td colspan="4">Nessuna lista da categorizzare.</td>
+                        </tr>
+                        <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <%- include('../partials/footer') %>

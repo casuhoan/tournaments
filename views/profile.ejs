@@ -1,0 +1,69 @@
+<%- include('partials/header') %>
+
+    <div class="glass-panel">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <img src="/<%= profileUser.avatar %>" class="avatar"
+                style="width: 100px; height: 100px; border-radius: 50%;">
+            <div>
+                <h1>
+                    <%= profileUser.username %>
+                </h1>
+                <p>
+                    <%= profileUser.email %>
+                </p>
+                <span class="status-tag" style="background: var(--primary); color: white;">
+                    <%= profileUser.role %>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel">
+        <h2><i class="fas fa-trophy"></i> Tornei Partecipati</h2>
+
+        <% if (participatedTournaments.length===0) { %>
+            <p>Nessun torneo partecipato.</p>
+            <% } else { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Torneo</th>
+                            <th>Data</th>
+                            <th>Posizione</th>
+                            <th>Punteggio</th>
+                            <th>Mazzo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% participatedTournaments.forEach(t=> { %>
+                            <% const p=t.participants.find(part=> part.userId === profileUser.id); %>
+                                <tr>
+                                    <td><a href="/tournaments/<%= t.id %>">
+                                            <%= t.name %>
+                                        </a></td>
+                                    <td>
+                                        <%= t.date %>
+                                    </td>
+                                    <td><span class="rank-badge">
+                                            <%= TournamentLogic.getRankString(p.rank) %>
+                                        </span></td>
+                                    <td>
+                                        <%= p.games_won %> - <%= p.games_lost %> - 0
+                                    </td> <!-- W-L-D -->
+                                    <td>
+                                        <% if (p.decklist_name) { %>
+                                            <a href="/decklist/<%= p.decklist_name %>">
+                                                <%= p.decklist_name %>
+                                            </a>
+                                            <% } else { %>
+                                                -
+                                                <% } %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                    </tbody>
+                </table>
+                <% } %>
+    </div>
+
+    <%- include('partials/footer') %>

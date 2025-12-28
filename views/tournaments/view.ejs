@@ -1,0 +1,285 @@
+<%- include('../partials/header') %>
+
+    <div class="glass-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1>
+                    <%= tournament.name %>
+                </h1>
+                <p><i class="far fa-calendar"></i>
+                    <%= tournament.date %> <span class="status-tag <%= tournament.status %>">
+                            <%= tournament.status==='in_progress' ? 'In Corso' : (tournament.status==='completed'
+                                ? 'Completato' : 'In Attesa' ) %>
+                        </span>
+                </p>
+            </div>
+            <div>
+                <!-- Organizer Actions -->
+                <% if (typeof user !=='undefined' && user && (user.role==='admin' || user.role==='organizer' ||
+                    user.id===tournament.organizerId)) { %>
+                    <div class="admin-controls">
+                        <% if (tournament.status==='created' ) { %>
+                            <form action="/tournaments/<%= tournament.id %>/start" method="POST"
+                                style="display:inline;">
+                                <button class="btn btn-primary">Avvia Torneo</button>
+                            </form>
+                            <% } else if (tournament.status==='in_progress' ) { %>
+                                <form action="/tournaments/<%= tournament.id %>/next-round" method="POST"
+                                    style="display:inline;">
+                                    <button class="btn btn-primary">Prossimo Turno</button>
+                                </form>
+                                <form action="/tournaments/<%= tournament.id %>/end" method="POST"
+                                    style="display:inline;">
+                                    <button class="btn" style="background:red; color:white;">Termina Torneo</button>
+                                </form>
+                                <% } %>
+
+                                    <a href="/admin/tournaments/<%= tournament.id %>" class="btn">Gestione Admin</a>
+                                    <a href="/admin/tournaments/<%= tournament.id %>/matches" class="btn"
+                                        style="background: var(--secondary); color: white;">Gestisci Risultati</a>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYER ACTION AREA -->
+    <% const myParticipant=(typeof user !=='undefined' && user) ? tournament.participants.find(p=> p.userId === user.id)
+        : null;
+        const myMatch = (currentMatches && myParticipant) ? currentMatches.find(m => m.player1 === user.id || m.player2
+        === user.id) : null;
+        %>
+
+        <% if (typeof user !=='undefined' && user && myParticipant) { %>
+            <!-- Registered Player View -->
+            <div class="glass-panel" style="border: 2px solid var(--primary);">
+                <h2><i class="fas fa-gamepad"></i> La tua Partita</h2>
+
+                <% if (tournament.status==='created' ) { %>
+                    <div style="text-align: center; padding: 20px;">
+                        <h3>Il torneo non è ancora iniziato.</h3>
+                        <p>In attesa dell'organizzatore...</p>
+
+                        <div style="margin-top: 20px; text-align: left;">
+                            <label>Invia la tua Decklist (Puoi modificarla fino all'inizio):</label>
+                            <form action="/tournaments/<%= tournament.id %>/decklist" method="POST">
+                                <textarea name="decklist" class="form-control" rows="10"
+                                    placeholder="Incolla qui la tua lista..."><%= myParticipant.decklist || '' %></textarea>
+                                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Salva
+                                    Lista</button>
+                            </form>
+                        </div>
+                    </div>
+                    <% } else if (tournament.status==='in_progress' ) { %>
+                        <div style="text-align: center;">
+                            <% if (myMatch) { %>
+                                <h3>Round <%= tournament.currentRound %> - Tavolo <%= myMatch.table %>
+                                </h3>
+
+                                <% const opponentId=(myMatch.player1===user.id) ? myMatch.player2 : myMatch.player1;
+                                    const opponent=opponentId ? usersMap[opponentId] : null; const isBye=!opponentId; %>
+
+                                    <div style="font-size: 1.5rem; margin: 20px 0;">
+                                        <strong>TU</strong> vs <strong>
+                                            <%= opponent ? opponent.username : 'BYE' %>
+                                        </strong>
+                                    </div>
+
+                                    <!-- Opponent Decklist if Public -->
+                                    <% const opponentPart=opponentId ? tournament.participants.find(p=> p.userId ===
+                                        opponentId) : null;
+                                        const showDeck = (tournament.settings?.decklist_visibility === 'public') &&
+                                        opponentPart && opponentPart.decklist;
+                                        %>
+                                        <% if (showDeck) { %>
+                                            <div style="margin-bottom: 20px;">
+                                                <details>
+                                                    <summary>Vedi Lista Avversario</summary>
+                                                    <pre
+                                                        style="text-align: left; background: rgba(0,0,0,0.1); padding: 10px;"><%= opponentPart.decklist %></pre>
+                                                </details>
+                                            </div>
+                                            <% } %>
+
+                                                <% if (myMatch.winner) { %>
+                                                    <div class="alert"
+                                                        style="background: rgba(0,255,0,0.2); color: green;">
+                                                        Risultato registrato:
+                                                        <% if (myMatch.winner===String(user.id)) { %> Hai Vinto! <% } %>
+                                                                <% if (myMatch.winner !==String(user.id) &&
+                                                                    myMatch.winner !=='draw' ) { %> Hai Perso. <% } %>
+                                                                        <% if (myMatch.winner==='draw' ) { %> Pareggio.
+                                                                            <% } %>
+                                                    </div>
+                                                    <% } else if (!isBye) { %>
+                                                        <!-- Result Submission -->
+                                                        <div
+                                                            style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                                            <!-- Generic simple submission buttons as requested -->
+                                                            <form action="/tournaments/<%= tournament.id %>/result"
+                                                                method="POST">
+                                                                <input type="hidden" name="matchId"
+                                                                    value="<%= JSON.stringify(myMatch) %>">
+                                                                <!-- Insecure but simple for ID-less match structure -->
+                                                                <input type="hidden" name="action" value="win_self">
+                                                                <button class="btn btn-primary">Ho Vinto</button>
+                                                            </form>
+                                                            <form action="/tournaments/<%= tournament.id %>/result"
+                                                                method="POST">
+                                                                <input type="hidden" name="matchId"
+                                                                    value="<%= JSON.stringify(myMatch) %>">
+                                                                <input type="hidden" name="action" value="win_opp">
+                                                                <button class="btn"
+                                                                    style="background: var(--accent); color: white;">Ha
+                                                                    Vinto Avversario</button>
+                                                            </form>
+                                                            <form action="/tournaments/<%= tournament.id %>/result"
+                                                                method="POST">
+                                                                <input type="hidden" name="matchId"
+                                                                    value="<%= JSON.stringify(myMatch) %>">
+                                                                <input type="hidden" name="action" value="draw">
+                                                                <button class="btn"
+                                                                    style="background: grey; color: white;">Pareggio</button>
+                                                            </form>
+                                                        </div>
+
+                                                        <!-- Advanced Score Input (Bo3 specific request: 2-0, 2-1 etc) -->
+                                                        <div style="margin-top: 15px;">
+                                                            <small>Oppure inserisci punteggio esatto:</small>
+                                                            <form
+                                                                action="/tournaments/<%= tournament.id %>/result_score"
+                                                                method="POST"
+                                                                style="display: flex; justify-content: center; gap: 5px; align-items: center; margin-top: 5px;">
+                                                                <input type="number" name="score1" placeholder="Tu"
+                                                                    style="width: 50px;" min="0" required>
+                                                                -
+                                                                <input type="number" name="score2" placeholder="Lui"
+                                                                    style="width: 50px;" min="0" required>
+                                                                <button class="btn btn-primary"
+                                                                    style="padding: 5px 10px;">Invia</button>
+                                                            </form>
+                                                        </div>
+                                                        <% } else { %>
+                                                            <p>Hai vinto a tavolino (BYE).</p>
+                                                            <% } %>
+
+                                                                <% } else { %>
+                                                                    <p>Nessuna partita assegnata in questo round (Forse
+                                                                        sei in pausa o errore?).</p>
+                                                                    <% } %>
+
+                                                                        <button onclick="window.location.reload()"
+                                                                            class="btn" style="margin-top: 20px;"><i
+                                                                                class="fas fa-sync"></i> Ricarica per
+                                                                            aggiornamenti</button>
+                        </div>
+                        <% } else { %>
+                            <div style="text-align: center;">
+                                <h3>Torneo Terminato!</h3>
+                                <p>Controlla la classifica finale qui sotto.</p>
+                            </div>
+                            <% } %>
+            </div>
+            <% } else if(tournament.status==='in_progress' ) { %>
+                <!-- Spectator View -->
+                <div class="glass-panel" style="text-align:center;">
+                    <h3>Sei uno spettatore</h3>
+                    <p>Accedi per partecipare o visualizza la classifica qui sotto.</p>
+                </div>
+                <% } %>
+
+                    <!-- STANDINGS -->
+                    <div class="glass-panel">
+                        <h2><i class="fas fa-list-ol"></i> Classifica <%= tournament.status==='in_progress'
+                                ? 'Provvisoria' : 'Finale' %>
+                        </h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Giocatore</th>
+                                    <th>Punti</th>
+                                    <th>W-L-D</th>
+                                    <th>Mazzo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% standings.forEach(p=> { %>
+                                    <tr>
+                                        <td><span class="rank-badge">
+                                                <%= TournamentLogic.getRankString(p.rank) %>
+                                            </span></td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="/<%= (typeof usersMap !== 'undefined' && usersMap[p.userId]) ? (usersMap[p.userId].avatar || 'img/default_avatar.png') : 'img/default_avatar.png' %>"
+                                                    class="avatar" style="width: 30px; height: 30px;">
+                                                <%= (typeof usersMap !=='undefined' && usersMap[p.userId]) ?
+                                                    usersMap[p.userId].username : ('Player ' + p.userId) %>
+                        </div>
+                    </td>
+                    <td><%= p.score %></td>
+                    <td><%= p.games_won %> - <%= p.games_lost %> - <%= 0 /* Draws logic missing in basic schema, infer? */ %></td>
+                    <td>
+                        <% if ((typeof user !== ' undefined' && user) ||
+                                                    tournament.settings?.decklist_visibility==='public' ) { %>
+                                                    <% if (p.decklist_name) { %>
+                                                        <a href="/decklist/<%= p.decklist_name %>">
+                                                            <%= p.decklist_name %>
+                                                        </a>
+                                                        <% } else if (p.decklist) { %>
+                                                            <span style="color: grey;">Inviato</span>
+                                                            <% } else { %>
+                                                                <span style="color: grey;">N/D</span>
+                                                                <% } %>
+                                                                    <% } else { %>
+                                                                        Hidden
+                                                                        <% } %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- PAIRINGS LIST (For everyone to see) -->
+                    <% if (tournament.status==='in_progress' && currentMatches.length> 0) { %>
+                        <div class="glass-panel">
+                            <h2>Round <%= tournament.currentRound %> - Abbinamenti</h2>
+                            <table class="table">
+                                <tbody>
+                                    <% currentMatches.forEach(m=> { %>
+                                        <tr>
+                                            <td>Tavolo <%= m.table %>
+                                            </td>
+                                            <td>
+                                                <%= (typeof usersMap !=='undefined' && usersMap[m.player1]) ?
+                                                    usersMap[m.player1].username : 'BYE' %>
+                                                    <% if(m.score1 !==null) { %> <strong>(<%= m.score1 %>)</strong>
+                                                        <% } %>
+                                            </td>
+                                            <td>vs</td>
+                                            <td>
+                                                <%= (typeof usersMap !=='undefined' && usersMap[m.player2]) ?
+                                                    usersMap[m.player2].username : 'BYE' %>
+                                                    <% if(m.score2 !==null) { %> <strong>(<%= m.score2 %>)</strong>
+                                                        <% } %>
+                                            </td>
+                                            <td>
+                                                <% if(m.winner) { %>
+                                                    <span style="color: green;">
+                                                        <%= m.winner==='draw' ? 'Pareggio' : 'Vincitore: ' + ((typeof
+                                                            usersMap !=='undefined' && usersMap[m.winner]) ?
+                                                            usersMap[m.winner].username : 'BYE' ) %>
+                                                    </span>
+                                                    <% } else { %>
+                                                        In Corso
+                                                        <% } %>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <% } %>
+
+                            <%- include('../partials/footer') %>

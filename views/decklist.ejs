@@ -1,0 +1,84 @@
+<%- include('partials/header') %>
+
+    <div class="glass-panel">
+        <h1>
+            <%= decklistName %>
+        </h1>
+        <p>Giocatore: <strong><a href="/profile/<%= playerName %>">
+                    <%= playerName %>
+                </a></strong></p>
+        <p>Torneo: <a href="/tournaments/<%= tournament.id %>">
+                <%= tournament.name %>
+            </a></p>
+        <p>Risultato: <%= resultString %>
+        </p>
+    </div>
+
+    <div class="glass-panel">
+        <h2>Lista Carte</h2>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <!-- Text List -->
+            <div style="flex: 1; min-width: 300px;">
+                <pre
+                    style="background: rgba(0,0,0,0.1); padding: 15px; border-radius: 8px; white-space: pre-wrap;"><%= decklistContent %></pre>
+            </div>
+
+            <!-- Scryfall Visualizer -->
+            <div style="flex: 2; min-width: 300px;">
+                <h3>Visualizzazione Scryfall</h3>
+                <div id="card-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;">
+                    <p>Caricamento immagini...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const decklistRaw = `<%= decklistContent %>`;
+        const cardGrid = document.getElementById('card-grid');
+
+        async function fetchCardImage(cardName) {
+            try {
+                // Remove amounts "4x Lightning Bolt" -> "Lightning Bolt"
+                const cleanName = cardName.replace(/^[0-9]+x?\s*/, '').trim();
+                if (!cleanName) return null;
+
+                const response = await fetch(`https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(cleanName)}`);
+                const data = await response.json();
+                if (data.image_uris) {
+                    return data.image_uris.normal;
+                } else if (data.card_faces) {
+                    return data.card_faces[0].image_uris.normal;
+                }
+                return null;
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
+        }
+
+        async function renderCards() {
+            const lines = decklistRaw.split('\n');
+            cardGrid.innerHTML = '';
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line || line.startsWith('//') || line.startsWith('SIDEBOARD')) continue;
+
+                const imgUrl = await fetchCardImage(line);
+                if (imgUrl) {
+                    const img = document.createElement('img');
+                    img.src = imgUrl;
+                    img.style.width = '100%';
+                    img.style.borderRadius = '8px';
+                    img.title = line;
+                    cardGrid.appendChild(img);
+                }
+            }
+        }
+
+        renderCards();
+    </script>
+
+    <%- include('partials/footer') %>

@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+
+    <div class="glass-panel">
+        <h1><i class="fas fa-edit"></i> Gestione Risultati: <%= tournament.name %>
+        </h1>
+        <a href="/tournaments/<%= tournament.id %>" class="btn" style="margin-bottom: 20px;">&larr; Torna al Torneo</a>
+
+        <% if (!tournament.matches || Object.keys(tournament.matches).length===0) { %>
+            <p>Nessun match presente in questo torneo.</p>
+            <% } else { %>
+                <% Object.keys(tournament.matches).forEach(roundKey=> { %>
+                    <div style="margin-bottom: 30px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                        <h3>
+                            <%= roundKey.replace('_', ' ' ).toUpperCase() %>
+                        </h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tavolo</th>
+                                    <th>Giocatore 1</th>
+                                    <th>Giocatore 2</th>
+                                    <th>Risultato Attuale</th>
+                                    <th>Modifica</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% tournament.matches[roundKey].forEach((m, idx)=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= m.table %>
+                                        </td>
+                                        <td>
+                                            <%= usersMap[m.player1] ? usersMap[m.player1].username : 'BYE' %>
+                                        </td>
+                                        <td>
+                                            <%= m.player2 ? (usersMap[m.player2] ? usersMap[m.player2].username : 'BYE'
+                                                ) : 'N/A' %>
+                                        </td>
+                                        <td>
+                                            <% if (m.winner) { %>
+                                                <%= m.score1 %> - <%= m.score2 %>
+                                                        (<%= m.winner==='draw' ? 'Pareggio' : 'Vince ' +
+                                                            (usersMap[m.winner] ? usersMap[m.winner].username :
+                                                            m.winner) %>)
+                                                            <% } else { %>
+                                                                In Corso
+                                                                <% } %>
+                                        </td>
+                                        <td>
+                                            <% if (m.player2) { %>
+                                                <form action="/admin/matches/update" method="POST"
+                                                    style="display: flex; gap: 5px; align-items: center;">
+                                                    <input type="hidden" name="tournamentId"
+                                                        value="<%= tournament.id %>">
+                                                    <input type="hidden" name="roundKey" value="<%= roundKey %>">
+                                                    <input type="hidden" name="matchIndex" value="<%= idx %>">
+
+                                                    <input type="number" name="score1" placeholder="S1"
+                                                        style="width: 50px;"
+                                                        value="<%= m.score1 !== null ? m.score1 : 0 %>" required>
+                                                    <input type="number" name="score2" placeholder="S2"
+                                                        style="width: 50px;"
+                                                        value="<%= m.score2 !== null ? m.score2 : 0 %>" required>
+
+                                                    <button class="btn btn-primary"
+                                                        style="padding: 5px 10px;">Salva</button>
+                                                </form>
+                                                <% } else { %>
+                                                    BYE (Non modificabile)
+                                                    <% } %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% }) %>
+                        <% } %>
+    </div>
+
+    <%- include('../partials/footer') %>

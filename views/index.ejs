@@ -1,0 +1,78 @@
+<%- include('partials/header') %>
+
+    <div class="glass-panel">
+        <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+        <div class="dashboard-grid" style="margin-top: 2rem;">
+            <div class="glass-panel stat-card" onclick="window.location.href='/tournaments'">
+                <h3>Tornei Totali</h3>
+                <div class="stat-number">
+                    <%= stats.totalTournaments %>
+                </div>
+            </div>
+            <div class="glass-panel stat-card" onclick="window.location.href='/tournaments?filter=active'">
+                <h3>In Corso</h3>
+                <div class="stat-number" style="color: var(--secondary);">
+                    <%= stats.activeTournaments %>
+                </div>
+            </div>
+            <div class="glass-panel stat-card" onclick="window.location.href='/tournaments?filter=completed'">
+                <h3>Completati</h3>
+                <div class="stat-number" style="color: green;">
+                    <%= stats.completedTournaments %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel">
+        <h2><i class="fas fa-history"></i> Ultimi Tornei</h2>
+        <div class="dashboard-grid">
+            <% recentTournaments.forEach(t=> { %>
+                <div class="glass-panel" style="background: rgba(255,255,255,0.3);">
+                    <h3>
+                        <%= t.name %>
+                    </h3>
+                    <p><i class="far fa-calendar"></i>
+                        <%= t.date %>
+                    </p>
+                    <span class="status-tag <%= t.status %>">
+                        <%= t.status==='in_progress' ? 'In Corso' : 'Completato' %>
+                    </span>
+                    <a href="/tournaments/<%= t.id %>" class="btn btn-primary"
+                        style="margin-top: 10px; display:block; text-align:center;">Vedi Classifica</a>
+
+                    <div style="margin-top: 10px;">
+                        <strong>Top 3:</strong>
+                        <ul style="list-style: none; padding: 0; margin-top: 5px;">
+                            <% let top3=t.participants .sort((a,b)=> a.rank - b.rank)
+                                .slice(0, 3);
+                                %>
+                                <% top3.forEach(p=> { %>
+                                    <% let pName=(typeof usersMap !=='undefined' && usersMap[p.userId]) ?
+                                        usersMap[p.userId].username : ('User ' + p.userId); 
+                           %> 
+                           <li>
+                               <span class="rank-badge"><%= p.rank %></span> 
+                               <%= pName %>
+                               <% if(p.decklist_name) { %> <small class="deck-name">- <%= p.decklist_name %></small> <% } %>
+                           </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<% if (typeof user !== ' undefined' && user) { %>
+                                        <div class="glass-panel">
+                                            <h2><i class="fas fa-user-circle"></i> I tuoi Tornei Recenti</h2>
+                                            <div id="my-tournaments-list">
+                                                <p>Vedi i tuoi tornei nella pagina <a href="/profile">Profilo</a>.</p>
+                                            </div>
+                                            <a href="/tournaments?filter=mine" class="btn btn-primary">Visualizza
+                                                Altri</a>
+                                        </div>
+                                        <% } %>
+
+                                            <%- include('partials/footer') %>

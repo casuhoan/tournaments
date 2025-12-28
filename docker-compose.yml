@@ -2,21 +2,11 @@ version: '3.8'
 
 services:
   web:
-    # Costruisce l'immagine usando il Dockerfile nella directory corrente
     build: .
-    # Nome del container
     container_name: tournament-manager-web
-    # Mappa la porta 8000 del tuo computer alla porta 80 del container
     ports:
-      - "8000:80"
-    # Monta il volume per persistere i dati
+      - "8000:8000"
     volumes:
-      # Monta il volume 'app-data' nella cartella '/var/www/html/data' del container
-      # In questo modo, i file JSON non verranno sovrascritti quando aggiorni il codice
-      - app-data:/var/www/html/data
-
-# Definisce il volume nominato che verrà usato per i dati
-volumes:
-  app-data:
-    # Il driver 'local' significa che i dati saranno salvati sul tuo computer
-    driver: local
+      - .:/app
+      - /app/node_modules
+    restart: always

@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+
+    <div class="glass-panel">
+        <h1><i class="fas fa-shield-alt"></i> Pannello Admin</h1>
+        <div class="dashboard-grid" style="margin-top: 20px;">
+            <div class="glass-panel stat-card" onclick="window.location.href='/admin/tournaments'"
+                style="cursor:pointer; background:rgba(255,255,255,0.4);">
+                <h3><i class="fas fa-trophy"></i> Gestione Tornei</h3>
+                <p>Modifica, Elimina, Crea</p>
+            </div>
+            <div class="glass-panel stat-card" onclick="window.location.href='/admin/users'"
+                style="cursor:pointer; background:rgba(255,255,255,0.4);">
+                <h3><i class="fas fa-users"></i> Gestione Utenti</h3>
+                <p>Modifica, Elimina</p>
+            </div>
+            <div class="glass-panel stat-card" onclick="window.location.href='/admin/decklists'"
+                style="cursor:pointer; background:rgba(255,255,255,0.4);">
+                <h3><i class="fas fa-copy"></i> Gestione Liste</h3>
+                <p>Categorizza nuove liste</p>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
