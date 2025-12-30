@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo Creato - Tournament Manager</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/navbar') %>
+
+        <div class="main-container" style="text-align: center; padding-top: 5rem;">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <div style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1>Torneo Creato con Successo!</h1>
+                <p>Il torneo <strong>
+                        <%= tournament.name %>
+                    </strong> è pronto per essere condiviso.</p>
+
+                <div style="margin: 2rem 0;">
+                    <label>Link di invito diretto:</label>
+                    <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
+                        <input type="text" value="<%= host %>/tournaments/<%= tournament.id %>" id="shareLink" readonly
+                            style="width: 100%; max-width: 300px; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <button onclick="copyLink()" class="btn btn-secondary"><i class="fas fa-copy"></i>
+                            Copia</button>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="justify-content: center;">
+                    <a href="/admin/tournaments" class="btn btn-secondary">Torna alla Lista</a>
+                    <a href="/tournaments/<%= tournament.id %>" class="btn btn-primary">Vai al Torneo</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function copyLink() {
+                var copyText = document.getElementById("shareLink");
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(copyText.value);
+                alert("Link copiato negli appunti: " + copyText.value);
+            }
+        </script>
+</body>
+
+</html>

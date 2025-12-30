@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea Torneo - Tournament Manager</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('../partials/navbar') %>
+
+        <div class="main-container">
+            <div class="page-header">
+                <h1><i class="fas fa-plus-circle"></i> Crea Nuovo Torneo</h1>
+                <p>Configura i dettagli del torneo</p>
+            </div>
+
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <form action="/admin/tournaments/create" method="POST">
+
+                    <!-- Nome e Data -->
+                    <div class="form-group">
+                        <label for="name">Nome Torneo</label>
+                        <input type="text" id="name" name="name" required placeholder="Esempio: Pauper League Gennaio">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Data Inizio</label>
+                        <input type="date" id="date" name="date" required
+                            value="<%= new Date().toISOString().split('T')[0] %>">
+                    </div>
+
+                    <!-- Formato Partite -->
+                    <div class="form-group">
+                        <label for="format">Formato Partite</label>
+                        <select id="format" name="format" required>
+                            <option value="bo1">Best of One (Bo1)</option>
+                            <option value="bo3">Best of Three (Bo3) - No Pareggio</option>
+                            <option value="bo3_draw">Best of Three (Bo3) - Con Pareggio</option>
+                        </select>
+                        <small>Bo1 consente risultati 1-0. Bo3 consente 2-0, 2-1.</small>
+                    </div>
+
+                    <!-- Tipologia Torneo -->
+                    <div class="form-group">
+                        <label for="type">Tipologia Torneo</label>
+                        <select id="type" name="type" required onchange="toggleRounds(this.value)">
+                            <option value="swiss">Svizzera (Round Limitati)</option>
+                            <option value="elimination">Eliminazione Diretta</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="rounds-group">
+                        <label for="rounds">Numero di Turni (Svizzera)</label>
+                        <input type="number" id="rounds" name="rounds" value="3" min="1" max="10">
+                    </div>
+
+                    <!-- Opzioni Liste -->
+                    <div class="form-group">
+                        <label for="decklist_mandatory">Lista Mazzo</label>
+                        <select id="decklist_mandatory" name="decklist_mandatory"
+                            onchange="togglePublicList(this.value)">
+                            <option value="false">Opzionale</option>
+                            <option value="true">Obbligatoria per partecipare</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="public-list-group" style="display:none;">
+                        <label for="decklist_public">Visibilità Liste</label>
+                        <select id="decklist_public" name="decklist_public">
+                            <option value="false">Private (Solo Admin)</option>
+                            <option value="true">Pubbliche (Visibili all'avversario)</option>
+                        </select>
+                        <small>Se pubbliche, i giocatori vedranno la lista dell'avversario durante il match.</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="/admin/tournaments" class="btn btn-secondary">Annulla</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Crea Torneo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function toggleRounds(val) {
+                document.getElementById('rounds-group').style.display = val === 'swiss' ? 'block' : 'none';
+            }
+            function togglePublicList(val) {
+                document.getElementById('public-list-group').style.display = val === 'true' ? 'block' : 'none';
+            }
+        </script>
+</body>
+
+</html>

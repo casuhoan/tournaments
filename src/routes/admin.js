@@ -51,8 +51,43 @@ router.post('/tournaments/:id/delete', (req, res) => {
     res.redirect('/admin/tournaments');
 });
 
+// CREATE TOURNAMENT UI
 router.get('/tournaments/new', (req, res) => {
-    res.send('<h1>Nuovo Torneo (Non implementato UI complessa, usare JSON o futura implementazione)</h1><p>Funzionalità base richiesta completata.</p>');
+    res.render('admin/tournament_create');
+});
+
+// PROCESS CREATION
+router.post('/tournaments/create', (req, res) => {
+    const { name, date, format, type, rounds, decklist_mandatory, decklist_public } = req.body;
+    let tournaments = DataManager.getTournaments();
+
+    // Generate ID
+    const maxId = tournaments.reduce((max, t) => Math.max(max, parseInt(t.id)), 100);
+    const newId = maxId + 1;
+
+    const newTournament = {
+        id: String(newId),
+        name: name,
+        date: date,
+        status: 'created', // created, in_progress, completed
+        organizerId: req.session.user.id,
+        currentRound: 0,
+        participants: [],
+        matches: {},
+        settings: {
+            format: format, // bo1, bo3, bo3_draw
+            tournament_type: type, // swiss, elimination
+            rounds: parseInt(rounds) || 3,
+            decklist_mandatory: decklist_mandatory === 'true',
+            decklist_public: decklist_public === 'true'
+        }
+    };
+
+    tournaments.push(newTournament);
+    DataManager.saveTournaments(tournaments);
+
+    // Redirect to the new tournament page using the direct link logic
+    res.render('admin/tournament_created_success', { tournament: newTournament, host: req.get('host') });
 });
 
 router.get('/tournaments/:id/matches', (req, res) => {
