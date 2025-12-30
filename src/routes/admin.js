@@ -39,6 +39,10 @@ function updateParticipantsScores(tournament) {
 // Routes
 router.use(isAdmin); // Apply isAdmin to all routes in this file
 
+router.get('/', (req, res) => {
+    res.render('admin/dashboard');
+});
+
 router.get('/tournaments', (req, res) => {
     const tournaments = DataManager.getTournaments();
     res.render('admin/tournaments', { tournaments });
