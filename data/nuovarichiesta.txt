@@ -125,3 +125,6 @@ Richiesta 16 (Alcuni fix):
 
 Richiesta 17 (Aggiunta collegamento a Scryfall):
 Vorrei che le liste si potessero aprire e mostrassero le immagini delle carte ordinate per tipo.
+
+casuhoan/tournaments:main 8081:80 /var/www/html /var/www/html/data /var/lib/docker/volumes/data
+TEST
