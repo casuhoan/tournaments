@@ -36,18 +36,36 @@ function updateParticipantsScores(tournament) {
     });
 }
 
+// Route for listing tournaments with pagination and filters
 router.get('/', (req, res) => {
     let tournaments = DataManager.getTournaments();
     const usersMap = getUserMap();
     const { filter, search, page } = req.query;
-    tournaments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Filter Logic
     if (filter === 'active') tournaments = tournaments.filter(t => t.status === 'in_progress');
     else if (filter === 'mine_active' && req.session.user) tournaments = tournaments.filter(t => t.status === 'in_progress' && t.participants.some(p => p.userId === req.session.user.id));
     else if (filter === 'mine_completed' && req.session.user) tournaments = tournaments.filter(t => t.status === 'completed' && t.participants.some(p => p.userId === req.session.user.id));
     else if (filter === 'mine' && req.session.user) tournaments = tournaments.filter(t => t.participants.some(p => p.userId === req.session.user.id));
+
     if (search) tournaments = tournaments.filter(t => t.name.toLowerCase().includes(search.toLowerCase()));
 
-    res.render('tournaments/list', { tournaments, usersMap, filter });
+    // Sort by date descending
+    tournaments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Pagination Logic
+    const itemsPerPage = 10;
+    const currentPage = parseInt(page) || 1;
+    const totalPages = Math.ceil(tournaments.length / itemsPerPage);
+    const paginatedTournaments = tournaments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    res.render('tournaments/list', {
+        tournaments: paginatedTournaments,
+        usersMap,
+        filters: { filter: filter || 'all', search: search || '' },
+        currentPage,
+        totalPages
+    });
 });
 
 router.get('/:id', (req, res) => {
