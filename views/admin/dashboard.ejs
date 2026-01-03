@@ -1,96 +1,30 @@
-<!DOCTYPE html>
-<html lang="it" data-theme="light">
+<%- include('../partials/header') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pannello Admin - Tournament Manager</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .admin-dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .admin-card {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.2s;
-            border: 1px solid var(--border-color);
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .admin-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            color: var(--primary);
-        }
-
-        .admin-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .admin-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .admin-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-
-<body>
-    <%- include('../partials/header') %>
-
-        <div class="main-container">
-            <div class="page-header">
-                <h1><i class="fas fa-user-shield"></i> Pannello Amministratore</h1>
-                <p>Gestisci tornei, utenti e contenuti del sito.</p>
-            </div>
-
-            <div class="admin-dashboard-grid">
-                <a href="/admin/tournaments" class="admin-card">
-                    <i class="fas fa-trophy admin-icon"></i>
-                    <div class="admin-title">Gestione Tornei</div>
-                    <div class="admin-desc">Crea, modifica ed elimina tornei. Gestisci i round e i risultati.</div>
-                </a>
-
-                <a href="/admin/users" class="admin-card">
-                    <i class="fas fa-users admin-icon"></i>
-                    <div class="admin-title">Gestione Utenti</div>
-                    <div class="admin-desc">Gestisci gli account registrati, reimposta password e modifica ruoli.</div>
-                </a>
-
-                <a href="/admin/decklists" class="admin-card">
-                    <i class="fas fa-scroll admin-icon"></i>
-                    <div class="admin-title">Gestione Liste</div>
-                    <div class="admin-desc">Visualizza e categorizza le liste dei mazzi inviate dai giocatori.</div>
-                </a>
-
-                <!-- Future Implementation: Site Settings, etc. -->
-                <!-- 
-            <a href="/admin/settings" class="admin-card">
-                <i class="fas fa-cogs admin-icon"></i>
-                <div class="admin-title">Impostazioni Sito</div>
-                <div class="admin-desc">Configurazione generale.</div>
-            </a>
-            -->
-            </div>
+    <div class="main-container">
+        <div class="page-header">
+            <h1><i class="fas fa-user-shield"></i> Pannello Amministratore</h1>
+            <p>Gestisci tornei, utenti e contenuti del sito.</p>
         </div>
-</body>
 
-</html>
+        <div class="admin-dashboard-grid">
+            <a href="/admin/tournaments" class="admin-card">
+                <i class="fas fa-trophy admin-icon"></i>
+                <div class="admin-title">Gestione Tornei</div>
+                <div class="admin-desc">Crea, modifica ed elimina tornei. Gestisci i round e i risultati.</div>
+            </a>
+
+            <a href="/admin/users" class="admin-card">
+                <i class="fas fa-users admin-icon"></i>
+                <div class="admin-title">Gestione Utenti</div>
+                <div class="admin-desc">Gestisci gli account registrati, reimposta password e modifica ruoli.</div>
+            </a>
+
+            <a href="/admin/decklists" class="admin-card">
+                <i class="fas fa-scroll admin-icon"></i>
+                <div class="admin-title">Gestione Liste</div>
+                <div class="admin-desc">Visualizza e categorizza le liste dei mazzi inviate dai giocatori.</div>
+            </a>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
