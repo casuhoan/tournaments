@@ -1,73 +1,89 @@
-<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
 
-    <div class="glass-panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1><i class="fas fa-list"></i> Tutti i Tornei</h1>
-            <form action="/tournaments" method="GET" style="display: flex; gap: 10px;">
-                <input type="text" name="search" placeholder="Cerca nome..." class="form-control"
-                    value="<%= filters.search %>">
-                <select name="filter" class="form-control" style="width: auto;">
-                    <option value="all" <%=filters.filter==='all' ? 'selected' : '' %>>Tutti</option>
-                    <option value="active" <%=filters.filter==='active' ? 'selected' : '' %>>In Corso (Tutti)</option>
-                    <option value="mine_active" <%=filters.filter==='mine_active' ? 'selected' : '' %>>In Corso (Miei)
-                    </option>
-                    <option value="mine_completed" <%=filters.filter==='mine_completed' ? 'selected' : '' %>>Completati
-                        (Miei)</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Filtra</button>
-            </form>
-        </div>
-
-        <div class="dashboard-grid">
-            <% tournaments.forEach(t=> { %>
-                <div class="glass-panel" style="background: rgba(255,255,255,0.3); position: relative;">
-                    <% if(t.status==='in_progress' ) { %>
-                        <span class="status-tag in_progress"
-                            style="position: absolute; top: 10px; right: 10px; background: var(--secondary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">In
-                            Corso</span>
-                        <% } %>
-
-                            <h3>
-                                <%= t.name %>
-                            </h3>
-                            <p><i class="far fa-calendar"></i>
-                                <%= t.date %>
-                            </p>
-
-                            <div style="margin-top: 15px;">
-                                <strong>Top 3:</strong>
-                                <ul style="list-style: none; padding: 0; margin-top: 5px;">
-                                    <% let top3=t.participants.sort((a,b)=> a.rank - b.rank).slice(0, 3);
-                                        %>
-                                        <% top3.forEach(p=> { %>
-                                            <% let pName=(typeof usersMap !=='undefined' && usersMap[p.userId]) ?
-                                                usersMap[p.userId].username : ('User ' + p.userId); %> 
-                           <li>
-                               <span class="rank-badge" style="font-weight:bold; color: var(--primary);"><%= TournamentLogic.getRankString(p.rank) %></span> 
-                               <a href="/profile/<%= pName %>" style="text-decoration:none; color:inherit;"><%= pName %></a>
-                               <% if(p.decklist_name) { %> - <a href="/decklist/<%= p.decklist_name %>" style="color: grey;"><%= p.decklist_name %></a> <% } %>
-                           </li>
-                        <% }) %>
-                    </ul>
-                </div>
-
-                <a href="/tournaments/<%= t.id %>" class="btn btn-primary" style="margin-top: 15px; width: 100%; text-align: center;">Vai al Torneo</a>
+    <div class="main-container">
+        <div class="glass-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1><i class="fas fa-list"></i> Tutti i Tornei</h1>
+                <form action="/tournaments" method="GET" style="display: flex; gap: 10px;">
+                    <input type="text" name="search" placeholder="Cerca nome..." class="form-control"
+                        value="<%= filters.search %>">
+                    <select name="filter" class="form-control" style="width: auto;">
+                        <option value="all" <%=filters.filter==='all' ? 'selected' : '' %>>Tutti</option>
+                        <option value="active" <%=filters.filter==='active' ? 'selected' : '' %>>In Corso (Tutti)
+                        </option>
+                        <option value="mine_active" <%=filters.filter==='mine_active' ? 'selected' : '' %>>In Corso
+                            (Miei)</option>
+                        <option value="mine_completed" <%=filters.filter==='mine_completed' ? 'selected' : '' %>
+                            >Completati (Miei)</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filtra</button>
+                </form>
             </div>
-        <% }) %>
-    </div>
 
-    <!-- Pagination Controls -->
-    <% if (totalPages > 1) { %>
-        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-            <% for(let i=1; i <= totalPages; i++) { %>
-                <a href="/tournaments?page=<%= i %>&filter=<%= filters.filter %>&search=<%= filters.search %>" 
-                   class="btn <%= currentPage == i ? ' btn-primary' : '' %>"
-                                                style="<%= currentPage==i ? '' : 'background:white; color:black;' %>">
-                                                    <%= i %>
-                                                        </a>
-                                                        <% } %>
-                            </div>
+            <div class="dashboard-grid">
+                <% tournaments.forEach(t=> { %>
+                    <div class="glass-panel" style="background: rgba(255,255,255,0.3); position: relative;">
+                        <% if (t.status==='in_progress' ) { %>
+                            <span class="status-tag in_progress"
+                                style="position: absolute; top: 10px; right: 10px; background: var(--secondary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">
+                                In Corso
+                            </span>
                             <% } %>
-                </div>
 
-                <%- include('../partials/footer') %>
+                                <h3>
+                                    <%= t.name %>
+                                </h3>
+                                <p><i class="far fa-calendar"></i>
+                                    <%= t.date %>
+                                </p>
+
+                                <div style="margin-top: 15px;">
+                                    <strong>Top 3:</strong>
+                                    <ul style="list-style: none; padding: 0; margin-top: 5px;">
+                                        <% // Create a safe copy and sort let participantsCopy=[...t.participants]; let
+                                            top3=participantsCopy.sort((a,b)=> a.rank - b.rank).slice(0, 3);
+                                            %>
+                                            <% top3.forEach(p=> { %>
+                                                <% let pName='User ' + p.userId; if (typeof usersMap !=='undefined' &&
+                                                    usersMap[p.userId]) { pName=usersMap[p.userId].username; } %>
+                                                    <li>
+                                                        <span class="rank-badge"
+                                                            style="font-weight:bold; color: var(--primary);">
+                                                            <%= TournamentLogic.getRankString(p.rank) %>
+                                                        </span>
+                                                        <a href="/profile/<%= pName %>"
+                                                            style="text-decoration:none; color:inherit;">
+                                                            <%= pName %>
+                                                        </a>
+                                                        <% if (p.decklist_name) { %>
+                                                            - <a href="/decklist/<%= p.decklist_name %>"
+                                                                style="color: grey;">
+                                                                <%= p.decklist_name %>
+                                                            </a>
+                                                            <% } %>
+                                                    </li>
+                                                    <% }) %>
+                                    </ul>
+                                </div>
+
+                                <a href="/tournaments/<%= t.id %>" class="btn btn-primary"
+                                    style="margin-top: 15px; width: 100%; text-align: center;">Vai al Torneo</a>
+                    </div>
+                    <% }) %>
+            </div>
+
+            <!-- Pagination Controls -->
+            <% if (totalPages> 1) { %>
+                <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <a href="/tournaments?page=<%= i %>&filter=<%= filters.filter %>&search=<%= filters.search %>"
+                            class="btn <%= currentPage == i ? 'btn-primary' : 'btn-pagination-inactive' %>">
+                            <%= i %>
+                        </a>
+                        <% } %>
+                </div>
+                <% } %>
+        </div>
+    </div>
+    <!-- Footer not included here if redundant, checking layout? Including partial -->
+    <%- include('../partials/footer') %>
