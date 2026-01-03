@@ -77,7 +77,12 @@ router.get('/:id', (req, res) => {
     tournament.participants = TournamentLogic.calculateStandings(tournament);
 
     const currentMatches = tournament.matches ? (tournament.matches[tournament.currentRound ? 'round_' + tournament.currentRound : 'round_1'] || []) : [];
-    res.render('tournaments/view', { tournament, usersMap, currentMatches });
+    res.render('tournaments/view', {
+        tournament,
+        usersMap,
+        currentMatches,
+        standings: tournament.participants
+    });
 });
 
 router.post('/:id/start', isLoggedIn, (req, res) => {
