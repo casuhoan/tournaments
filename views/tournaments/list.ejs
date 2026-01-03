@@ -40,7 +40,7 @@
                                 <div style="margin-top: 15px;">
                                     <strong>Top 3:</strong>
                                     <ul style="list-style: none; padding: 0; margin-top: 5px;">
-                                        <% // Create a safe copy and sort let participantsCopy=[...t.participants]; let
+                                        <% let participantsCopy=[...t.participants]; let
                                             top3=participantsCopy.sort((a,b)=> a.rank - b.rank).slice(0, 3);
                                             %>
                                             <% top3.forEach(p=> { %>
