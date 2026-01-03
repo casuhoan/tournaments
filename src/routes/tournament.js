@@ -85,6 +85,33 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.post('/:id/join', isLoggedIn, (req, res) => {
+    const tournaments = DataManager.getTournaments();
+    const tIndex = tournaments.findIndex(t => t.id == req.params.id);
+    if (tIndex === -1) return res.status(404).send('Tournament not found');
+
+    let tournament = tournaments[tIndex];
+    if (tournament.status !== 'created') return res.status(400).send('Tournament registration closed');
+
+    // Check if already registered
+    if (tournament.participants.some(p => p.userId === req.session.user.id)) {
+        return res.redirect('/tournaments/' + tournament.id);
+    }
+
+    tournament.participants.push({
+        userId: req.session.user.id,
+        score: 0,
+        games_won: 0,
+        games_lost: 0,
+        rank: 0,
+        decklist: '',
+        decklist_name: ''
+    });
+
+    DataManager.saveTournaments(tournaments);
+    res.redirect('/tournaments/' + tournament.id);
+});
+
 router.post('/:id/start', isLoggedIn, (req, res) => {
     const tournaments = DataManager.getTournaments();
     const tIndex = tournaments.findIndex(t => t.id == req.params.id);
@@ -95,7 +122,7 @@ router.post('/:id/start', isLoggedIn, (req, res) => {
     tournament.currentRound = 1;
     tournament.status = 'in_progress';
     tournament.matches = {};
-    const pairings = TournamentLogic.generatePairings(tournament.participants, []);
+    const pairings = TournamentLogic.generatePairings(tournament);
     tournament.matches['round_1'] = pairings;
 
     DataManager.saveTournaments(tournaments);
@@ -164,9 +191,7 @@ router.post('/:id/next-round', isLoggedIn, (req, res) => {
     updateParticipantsScores(tournament);
 
     tournament.currentRound += 1;
-    const pastMatches = [];
-    Object.values(tournament.matches).forEach(r => pastMatches.push(...r));
-    const newPairings = TournamentLogic.generatePairings(tournament.participants, pastMatches);
+    const newPairings = TournamentLogic.generatePairings(tournament);
     tournament.matches['round_' + tournament.currentRound] = newPairings;
 
     DataManager.saveTournaments(tournaments);

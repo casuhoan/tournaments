@@ -313,7 +313,26 @@
         "status": "created",
         "organizerId": 7,
         "currentRound": 0,
-        "participants": [],
+        "participants": [
+            {
+                "userId": 7,
+                "score": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "rank": 0,
+                "decklist": "",
+                "decklist_name": ""
+            },
+            {
+                "userId": 8,
+                "score": 0,
+                "games_won": 0,
+                "games_lost": 0,
+                "rank": 0,
+                "decklist": "",
+                "decklist_name": ""
+            }
+        ],
         "matches": {},
         "settings": {
             "format": "bo1",
