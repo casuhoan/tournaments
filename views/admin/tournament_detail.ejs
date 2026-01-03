@@ -1,0 +1,138 @@
+<%- include('../partials/header') %>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1><i class="fas fa-edit"></i> Modifica Torneo</h1>
+            <p>Gestisci impostazioni e dettagli del torneo <%= tournament.name %>
+            </p>
+        </div>
+
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <!-- INFO CARD -->
+            <div style="margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border);">
+                <h3>Stato Attuale: <span class="status-tag <%= tournament.status %>">
+                        <%= tournament.status %>
+                    </span></h3>
+                <p>Partecipanti: <%= tournament.participants.length %>
+                </p>
+                <p>Turno Corrente: <%= tournament.currentRound %>
+                </p>
+                <div style="margin-top: 10px;">
+                    <a href="/admin/tournaments/<%= tournament.id %>/matches" class="btn btn-secondary">Gestisci Match &
+                        Risultati</a>
+                    <a href="/tournaments/<%= tournament.id %>" class="btn btn-primary" target="_blank">Vedi Pagina
+                        Pubblica</a>
+                </div>
+            </div>
+
+            <form action="/admin/tournaments/<%= tournament.id %>/update" method="POST">
+
+                <!-- Nome e Data -->
+                <div class="form-group">
+                    <label for="name">Nome Torneo</label>
+                    <input type="text" id="name" name="name" required value="<%= tournament.name %>"
+                        class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Data Inizio</label>
+                    <input type="date" id="date" name="date" required value="<%= tournament.date %>"
+                        class="form-control">
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0;">
+
+                <!-- SETUP (Only editable if not started ideally, but letting admin force it is okay with warning) -->
+                <% if (tournament.status !=='created' ) { %>
+                    <div class="alert" style="background: rgba(255, 165, 0, 0.2); color: orange;">
+                        <i class="fas fa-exclamation-triangle"></i> Attenzione: Il torneo è già iniziato. Modificare il
+                        formato ora potrebbe causare errori.
+                    </div>
+                    <% } %>
+
+                        <!-- Formato Partite -->
+                        <div class="form-group">
+                            <label for="format">Formato Partite</label>
+                            <select id="format" name="format" required class="form-control">
+                                <option value="bo1" <%=tournament.settings?.format==='bo1' ? 'selected' : '' %>>Best of
+                                    One (Bo1)</option>
+                                <option value="bo3" <%=tournament.settings?.format==='bo3' ? 'selected' : '' %>>Best of
+                                    Three (Bo3) - No Pareggio</option>
+                                <option value="bo3_draw" <%=tournament.settings?.format==='bo3_draw' ? 'selected' : ''
+                                    %>>Best of Three (Bo3) - Con Pareggio</option>
+                            </select>
+                        </div>
+
+                        <!-- Tipologia Torneo -->
+                        <div class="form-group">
+                            <label for="type">Tipologia Torneo</label>
+                            <select id="type" name="type" required onchange="toggleRounds(this.value)"
+                                class="form-control">
+                                <option value="swiss" <%=tournament.settings?.tournament_type==='swiss' ? 'selected'
+                                    : '' %>>Svizzera (Round Limitati)</option>
+                                <option value="elimination" <%=tournament.settings?.tournament_type==='elimination'
+                                    ? 'selected' : '' %>>Eliminazione Diretta</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="rounds-group"
+                            style="<%= tournament.settings?.tournament_type === 'swiss' ? 'block' : 'none' %>">
+                            <label for="rounds">Numero di Turni</label>
+                            <input type="number" id="rounds" name="rounds"
+                                value="<%= tournament.settings?.rounds || 3 %>" min="1" max="10" class="form-control">
+                        </div>
+
+                        <!-- Opzioni Liste -->
+                        <div class="form-group">
+                            <label for="decklist_mandatory">Lista Mazzo</label>
+                            <select id="decklist_mandatory" name="decklist_mandatory"
+                                onchange="togglePublicList(this.value)" class="form-control">
+                                <option value="false" <%=!tournament.settings?.decklist_mandatory ? 'selected' : '' %>
+                                    >Opzionale</option>
+                                <option value="true" <%=tournament.settings?.decklist_mandatory ? 'selected' : '' %>
+                                    >Obbligatoria per partecipare</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="public-list-group"
+                            style="display: <%= tournament.settings?.decklist_mandatory ? 'block' : 'none' %>;">
+                            <label for="decklist_public">Visibilità Liste</label>
+                            <select id="decklist_public" name="decklist_public" class="form-control">
+                                <option value="false" <%=!tournament.settings?.decklist_public ? 'selected' : '' %>
+                                    >Private (Solo Admin)</option>
+                                <option value="true" <%=tournament.settings?.decklist_public ? 'selected' : '' %>
+                                    >Pubbliche (Visibili all'avversario)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="/admin/tournaments" class="btn btn-secondary">Annulla</a>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salva
+                                Modifiche</button>
+                        </div>
+            </form>
+
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0;">
+
+            <!-- DANGER ZONE -->
+            <div style="border: 1px solid rgba(255,0,0,0.3); padding: 20px; border-radius: 8px;">
+                <h3 style="color: red; margin-top: 0;">Zona Pericolo</h3>
+                <p>Eliminare il torneo è irreversibile.</p>
+                <form action="/admin/tournaments/<%= tournament.id %>/delete" method="POST"
+                    onsubmit="return confirm('Sei sicuro di voler eliminare questo torneo?');">
+                    <button type="submit" class="btn" style="background: red; color: white;">Elimina Torneo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleRounds(val) {
+            document.getElementById('rounds-group').style.display = val === 'swiss' ? 'block' : 'none';
+        }
+        function togglePublicList(val) {
+            document.getElementById('public-list-group').style.display = val === 'true' ? 'block' : 'none';
+        }
+    </script>
+
+    <%- include('../partials/footer') %>

@@ -305,5 +305,22 @@
                 }
             ]
         }
+    },
+    {
+        "id": 107,
+        "name": "Pauper",
+        "date": "2026-01-03",
+        "status": "created",
+        "organizerId": 7,
+        "currentRound": 0,
+        "participants": [],
+        "matches": {},
+        "settings": {
+            "format": "bo1",
+            "tournament_type": "swiss",
+            "rounds": 3,
+            "decklist_mandatory": false,
+            "decklist_public": false
+        }
     }
 ]

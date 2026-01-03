@@ -94,6 +94,36 @@ router.post('/tournaments/create', (req, res) => {
     res.render('admin/tournament_created_success', { tournament: newTournament, host: req.get('host') });
 });
 
+// EDIT TOURNAMENT UI
+router.get('/tournaments/:id', (req, res) => {
+    const tournament = DataManager.getTournamentById(req.params.id);
+    if (!tournament) return res.status(404).render('error', { message: 'Tournament not found' });
+    res.render('admin/tournament_detail', { tournament });
+});
+
+// UPDATE TOURNAMENT
+router.post('/tournaments/:id/update', (req, res) => {
+    const { name, date, format, type, rounds, decklist_mandatory, decklist_public } = req.body;
+    let tournaments = DataManager.getTournaments();
+    const tIndex = tournaments.findIndex(t => t.id == req.params.id);
+
+    if (tIndex === -1) return res.status(404).send('Tournament not found');
+
+    tournaments[tIndex].name = name;
+    tournaments[tIndex].date = date;
+    tournaments[tIndex].settings = {
+        ...tournaments[tIndex].settings,
+        format,
+        tournament_type: type,
+        rounds: parseInt(rounds),
+        decklist_mandatory: decklist_mandatory === 'true',
+        decklist_public: decklist_public === 'true'
+    };
+
+    DataManager.saveTournaments(tournaments);
+    res.redirect('/admin/tournaments/' + req.params.id);
+});
+
 router.get('/tournaments/:id/matches', (req, res) => {
     const tournament = DataManager.getTournamentById(req.params.id);
     if (!tournament) return res.status(404).send('Tournament not found');
