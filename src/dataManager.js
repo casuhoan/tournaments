@@ -50,7 +50,7 @@ const DataManager = {
 
     getTournamentById: (id) => {
         const tournaments = readJson(TOURNAMENTS_FILE);
-        return tournaments.find(t => t.id === Number(id)); // ID in JSON might be number
+        return tournaments.find(t => t.id == id); // Loose equality to handle String/Number differences
     }
 };
 

@@ -70,7 +70,7 @@ router.post('/tournaments/create', (req, res) => {
     const newId = maxId + 1;
 
     const newTournament = {
-        id: String(newId),
+        id: newId, // Save as Number to match existing data
         name: name,
         date: date,
         status: 'created', // created, in_progress, completed
