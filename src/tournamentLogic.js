@@ -11,21 +11,29 @@ const TournamentLogic = {
     // Calculate standings for a tournament
     calculateStandings: (tournament) => {
         let participants = tournament.participants.map(p => {
+            const gameDiff = (p.games_won || 0) - (p.games_lost || 0);
             return {
                 ...p,
                 score: p.score || 0,
                 games_won: p.games_won || 0,
                 games_lost: p.games_lost || 0,
-                malus: p.malus || 0
+                game_difference: gameDiff,
+                malus: p.malus || 0,
+                bye_count: p.bye_count || 0
             };
         });
 
         participants.sort((a, b) => {
+            // 1. Points
             if (b.score !== a.score) return b.score - a.score;
+            // 2. Malus (lower is better)
             if (a.malus !== b.malus) return a.malus - b.malus;
+            // 3. Game Difference
+            if (b.game_difference !== a.game_difference) return b.game_difference - a.game_difference;
+            // 4. Games Won
             if (b.games_won !== a.games_won) return b.games_won - a.games_won;
-            if (a.games_lost !== b.games_lost) return a.games_lost - b.games_lost;
-            return b.userId - a.userId;
+            // 5. Random (using userId as seed for consistency)
+            return Math.sign(Math.sin(a.userId) - Math.sin(b.userId));
         });
 
         participants.forEach((p, index) => {
@@ -88,19 +96,28 @@ const TournamentLogic = {
         let byePlayer = null;
 
         if (participants.length % 2 !== 0) {
+            // Prefer giving BYE to lowest-ranked player who has received fewest BYEs
+            participants.sort((a, b) => {
+                const byeCountDiff = (a.bye_count || 0) - (b.bye_count || 0);
+                if (byeCountDiff !== 0) return byeCountDiff;
+                return b.rank - a.rank; // Higher rank = lower in standings
+            });
             byePlayer = participants.pop();
+            // Re-sort by standings for pairing
+            participants = TournamentLogic.calculateStandings({ ...tournament, participants });
         }
 
-        const solve = (pool) => {
+        const solve = (pool, allowRepeats = false) => {
             if (pool.length === 0) return [];
             let p1 = pool[0];
             for (let i = 1; i < pool.length; i++) {
                 let p2 = pool[i];
-                if (!history[p1.userId].has(p2.userId)) {
+                // Check repeats only if strict
+                if (allowRepeats || !history[p1.userId].has(p2.userId)) {
                     let remaining = [...pool];
                     remaining.splice(i, 1);
                     remaining.shift();
-                    let result = solve(remaining);
+                    let result = solve(remaining, allowRepeats);
                     if (result !== null) {
                         return [{ player1: p1, player2: p2, table: 0 }, ...result];
                     }
@@ -109,7 +126,7 @@ const TournamentLogic = {
             return null;
         };
 
-        let pairings = solve(participants);
+        let pairings = solve(participants, false);
 
         if (pairings === null) {
             return null;
@@ -126,6 +143,12 @@ const TournamentLogic = {
         }));
 
         if (byePlayer) {
+            // Increment BYE count for tracking
+            const byeParticipant = tournament.participants.find(p => p.userId === byePlayer.userId);
+            if (byeParticipant) {
+                byeParticipant.bye_count = (byeParticipant.bye_count || 0) + 1;
+            }
+
             roundMatches.push({
                 round: nextRound,
                 player1: byePlayer.userId,

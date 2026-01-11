@@ -16,6 +16,7 @@ function updateParticipantsScores(tournament) {
     if (!tournament.matches) return;
     tournament.participants.forEach(p => { p.score = 0; p.games_won = 0; p.games_lost = 0; });
     Object.values(tournament.matches).forEach(roundMatches => {
+        if (!roundMatches) return;
         roundMatches.forEach(m => {
             if (m.winner) {
                 const p1 = tournament.participants.find(p => p.userId === m.player1);
@@ -105,7 +106,8 @@ router.post('/:id/join', isLoggedIn, (req, res) => {
         games_lost: 0,
         rank: 0,
         decklist: '',
-        decklist_name: ''
+        decklist_name: '',
+        bye_count: 0
     });
 
     DataManager.saveTournaments(tournaments);
@@ -123,6 +125,9 @@ router.post('/:id/start', isLoggedIn, (req, res) => {
     tournament.status = 'in_progress';
     tournament.matches = {};
     const pairings = TournamentLogic.generatePairings(tournament);
+    if (!pairings) {
+        return res.status(500).send('Errore: Impossibile generare abbinamenti validi. Riprova o controlla i partecipanti.');
+    }
     tournament.matches['round_1'] = pairings;
 
     DataManager.saveTournaments(tournaments);
@@ -165,15 +170,25 @@ router.post('/:id/result_score', isLoggedIn, (req, res) => {
         req.session.user.id === match.player1 || req.session.user.id === match.player2;
     if (!canEdit) return res.status(403).send("Unauthorized");
 
-    match.score1 = parseInt(score1);
-    match.score2 = parseInt(score2);
+    let s1 = (score1 === '' || score1 === undefined) ? 0 : parseInt(score1);
+    let s2 = (score2 === '' || score2 === undefined) ? 0 : parseInt(score2);
+
+    // FIX: Map "Tu" (s1) and "Lui" (s2) to actual Player1 vs Player2
+    if (match.player1 === req.session.user.id) {
+        match.score1 = s1;
+        match.score2 = s2;
+    } else {
+        // User is Player 2
+        match.score1 = s2;
+        match.score2 = s1;
+    }
 
     if (match.score1 > match.score2) match.winner = String(match.player1);
     else if (match.score2 > match.score1) match.winner = String(match.player2);
     else if (match.score1 === match.score2) match.winner = 'draw';
 
     updateParticipantsScores(tournament);
-    tournament.participants = TournamentLogic.calculateStandings(tournament); // FIX: Recalculate
+    tournament.participants = TournamentLogic.calculateStandings(tournament);
     DataManager.saveTournaments(tournaments);
     res.redirect('/tournaments/' + tournament.id);
 });
@@ -186,12 +201,29 @@ router.post('/:id/next-round', isLoggedIn, (req, res) => {
 
     // Check if current round complete
     const currentMatches = tournament.matches['round_' + tournament.currentRound];
-    if (currentMatches.some(m => !m.winner)) return res.send('Completa prima tutti i match del turno corrente.');
+    if (!currentMatches || currentMatches.some(m => !m.winner)) return res.send('Completa prima tutti i match del turno corrente (o il round è invalido).');
 
     updateParticipantsScores(tournament);
 
+    // FIX: Check Max Rounds
+    const maxRounds = tournament.settings && tournament.settings.rounds ? parseInt(tournament.settings.rounds) : 3;
+    if (tournament.currentRound >= maxRounds) {
+        // Auto-end tournament
+        tournament.status = 'completed';
+        tournament.participants = TournamentLogic.calculateStandings(tournament);
+        DataManager.saveTournaments(tournaments);
+        return res.redirect('/tournaments/' + tournament.id);
+    }
+
     tournament.currentRound += 1;
     const newPairings = TournamentLogic.generatePairings(tournament);
+    if (!newPairings) {
+        // No possible unique pairings found => End Tournament early
+        tournament.status = 'completed';
+        tournament.participants = TournamentLogic.calculateStandings(tournament);
+        DataManager.saveTournaments(tournaments);
+        return res.redirect('/tournaments/' + tournament.id);
+    }
     tournament.matches['round_' + tournament.currentRound] = newPairings;
 
     DataManager.saveTournaments(tournaments);

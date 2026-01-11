@@ -132,78 +132,64 @@
                                                                                     <% } %>
                                                             </div>
                                                             <% } else if (!isBye) { %>
-                                                                <!-- Result Submission -->
-                                                                <div
-                                                                    style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                                                                    <!-- Generic simple submission buttons as requested -->
-                                                                    <form
-                                                                        action="/tournaments/<%= tournament.id %>/result"
-                                                                        method="POST">
-                                                                        <input type="hidden" name="matchId"
-                                                                            value="<%= JSON.stringify(myMatch) %>">
-                                                                        <!-- Insecure but simple for ID-less match structure -->
-                                                                        <input type="hidden" name="action"
-                                                                            value="win_self">
-                                                                        <button class="btn btn-primary">Ho
-                                                                            Vinto</button>
-                                                                    </form>
-                                                                    <form
-                                                                        action="/tournaments/<%= tournament.id %>/result"
-                                                                        method="POST">
-                                                                        <input type="hidden" name="matchId"
-                                                                            value="<%= JSON.stringify(myMatch) %>">
-                                                                        <input type="hidden" name="action"
-                                                                            value="win_opp">
-                                                                        <button class="btn"
-                                                                            style="background: var(--accent); color: white;">Ha
-                                                                            Vinto Avversario</button>
-                                                                    </form>
-                                                                    <form
-                                                                        action="/tournaments/<%= tournament.id %>/result"
-                                                                        method="POST">
-                                                                        <input type="hidden" name="matchId"
-                                                                            value="<%= JSON.stringify(myMatch) %>">
-                                                                        <input type="hidden" name="action" value="draw">
-                                                                        <button class="btn"
-                                                                            style="background: grey; color: white;">Pareggio</button>
-                                                                    </form>
-                                                                </div>
+                                                                <% const myMatchIndex=currentMatches.findIndex(m=>
+                                                                    m.player1 === user.id || m.player2 === user.id); %>
 
-                                                                <!-- Advanced Score Input (Bo3 specific request: 2-0, 2-1 etc) -->
-                                                                <div style="margin-top: 15px;">
-                                                                    <small>Oppure inserisci punteggio esatto:</small>
-                                                                    <form
-                                                                        action="/tournaments/<%= tournament.id %>/result_score"
-                                                                        method="POST"
-                                                                        style="display: flex; justify-content: center; gap: 5px; align-items: center; margin-top: 5px;">
-                                                                        <input type="number" name="score1"
-                                                                            placeholder="Tu" style="width: 50px;"
-                                                                            min="0" required>
-                                                                        -
-                                                                        <input type="number" name="score2"
-                                                                            placeholder="Lui" style="width: 50px;"
-                                                                            min="0" required>
-                                                                        <button class="btn btn-primary"
-                                                                            style="padding: 5px 10px;">Invia</button>
-                                                                    </form>
-                                                                </div>
-                                                                <% } else { %>
-                                                                    <p>Hai vinto a tavolino (BYE).</p>
-                                                                    <% } %>
+                                                                    <!-- Advanced Score Input (Bo3 specific request: 2-0, 2-1 etc) -->
+                                                                    <div style="margin-top: 15px;">
+                                                                        <p>Inserisci il risultato:</p>
+                                                                        <form
+                                                                            action="/tournaments/<%= tournament.id %>/result_score"
+                                                                            method="POST"
+                                                                            style="display: flex; justify-content: center; gap: 10px; align-items: center; margin-top: 5px;">
+                                                                            <input type="hidden" name="roundKey"
+                                                                                value="round_<%= tournament.currentRound %>">
+                                                                            <input type="hidden" name="matchIndex"
+                                                                                value="<%= myMatchIndex %>">
 
-                                                                        <% } else { %>
-                                                                            <p>Nessuna partita assegnata in questo round
-                                                                                (Forse
-                                                                                sei in pausa o errore?).</p>
-                                                                            <% } %>
+                                                                            <div style="text-align: center;">
+                                                                                <label
+                                                                                    style="display: block; font-size: 0.8rem;">TU</label>
+                                                                                <input type="number" name="score1"
+                                                                                    placeholder="0"
+                                                                                    style="width: 50px; text-align: center;"
+                                                                                    min="0" required>
+                                                                            </div>
+                                                                            <span
+                                                                                style="font-weight: bold; font-size: 1.2rem;">-</span>
+                                                                            <div style="text-align: center;">
+                                                                                <label
+                                                                                    style="display: block; font-size: 0.8rem;">LUI</label>
+                                                                                <input type="number" name="score2"
+                                                                                    placeholder="0"
+                                                                                    style="width: 50px; text-align: center;"
+                                                                                    min="0" required>
+                                                                            </div>
 
-                                                                                <button
-                                                                                    onclick="window.location.reload()"
-                                                                                    class="btn"
-                                                                                    style="margin-top: 20px;"><i
-                                                                                        class="fas fa-sync"></i>
-                                                                                    Ricarica per
-                                                                                    aggiornamenti</button>
+                                                                            <button class="btn btn-primary"
+                                                                                style="padding: 10px 20px; font-weight: bold;">
+                                                                                <i class="fas fa-paper-plane"></i> Invia
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                    <% } else { %>
+                                                                        <p>Hai vinto a tavolino (BYE).</p>
+                                                                        <% } %>
+
+                                                                            <% } else { %>
+                                                                                <p>Nessuna partita assegnata in questo
+                                                                                    round
+                                                                                    (Forse
+                                                                                    sei in pausa o errore?).</p>
+                                                                                <% } %>
+
+                                                                                    <button
+                                                                                        onclick="window.location.reload()"
+                                                                                        class="btn"
+                                                                                        style="margin-top: 20px;"><i
+                                                                                            class="fas fa-sync"></i>
+                                                                                        Ricarica per
+                                                                                        aggiornamenti</button>
                                 </div>
                                 <% } else { %>
                                     <div style="text-align: center;">

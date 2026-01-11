@@ -1,299 +1,57 @@
 [
     {
-        "id": 101,
-        "name": "Torneo di Apertura",
-        "date": "2025-10-15",
+        "id": 108,
+        "name": "Nig",
+        "date": "2026-01-03",
+        "status": "in_progress",
         "organizerId": 7,
-        "link": "torneo-di-apertura-101",
-        "status": "completed",
-        "settings": [],
+        "currentRound": 3,
         "participants": [
-            {
-                "userId": 1,
-                "rank": 1,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 2,
-                "rank": 2,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 3,
-                "rank": 3,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 4,
-                "rank": 4,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            }
-        ],
-        "matches": []
-    },
-    {
-        "id": 102,
-        "name": "Sfida Autunnale",
-        "date": "2025-10-22",
-        "organizerId": 7,
-        "link": "sfida-autunnale-102",
-        "status": "completed",
-        "settings": [],
-        "participants": [
-            {
-                "userId": 5,
-                "rank": 1,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 1,
-                "rank": 2,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 6,
-                "rank": 3,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 2,
-                "rank": 4,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            }
-        ],
-        "matches": []
-    },
-    {
-        "id": 103,
-        "name": "Campionato Regionale",
-        "date": "2025-11-01",
-        "organizerId": 7,
-        "link": "campionato-regionale-103",
-        "status": "completed",
-        "settings": [],
-        "participants": [
-            {
-                "userId": 3,
-                "rank": 1,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 5,
-                "rank": 2,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 1,
-                "rank": 3,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 4,
-                "rank": 4,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            }
-        ],
-        "matches": []
-    },
-    {
-        "id": 104,
-        "name": "Grande Classico",
-        "date": "2025-11-12",
-        "organizerId": 7,
-        "link": "grande-classico-104",
-        "status": "completed",
-        "settings": [],
-        "participants": [
-            {
-                "userId": 2,
-                "rank": 1,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 6,
-                "rank": 2,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 4,
-                "rank": 3,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
-            {
-                "userId": 1,
-                "rank": 4,
-                "score": 0,
-                "malus": 0,
-                "played_opponents": [],
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            }
-        ],
-        "matches": []
-    },
-    {
-        "id": 106,
-        "name": "Test2",
-        "date": "2025-11-15",
-        "organizerId": 7,
-        "link": "test2-106",
-        "status": "completed",
-        "settings": {
-            "match_type": "bo1",
-            "tournament_type": "swiss",
-            "rounds": 4,
-            "decklist_req": "optional",
-            "decklist_visibility": "private"
-        },
-        "participants": [
-            {
-                "userId": 7,
-                "decklist": "",
-                "score": 3,
-                "malus": 0,
-                "games_won": 0,
-                "games_lost": 0,
-                "decklist_name": "",
-                "decklist_format": ""
-            },
             {
                 "userId": 8,
-                "decklist": "",
-                "score": 6,
-                "malus": 0,
+                "score": 4,
                 "games_won": 0,
                 "games_lost": 0,
+                "rank": 1,
+                "decklist": "",
                 "decklist_name": "",
-                "decklist_format": ""
+                "malus": 0
+            },
+            {
+                "userId": 7,
+                "score": 1,
+                "games_won": 0,
+                "games_lost": 0,
+                "rank": 2,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
             }
         ],
         "matches": {
             "round_1": [
                 {
-                    "round": 1,
+                    "round": 2,
                     "player1": 8,
                     "player2": 7,
-                    "score1": 0,
-                    "score2": 0,
-                    "winner": "7",
+                    "score1": null,
+                    "score2": null,
+                    "winner": "8",
                     "table": 1
                 }
             ],
             "round_2": [
                 {
-                    "round": 2,
-                    "player1": 7,
-                    "player2": 8,
+                    "round": 3,
+                    "player1": 8,
+                    "player2": 7,
                     "score1": 0,
                     "score2": 0,
-                    "winner": "8",
+                    "winner": "draw",
                     "table": 1
                 }
             ],
             "round_3": [
-                {
-                    "round": 3,
-                    "player1": 7,
-                    "player2": 8,
-                    "score1": 0,
-                    "score2": 0,
-                    "winner": "8",
-                    "table": 1
-                }
-            ],
-            "round_4": [
                 {
                     "round": 4,
                     "player1": 8,
@@ -304,36 +62,284 @@
                     "table": 1
                 }
             ]
+        },
+        "settings": {
+            "format": "bo1",
+            "tournament_type": "swiss",
+            "rounds": 3,
+            "decklist_mandatory": false,
+            "decklist_public": false
         }
     },
     {
-        "id": 107,
-        "name": "Pauper",
-        "date": "2026-01-03",
-        "status": "created",
+        "id": 109,
+        "name": "Nigga",
+        "date": "2026-01-08",
+        "status": "completed",
         "organizerId": 7,
-        "currentRound": 0,
+        "currentRound": 7,
+        "participants": [
+            {
+                "userId": 8,
+                "score": 14,
+                "games_won": 6,
+                "games_lost": 3,
+                "rank": 1,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
+            },
+            {
+                "userId": 7,
+                "score": 5,
+                "games_won": 3,
+                "games_lost": 6,
+                "rank": 2,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
+            }
+        ],
+        "matches": {
+            "round_1": [
+                {
+                    "round": 2,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 1,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ],
+            "round_2": [
+                {
+                    "round": 3,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 1,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ],
+            "round_3": [
+                {
+                    "round": 4,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 1,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ],
+            "round_4": [
+                {
+                    "round": 5,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 0,
+                    "score2": 1,
+                    "winner": "7",
+                    "table": 1
+                }
+            ],
+            "round_5": [
+                {
+                    "round": 6,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 1,
+                    "score2": 1,
+                    "winner": "draw",
+                    "table": 1
+                }
+            ],
+            "round_6": [
+                {
+                    "round": 7,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 1,
+                    "score2": 1,
+                    "winner": "draw",
+                    "table": 1
+                }
+            ],
+            "round_7": [
+                {
+                    "round": 8,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 1,
+                    "score2": 0,
+                    "winner": "8",
+                    "table": 1
+                }
+            ]
+        },
+        "settings": {
+            "format": "bo1",
+            "tournament_type": "swiss",
+            "rounds": 3,
+            "decklist_mandatory": false,
+            "decklist_public": false
+        }
+    },
+    {
+        "id": 110,
+        "name": "Test",
+        "date": "2026-01-08",
+        "status": "in_progress",
+        "organizerId": 7,
+        "currentRound": 2,
         "participants": [
             {
                 "userId": 7,
-                "score": 0,
-                "games_won": 0,
+                "score": 3,
+                "games_won": 1,
                 "games_lost": 0,
-                "rank": 0,
+                "rank": 1,
                 "decklist": "",
-                "decklist_name": ""
+                "decklist_name": "",
+                "malus": 0
             },
             {
                 "userId": 8,
                 "score": 0,
                 "games_won": 0,
-                "games_lost": 0,
-                "rank": 0,
+                "games_lost": 1,
+                "rank": 2,
                 "decklist": "",
-                "decklist_name": ""
+                "decklist_name": "",
+                "malus": 0
             }
         ],
-        "matches": {},
+        "matches": {
+            "round_1": [
+                {
+                    "round": 2,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 0,
+                    "score2": 1,
+                    "winner": "7",
+                    "table": 1
+                }
+            ],
+            "round_2": [
+                {
+                    "round": 3,
+                    "player1": 7,
+                    "player2": 8,
+                    "score1": null,
+                    "score2": null,
+                    "winner": null,
+                    "table": 1
+                }
+            ]
+        },
+        "settings": {
+            "format": "bo1",
+            "tournament_type": "swiss",
+            "rounds": 3,
+            "decklist_mandatory": false,
+            "decklist_public": false
+        }
+    },
+    {
+        "id": 111,
+        "name": "Negri",
+        "date": "2026-01-08",
+        "status": "completed",
+        "organizerId": 7,
+        "currentRound": 2,
+        "participants": [
+            {
+                "userId": 7,
+                "score": 3,
+                "games_won": 1,
+                "games_lost": 0,
+                "rank": 1,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
+            },
+            {
+                "userId": 8,
+                "score": 0,
+                "games_won": 0,
+                "games_lost": 1,
+                "rank": 2,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
+            }
+        ],
+        "matches": {
+            "round_1": [
+                {
+                    "round": 2,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 0,
+                    "score2": 1,
+                    "winner": "7",
+                    "table": 1
+                }
+            ]
+        },
+        "settings": {
+            "format": "bo1",
+            "tournament_type": "swiss",
+            "rounds": 3,
+            "decklist_mandatory": false,
+            "decklist_public": false
+        }
+    },
+    {
+        "id": 112,
+        "name": "Negraccio",
+        "date": "2026-01-08",
+        "status": "completed",
+        "organizerId": 7,
+        "currentRound": 2,
+        "participants": [
+            {
+                "userId": 7,
+                "score": 3,
+                "games_won": 1,
+                "games_lost": 0,
+                "rank": 1,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
+            },
+            {
+                "userId": 8,
+                "score": 0,
+                "games_won": 0,
+                "games_lost": 1,
+                "rank": 2,
+                "decklist": "",
+                "decklist_name": "",
+                "malus": 0
+            }
+        ],
+        "matches": {
+            "round_1": [
+                {
+                    "round": 2,
+                    "player1": 8,
+                    "player2": 7,
+                    "score1": 0,
+                    "score2": 1,
+                    "winner": "7",
+                    "table": 1
+                }
+            ]
+        },
         "settings": {
             "format": "bo1",
             "tournament_type": "swiss",
