@@ -214,4 +214,24 @@ router.post('/decklists/categorize', (req, res) => {
     res.redirect('/admin/decklists');
 });
 
+// Update player penalty (malus)
+router.post('/tournaments/:id/penalty', (req, res) => {
+    const { userId, malus } = req.body;
+    const tournaments = DataManager.getTournaments();
+    const tIndex = tournaments.findIndex(t => t.id == req.params.id);
+
+    if (tIndex === -1) return res.status(404).send('Tournament not found');
+
+    const participant = tournaments[tIndex].participants.find(p => p.userId == userId);
+    if (!participant) return res.status(404).send('Participant not found');
+
+    participant.malus = parseInt(malus) || 0;
+
+    // Recalculate standings after penalty change
+    tournaments[tIndex].participants = TournamentLogic.calculateStandings(tournaments[tIndex]);
+
+    DataManager.saveTournaments(tournaments);
+    res.redirect(`/admin/tournaments/${req.params.id}/matches`);
+});
+
 module.exports = router;

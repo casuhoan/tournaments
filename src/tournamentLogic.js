@@ -86,6 +86,7 @@ const TournamentLogic = {
             });
         });
 
+        // Calculate standings FIRST (before BYE selection)
         if (nextRound === 1) {
             participants.sort(() => Math.random() - 0.5);
         } else {
@@ -101,20 +102,26 @@ const TournamentLogic = {
 
             if (eligibleForBye.length === 0) {
                 // Edge case: All players already have a BYE
-                // This should not happen in well-designed tournaments, but handle gracefully
                 console.error('WARNING: All players have already received a BYE. Cannot continue with odd number.');
                 return null;
             }
 
-            // Among eligible players, prefer lowest-ranked
-            eligibleForBye.sort((a, b) => b.rank - a.rank); // Higher rank = lower in standings
-            byePlayer = eligibleForBye.pop();
+            // Among eligible players, select the LAST one (lowest in standings)
+            // eligibleForBye is already sorted by calculateStandings above
+            // Find the lowest-ranked among eligible
+            let lowestRank = -1;
+            let lowestPlayer = null;
+            eligibleForBye.forEach(p => {
+                if (p.rank > lowestRank) {
+                    lowestRank = p.rank;
+                    lowestPlayer = p;
+                }
+            });
+            byePlayer = lowestPlayer;
 
             // Remove BYE player from participants pool for pairing
+            // IMPORTANT: Keep the rest in their current sorted order!
             participants = participants.filter(p => p.userId !== byePlayer.userId);
-
-            // Re-sort remaining by standings for pairing
-            participants = TournamentLogic.calculateStandings({ ...tournament, participants });
         }
 
         const solve = (pool, allowRepeats = false) => {

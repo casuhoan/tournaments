@@ -53,11 +53,34 @@ router.post('/settings/profile', upload.single('avatar'), (req, res) => {
     res.render('settings', { user: req.session.user, success: 'Profile updated successfully' });
 });
 
+// View own profile
+router.get('/profile', (req, res) => {
+    if (!req.session.user) return res.redirect('/login');
+    const users = DataManager.getUsers();
+    const user = users.find(u => u.id === req.session.user.id);
+    if (!user) return res.redirect('/login');
+
+    // Get user's tournament history
+    const tournaments = DataManager.getTournaments();
+    const userTournaments = tournaments.filter(t =>
+        t.participants && t.participants.some(p => p.userId === user.id)
+    );
+
+    res.render('profile', { user, tournaments: userTournaments });
+});
+
 router.get('/profile/:id', (req, res) => {
     const users = DataManager.getUsers();
     const user = users.find(u => u.id == req.params.id);
     if (!user) return res.status(404).send('User not found');
-    res.render('profile', { user });
+
+    // Get user's tournament history
+    const tournaments = DataManager.getTournaments();
+    const userTournaments = tournaments.filter(t =>
+        t.participants && t.participants.some(p => p.userId === user.id)
+    );
+
+    res.render('profile', { user, tournaments: userTournaments });
 });
 
 module.exports = router;
