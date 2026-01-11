@@ -96,19 +96,31 @@ const TournamentLogic = {
         let byePlayer = null;
 
         if (participants.length % 2 !== 0) {
-            // Prefer giving BYE to lowest-ranked player who has received fewest BYEs
-            participants.sort((a, b) => {
-                const byeCountDiff = (a.bye_count || 0) - (b.bye_count || 0);
-                if (byeCountDiff !== 0) return byeCountDiff;
-                return b.rank - a.rank; // Higher rank = lower in standings
-            });
-            byePlayer = participants.pop();
-            // Re-sort by standings for pairing
+            // STRICT RULE: BYE can only be given ONCE per player in the entire tournament
+            const eligibleForBye = participants.filter(p => (p.bye_count || 0) === 0);
+
+            if (eligibleForBye.length === 0) {
+                // Edge case: All players already have a BYE
+                // This should not happen in well-designed tournaments, but handle gracefully
+                console.error('WARNING: All players have already received a BYE. Cannot continue with odd number.');
+                return null;
+            }
+
+            // Among eligible players, prefer lowest-ranked
+            eligibleForBye.sort((a, b) => b.rank - a.rank); // Higher rank = lower in standings
+            byePlayer = eligibleForBye.pop();
+
+            // Remove BYE player from participants pool for pairing
+            participants = participants.filter(p => p.userId !== byePlayer.userId);
+
+            // Re-sort remaining by standings for pairing
             participants = TournamentLogic.calculateStandings({ ...tournament, participants });
         }
 
         const solve = (pool, allowRepeats = false) => {
             if (pool.length === 0) return [];
+            if (pool.length === 1) return null; // Can't pair a single player
+
             let p1 = pool[0];
             for (let i = 1; i < pool.length; i++) {
                 let p2 = pool[i];
@@ -127,6 +139,13 @@ const TournamentLogic = {
         };
 
         let pairings = solve(participants, false);
+
+        // FALLBACK: If strict pairing fails with small pool (e.g., 2 players who already played),
+        // allow one repeat match to continue tournament
+        if (pairings === null && participants.length === 2) {
+            console.log("Small pool - allowing repeat match to continue tournament");
+            pairings = solve(participants, true);
+        }
 
         if (pairings === null) {
             return null;
