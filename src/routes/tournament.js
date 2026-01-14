@@ -243,6 +243,29 @@ router.post('/:id/end', isLoggedIn, (req, res) => {
     res.redirect('/tournaments/' + tournament.id);
 });
 
+
+
+// View Decklist
+router.get('/:id/decklist/:userId', (req, res) => {
+    const tournament = DataManager.getTournamentById(req.params.id);
+    if (!tournament) return res.status(404).send('Tournament not found');
+
+    const participant = tournament.participants.find(p => p.userId == req.params.userId);
+    if (!participant || !participant.decklist) return res.status(404).send('Decklist not found');
+
+    const usersMap = getUserMap();
+    const user = usersMap[req.params.userId];
+    const playerName = user ? user.username : 'User ' + req.params.userId;
+
+    res.render('decklist', {
+        tournament,
+        decklistName: participant.decklist_name || 'Mazzo Senza Nome',
+        decklistContent: participant.decklist,
+        playerName: playerName,
+        resultString: `Rank ${participant.rank} (${participant.score} pts)`
+    });
+});
+
 router.post('/:id/decklist', isLoggedIn, (req, res) => {
     const { decklist_url } = req.body;
     const tournaments = DataManager.getTournaments();

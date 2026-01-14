@@ -52,7 +52,7 @@
                                     </td> <!-- W-L-D -->
                                     <td>
                                         <% if (p.decklist_name) { %>
-                                            <a href="/decklist/<%= p.decklist_name %>">
+                                            <a href="/tournaments/<%= t.id %>/decklist/<%= p.userId %>">
                                                 <%= p.decklist_name %>
                                             </a>
                                             <% } else { %>

@@ -231,27 +231,32 @@
                                                     <div style="display: flex; align-items: center; gap: 10px;">
                                                         <img src="/<%= (typeof usersMap !== 'undefined' && usersMap[p.userId]) ? (usersMap[p.userId].avatar || 'img/default_avatar.png') : 'img/default_avatar.png' %>"
                                                             class="avatar" style="width: 30px; height: 30px;">
-                                                        <%= (typeof usersMap !=='undefined' && usersMap[p.userId]) ?
-                                                            usersMap[p.userId].username : ('Player ' + p.userId) %>
+                                                        <a href="/profile/<%= p.userId %>"
+                                                            style="color: inherit; text-decoration: none; font-weight: bold;">
+                                                            <%= (typeof usersMap !=='undefined' && usersMap[p.userId]) ?
+                                                                usersMap[p.userId].username : ('Player ' + p.userId) %>
+                                                        </a>
                         </div>
                     </td>
                     <td><%= p.score %></td>
                     <td><%= p.games_won %> - <%= p.games_lost %> - <%= 0 /* Draws logic missing in basic schema, infer? */ %></td>
                     <td>
                         <% if ((typeof user !== ' undefined' && user) ||
-                                                            tournament.settings?.decklist_visibility==='public' ) { %>
-                                                            <% if (p.decklist_name) { %>
-                                                                <a href="/decklist/<%= p.decklist_name %>">
-                                                                    <%= p.decklist_name %>
-                                                                </a>
-                                                                <% } else if (p.decklist) { %>
-                                                                    <span style="color: grey;">Inviato</span>
-                                                                    <% } else { %>
-                                                                        <span style="color: grey;">N/D</span>
-                                                                        <% } %>
-                                                                            <% } else { %>
-                                                                                Hidden
-                                                                                <% } %>
+                                                                tournament.settings?.decklist_visibility==='public' ) {
+                                                                %>
+                                                                <% if (p.decklist_name) { %>
+                                                                    <a
+                                                                        href="/tournaments/<%= tournament.id %>/decklist/<%= p.userId %>">
+                                                                        <%= p.decklist_name %>
+                                                                    </a>
+                                                                    <% } else if (p.decklist) { %>
+                                                                        <span style="color: grey;">Inviato</span>
+                                                                        <% } else { %>
+                                                                            <span style="color: grey;">N/D</span>
+                                                                            <% } %>
+                                                                                <% } else { %>
+                                                                                    Hidden
+                                                                                    <% } %>
                                                 </td>
                                             </tr>
                                             <% }) %>

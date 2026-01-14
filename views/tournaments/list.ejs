@@ -51,12 +51,12 @@
                                                             style="font-weight:bold; color: var(--primary);">
                                                             <%= TournamentLogic.getRankString(p.rank) %>
                                                         </span>
-                                                        <a href="/profile/<%= pName %>"
+                                                        <a href="/profile/<%= p.userId %>"
                                                             style="text-decoration:none; color:inherit;">
                                                             <%= pName %>
                                                         </a>
                                                         <% if (p.decklist_name) { %>
-                                                            - <a href="/decklist/<%= p.decklist_name %>"
+                                                            - <a href="/tournaments/<%= t.id %>/decklist/<%= p.userId %>"
                                                                 style="color: grey;">
                                                                 <%= p.decklist_name %>
                                                             </a>
