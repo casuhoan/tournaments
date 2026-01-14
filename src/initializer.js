@@ -47,6 +47,24 @@ function initializeData(app) {
         console.log('No /tempdata found. Skipping migration.');
     }
 
+    // Check for leagues.json, create empty if missing
+    const LEAGUES_FILE = path.join(DATA_DIR, 'leagues.json');
+    if (!fs.existsSync(LEAGUES_FILE)) {
+        try {
+            // Check if temp data has it, otherwise default empty
+            const tempLeagues = path.join(TEMP_DATA_DIR, 'leagues.json');
+            if (fs.existsSync(tempLeagues)) {
+                fs.copyFileSync(tempLeagues, LEAGUES_FILE);
+                console.log('Migrated leagues.json from temp data.');
+            } else {
+                fs.writeFileSync(LEAGUES_FILE, '[]');
+                console.log('Created empty leagues.json');
+            }
+        } catch (err) {
+            console.error('Error initializing leagues.json:', err);
+        }
+    }
+
     // Create flag file
     try {
         fs.writeFileSync(INIT_FLAG, new Date().toISOString());

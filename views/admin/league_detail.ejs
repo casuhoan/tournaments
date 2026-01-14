@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+
+    <div class="main-container">
+        <div class="glass-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h1>
+                        <%= league.name %>
+                    </h1>
+                    <span style="color: grey;">Gestione Tappe</span>
+                </div>
+                <a href="/admin/leagues" class="btn btn-secondary">Torna alle Leghe</a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- LEFT: Current Stops -->
+                <div>
+                    <h3>Tappe Della Lega (<%= league.stops.length %>/<%= league.max_stops %>)</h3>
+
+                    <% if(stopDetails.length===0) { %>
+                        <p style="color: grey; font-style: italic;">Nessuna tappa inserita.</p>
+                        <% } else { %>
+                            <ul class="list-group">
+                                <% stopDetails.forEach((stop, index)=> { %>
+                                    <li class="list-group-item"
+                                        style="background: rgba(255,255,255,0.05); margin-bottom: 10px; border-radius: 8px; padding: 15px;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div>
+                                                <strong>Tappa <%= index + 1 %>:</strong>
+                                                <%= stop.name %>
+                                                    <br>
+                                                    <small style="color: grey;">
+                                                        <%= stop.date %> | <%= stop.status %>
+                                                    </small>
+                                            </div>
+                                            <a href="/admin/tournaments/<%= stop.id %>/matches"
+                                                class="btn btn-sm btn-secondary">Vedi Torneo</a>
+                                        </div>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } %>
+                </div>
+
+                <!-- RIGHT: Add Stop -->
+                <div
+                    style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; height: fit-content;">
+                    <h3>Aggiungi Tappa</h3>
+                    <p>Seleziona un torneo esistente (stato: created) da aggiungere come tappa.</p>
+
+                    <% if(league.status==='completed' ) { %>
+                        <div class="alert alert-warning">Lega Terminata. Impossibile aggiungere tappe.</div>
+                        <% } else if(league.stops.length>= league.max_stops) { %>
+                            <div class="alert alert-warning">Numero massimo di tappe raggiunto.</div>
+                            <% } else { %>
+                                <form action="/admin/leagues/<%= league.id %>/stops" method="POST">
+                                    <div class="form-group">
+                                        <label>Seleziona Torneo</label>
+                                        <select name="tournament_id" class="form-control" required>
+                                            <option value="">-- Scegli un torneo --</option>
+                                            <% availableTournaments.forEach(t=> { %>
+                                                <option value="<%= t.id %>">
+                                                    <%= t.name %> (<%= t.date %>)
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;">Aggiungi
+                                        Tappa</button>
+                                </form>
+                                <% if(availableTournaments.length===0) { %>
+                                    <p style="margin-top: 10px; color: #ff6b6b; font-size: 0.9rem;">
+                                        <i class="fas fa-exclamation-circle"></i> Nessun torneo disponibile. <a
+                                            href="/admin/tournaments/create">Creane uno nuovo</a> prima.
+                                    </p>
+                                    <% } %>
+                                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

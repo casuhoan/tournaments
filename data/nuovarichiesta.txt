@@ -123,7 +123,20 @@ Richiesta 16 (Alcuni fix):
 6. Nella classica e lista dei partecipanti non vedo l'immagine profilo, mentre nella schermata di visualizzazione del torneo vedo l'immagine ma è troppo ingrandita.
 7. Ci sono dei problemi con l'invio delle liste, perché ho scritto una lista di test ma nella sezione mazzo non vedo un pulsante per visualizzarla.
 
-Richiesta 17 (Aggiunta collegamento a Scryfall):
+Richiesta 17 (Aggiunta leghe):
+1. Aggiungere una nuova sezione in Pannello Admin per le leghe.
+2. In questa sezione dovrei avere due sezioni, una per le leghe a cui partecipo (in corso o terminata) e una per visualizzarle tutte.
+3. Durante la creazione (nel pannello admin ovviamente) mi chiede un nome e il numero di tappe. Poi (sempre nella pagina admin) posso aggiunger una tappa inserendo la data e selezionando uno dei tornei tra quelli non ancora iniziati.
+4. Al termina del torneo, verrà registrato il punteggio alla lega. La classifica di tutti i giocatori assegnerà 3 punti per ogni vittoria e 1 punto per ogni pareggio.
+5. Entrando nella pagina della lega, verrà visualizzata la classifica totale (somma di tutti i punteggi ottenuti da un giocatore nelle varie leghe), una sezione per visualizzare la pagina dei tornei delle tappe successive (in caso non ci fossero, verrà visualizzato "Prossima tappa non ancora disponibile) e in fondo ci saranno le varie tappe con la top 3 dei giocatori per tappa. 
+6. Ovviamente premendo su un singolo torneo si vedrà la pagina del torneo e premendo sul nome del giocatore si vedrà il suo profilo.
+7. Al termine dell'ultima tappa la lega si chiuderà automaticamente, rimarrà visualizzata solo la classifica finale e tutte le tappe effettuate con la top 3.
+Ti consiglio di controllare più volte se funziona correttamente facendo del test.
+
+Richiesta 18 (Footer):
+Aggiungere un footer.
+
+Richiesta 19 (Aggiunta collegamento a Scryfall):
 Vorrei che le liste si potessero aprire e mostrassero le immagini delle carte ordinate per tipo.
 
 casuhoan/tournaments:main 8081:80 /var/www/html /var/www/html/data /var/lib/docker/volumes/data

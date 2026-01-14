@@ -5,7 +5,7 @@ const DATA_DIR = path.join(__dirname, '../data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const TOURNAMENTS_FILE = path.join(DATA_DIR, 'tournaments.json');
 
-// Helper to read JSON
+// Helper to read JSON (Disk I/O)
 const readJson = (file) => {
     try {
         if (!fs.existsSync(file)) {
@@ -19,7 +19,7 @@ const readJson = (file) => {
     }
 };
 
-// Helper to write JSON
+// Helper to write JSON (Disk I/O)
 const writeJson = (file, data) => {
     try {
         fs.writeFileSync(file, JSON.stringify(data, null, 4), 'utf8');
@@ -30,27 +30,43 @@ const writeJson = (file, data) => {
     }
 };
 
+// IN-MEMORY CACHE
+// Load data once at startup (or first access)
+let cachedUsers = readJson(USERS_FILE);
+let cachedTournaments = readJson(TOURNAMENTS_FILE);
+
+console.log('[DataManager] Data loaded into memory cache.');
+
 const DataManager = {
-    getUsers: () => readJson(USERS_FILE),
-    saveUsers: (users) => writeJson(USERS_FILE, users),
+    // READ: Return from memory (Instant)
+    getUsers: () => cachedUsers,
 
-    getTournaments: () => readJson(TOURNAMENTS_FILE),
-    saveTournaments: (tournaments) => writeJson(TOURNAMENTS_FILE, tournaments),
+    // WRITE: Update memory AND save to disk (Sync for safety)
+    saveUsers: (users) => {
+        cachedUsers = users; // Update cache
+        return writeJson(USERS_FILE, users); // Persist
+    },
 
-    // Specific Helpers
+    // READ: Return from memory (Instant)
+    getTournaments: () => cachedTournaments,
+
+    // WRITE: Update memory AND save to disk
+    saveTournaments: (tournaments) => {
+        cachedTournaments = tournaments; // Update cache
+        return writeJson(TOURNAMENTS_FILE, tournaments); // Persist
+    },
+
+    // Specific Helpers (Now using cached data via getters)
     getUserById: (id) => {
-        const users = readJson(USERS_FILE);
-        return users.find(u => u.id === id);
+        return cachedUsers.find(u => u.id === id);
     },
 
     getUserByEmail: (email) => {
-        const users = readJson(USERS_FILE);
-        return users.find(u => u.email === email);
+        return cachedUsers.find(u => u.email === email);
     },
 
     getTournamentById: (id) => {
-        const tournaments = readJson(TOURNAMENTS_FILE);
-        return tournaments.find(t => t.id == id); // Loose equality to handle String/Number differences
+        return cachedTournaments.find(t => t.id == id);
     }
 };
 

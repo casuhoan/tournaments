@@ -1,5 +1,79 @@
 </div>
 
+<footer
+    style="margin-top: 60px; padding: 50px 20px; background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(10px); border-top: 1px solid var(--glass-border); color: #a0a0a0; position: relative; z-index: 10;">
+    <div
+        style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+
+        <!-- Column 1: Info -->
+        <div>
+            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.4rem;">Tournament Manager</h3>
+            <p style="line-height: 1.6;">La piattaforma ufficiale per gestire i tuoi tornei. Organizza, partecipa e
+                scala la classifica in un ambiente competitivo e professionale.</p>
+        </div>
+
+        <!-- Column 2: Mini Guide -->
+        <div>
+            <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.2rem;">Come Funziona?</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                    <span
+                        style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">1</span>
+                    <span><strong>Registrati</strong> ed effettua il login</span>
+                </li>
+                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                    <span
+                        style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">2</span>
+                    <span><strong>Iscriviti</strong> a un torneo attivo</span>
+                </li>
+                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                    <span
+                        style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">3</span>
+                    <span><strong>Invia</strong> la tua Decklist (se richiesta)</span>
+                </li>
+                <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                    <span
+                        style="background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">4</span>
+                    <span><strong>Gioca</strong> e riporta i risultati!</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Links -->
+        <div>
+            <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.2rem;">Link Rapidi</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li><a href="/" class="footer-link"><i class="fas fa-home" style="width: 20px;"></i> Home</a></li>
+                <li style="margin-top: 10px;"><a href="/profile" class="footer-link"><i class="fas fa-user"
+                            style="width: 20px;"></i> Il Tuo Profilo</a></li>
+                <li style="margin-top: 10px;"><a href="/tournaments" class="footer-link"><i class="fas fa-trophy"
+                            style="width: 20px;"></i> Tornei</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div
+        style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;">
+        &copy; 2026 Grandius Hall of Fame. Created with <i class="fas fa-heart" style="color: var(--secondary);"></i>
+        and Code.
+    </div>
+
+    <style>
+        .footer-link {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+    </style>
+</footer>
+
 <script src="/js/main.js"></script>
 <script>
     const theme = localStorage.getItem('theme') || 'dark';

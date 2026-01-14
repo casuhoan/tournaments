@@ -234,4 +234,73 @@ router.post('/tournaments/:id/penalty', (req, res) => {
     res.redirect(`/admin/tournaments/${req.params.id}/matches`);
 });
 
+
+
+// LEAGUES MANAGEMENT
+
+// List Leagues & Create Form
+router.get('/leagues', isAdmin, (req, res) => {
+    const leagues = DataManager.getLeagues() || [];
+    res.render('admin/leagues', { leagues });
+});
+
+// Create League
+router.post('/leagues', isAdmin, (req, res) => {
+    const { name, max_stops } = req.body;
+    let leagues = DataManager.getLeagues() || [];
+
+    const newLeague = {
+        id: Date.now().toString(),
+        name,
+        max_stops: parseInt(max_stops) || 5,
+        status: 'active', // active, completed
+        stops: [], // Array of tournament IDs
+        created_at: new Date().toISOString()
+    };
+
+    leagues.push(newLeague);
+    DataManager.saveLeagues(leagues);
+    res.redirect('/admin/leagues');
+});
+
+// League Detail & Manage Stops
+router.get('/leagues/:id', isAdmin, (req, res) => {
+    const leagues = DataManager.getLeagues();
+    const league = leagues.find(l => l.id == req.params.id);
+    if (!league) return res.redirect('/admin/leagues');
+
+    // Get all tournaments that are NOT already in this league (or any league? User didn't specify, but usually unique)
+    // For now, allow any "created" tournament to be added as a stop.
+    // User requirement: "selezionando uno dei tornei tra quelli non ancora iniziati"
+    const allTournaments = DataManager.getTournaments();
+    const availableTournaments = allTournaments.filter(t =>
+        t.status === 'created' &&
+        !league.stops.includes(t.id)
+        // Optional: Check if t is already in another league? Not strictly required but good practice.
+    );
+
+    // Get details of stops
+    const stopDetails = league.stops.map(stopId => {
+        return allTournaments.find(t => t.id == stopId) || { id: stopId, name: 'Unknown/Deleted', status: 'unknown' };
+    });
+
+    res.render('admin/league_detail', { league, availableTournaments, stopDetails });
+});
+
+// Add Stop to League
+router.post('/leagues/:id/stops', isAdmin, (req, res) => {
+    const { tournament_id } = req.body;
+    let leagues = DataManager.getLeagues();
+    let league = leagues.find(l => l.id == req.params.id);
+
+    if (league && tournament_id) {
+        if (!league.stops.includes(tournament_id)) {
+            league.stops.push(tournament_id);
+            // Optionally, we could tag the tournament object with leagueId if needed for easier lookup
+            DataManager.saveLeagues(leagues);
+        }
+    }
+    res.redirect('/admin/leagues/' + req.params.id);
+});
+
 module.exports = router;
