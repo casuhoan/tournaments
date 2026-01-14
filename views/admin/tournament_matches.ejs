@@ -108,11 +108,13 @@
                                                             <td>
                                                                 <div
                                                                     style="display: flex; align-items: center; gap: 10px;">
-                                                                    <img src="/<%= usersMap[p.userId]?.avatar || 'img/default_avatar.png' %>"
+                                                                    <img src="/<%= (usersMap[p.userId] && usersMap[p.userId].avatar) ? usersMap[p.userId].avatar : 'img/default_avatar.png' %>"
                                                                         class="avatar"
                                                                         style="width: 30px; height: 30px;">
-                                                                    <%= usersMap[p.userId]?.username || 'Player ' +
-                                                                        p.userId %>
+                                                                    <%= (usersMap[p.userId] &&
+                                                                        usersMap[p.userId].username) ?
+                                                                        usersMap[p.userId].username : ('Player ' +
+                                                                        p.userId) %>
                                                                 </div>
                                                             </td>
                                                             <td>
@@ -120,9 +122,10 @@
                                                             </td>
                                                             <td>
                                                                 <span
-                                                                    style="color: <%= (p.malus || 0) > 0 ? 'orange' : 'inherit' %>; font-weight: bold;">
-                                                                    <%= p.malus || 0 %>
-                                                                </span>
+                                                                    style="color: <%= (p.malus || 0) > 0 ? ' orange'
+                                                                        : 'inherit' %>; font-weight: bold;">
+                                                                        <%= p.malus || 0 %>
+                                                                            </span>
                                                             </td>
                                                             <td>
                                                                 <form

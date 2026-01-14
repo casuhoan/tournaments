@@ -69,8 +69,9 @@ app.get('/', (req, res) => {
 
 // Mount Routes
 app.use('/', authRoutes);
-app.use('/', profileRoutes);
-app.use('/tournaments', tournamentRoutes);
 app.use('/admin', adminRoutes);
+app.use('/tournaments', tournamentRoutes);
+app.use('/profile', profileRoutes);
+app.use('/leagues', leagueRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

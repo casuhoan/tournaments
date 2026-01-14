@@ -1,0 +1,141 @@
+<%- include('../partials/header') %>
+
+    <div class="main-container">
+        <!-- INFO LEGA -->
+        <div class="glass-panel" style="text-align: center; margin-bottom: 30px;">
+            <h1>
+                <%= league.name %>
+            </h1>
+            <% if(league.status==='active' ) { %>
+                <span class="status-tag in_progress" style="font-size: 1.2rem; padding: 5px 15px;">In Corso</span>
+                <% } else { %>
+                    <span class="status-tag completed" style="font-size: 1.2rem; padding: 5px 15px;">Terminata</span>
+                    <% } %>
+                        <p style="margin-top: 10px; color: grey;">Totale Tappe: <%= league.stops.length %> / <%=
+                                    league.max_stops %>
+                        </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+
+            <!-- CLASSIFICA GENERALE -->
+            <div class="glass-panel">
+                <h2><i class="fas fa-list-ol"></i> Classifica Generale</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Giocatore</th>
+                            <th>Punti Totali</th>
+                            <th>W-L</th>
+                            <th>Tappe Giocate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (standings.length===0) { %>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">Nessun risultato registrato.</td>
+                            </tr>
+                            <% } %>
+                                <% standings.forEach((p, index)=> { %>
+                                    <tr>
+                                        <td><span class="rank-badge"
+                                                style="<%= index === 0 ? 'background: gold; color: black;' : (index === 1 ? 'background: silver; color: black;' : (index === 2 ? 'background: #cd7f32; color: black;' : '')) %>">
+                                                <%= index + 1 %>
+                                            </span></td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <img src="/<%= (usersMap[p.userId] && usersMap[p.userId].avatar) ? usersMap[p.userId].avatar : 'img/default_avatar.png' %>"
+                                                    class="avatar" style="width: 30px; height: 30px;">
+                                                <a href="/profile/<%= p.userId %>"
+                                                    style="color: inherit; text-decoration: none; font-weight: bold;">
+                                                    <%= (usersMap[p.userId] && usersMap[p.userId].username) ?
+                                                        usersMap[p.userId].username : 'Player ' + p.userId %>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td><strong>
+                                                <%= p.score %>
+                                            </strong></td>
+                                        <td>
+                                            <%= p.games_won %> - <%= p.games_lost %>
+                                        </td>
+                                        <td>
+                                            <%= p.participations %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TAPPE -->
+            <div>
+                <!-- PROSSIME TAPPE -->
+                <div class="glass-panel" style="margin-bottom: 20px;">
+                    <h3>Prossime Tappe</h3>
+                    <% if (nextStops.filter(t=> t.status === 'created').length === 0) { %>
+                        <p style="color: grey;">Prossima tappa non ancora disponibile.</p>
+                        <% } else { %>
+                            <ul class="list-group">
+                                <% nextStops.filter(t=> t.status === 'created').forEach(t => { %>
+                                    <li class="list-group-item"
+                                        style="background: rgba(255,255,255,0.05); margin-bottom: 10px; border-radius: 8px; padding: 15px;">
+                                        <strong>
+                                            <%= t.name %>
+                                        </strong>
+                                        <br>
+                                        <span style="color: grey; font-size: 0.9rem;">
+                                            <%= t.date %>
+                                        </span>
+                                        <a href="/tournaments/<%= t.id %>" class="btn btn-sm btn-primary"
+                                            style="display: block; margin-top: 10px; text-align: center;">Vai al
+                                            Torneo</a>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } %>
+                </div>
+
+                <!-- STORICO TAPPE & TOP 3 -->
+                <div class="glass-panel">
+                    <h3>Storico Tappe</h3>
+                    <% const pastStops=stops.filter(t=> t.status !== 'created'); %>
+                        <% if (pastStops.length===0) { %>
+                            <p style="color: grey;">Nessuna tappa completata.</p>
+                            <% } else { %>
+                                <% pastStops.forEach(t=> { %>
+                                    <div
+                                        style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                            <strong>
+                                                <%= t.name %>
+                                            </strong>
+                                            <a href="/tournaments/<%= t.id %>"
+                                                style="font-size: 0.8rem; color: var(--primary);">Vedi</a>
+                                        </div>
+                                        <small style="color: grey;">Top 3:</small>
+                                        <ul style="padding-left: 20px; font-size: 0.9rem; margin: 5px 0;">
+                                            <% if(t.top3 && t.top3.length> 0) { %>
+                                                <% t.top3.forEach(p=> { %>
+                                                    <li>
+                                                        #<%= p.rank %>: <%= (usersMap[p.userId] &&
+                                                                usersMap[p.userId].username) ?
+                                                                usersMap[p.userId].username : p.userId %>
+                                                    </li>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <li>Nessun risultato</li>
+                                                            <% } %>
+                                        </ul>
+                                    </div>
+                                    <% }) %>
+                                        <% } %>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

@@ -1,0 +1,75 @@
+<%- include('../partials/header') %>
+
+    <div class="main-container">
+        <div class="glass-panel">
+            <h1><i class="fas fa-medal"></i> Leghe & Campionati</h1>
+            <p>Partecipa a una serie di tornei e scala la classifica generale!</p>
+
+            <% if (user) { %>
+                <div style="margin-top: 30px;">
+                    <h2 style="color: var(--primary);">Le Mie Leghe</h2>
+                    <% const myLeagues=leagues.filter(l=> l.isMyLeague); %>
+                        <% if (myLeagues.length===0) { %>
+                            <p style="color: grey;">Non stai partecipando a nessuna lega attiva.</p>
+                            <% } else { %>
+                                <div class="dashboard-grid">
+                                    <% myLeagues.forEach(l=> { %>
+                                        <div class="glass-panel"
+                                            style="background: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary);">
+                                            <div
+                                                style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                                <h3>
+                                                    <%= l.name %>
+                                                </h3>
+                                                <% if(l.status==='active' ) { %>
+                                                    <span class="status-tag in_progress">In Corso</span>
+                                                    <% } else { %>
+                                                        <span class="status-tag completed">Terminata</span>
+                                                        <% } %>
+                                            </div>
+                                            <p>
+                                                <%= l.stopsCount %> Tappe Previste
+                                            </p>
+                                            <a href="/leagues/<%= l.id %>" class="btn btn-primary"
+                                                style="width: 100%; text-align: center; margin-top: 10px;">Vedi
+                                                Classifica</a>
+                                        </div>
+                                        <% }) %>
+                                </div>
+                                <% } %>
+                </div>
+                <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0;">
+                <% } %>
+
+                    <h2>Tutte le Leghe</h2>
+                    <% if (leagues.length===0) { %>
+                        <p>Nessuna lega presente al momento.</p>
+                        <% } else { %>
+                            <div class="dashboard-grid">
+                                <% leagues.forEach(l=> { %>
+                                    <div class="glass-panel">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                            <h3>
+                                                <%= l.name %>
+                                            </h3>
+                                            <% if(l.status==='active' ) { %>
+                                                <span class="status-tag in_progress">In Corso</span>
+                                                <% } else { %>
+                                                    <span class="status-tag completed">Terminata</span>
+                                                    <% } %>
+                                        </div>
+                                        <p>
+                                            <%= l.stopsCount %> Tappe Totali
+                                        </p>
+                                        <a href="/leagues/<%= l.id %>" class="btn btn-secondary"
+                                            style="width: 100%; text-align: center; margin-top: 10px;">Dettagli</a>
+                                    </div>
+                                    <% }) %>
+                            </div>
+                            <% } %>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
