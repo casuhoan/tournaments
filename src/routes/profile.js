@@ -66,7 +66,7 @@ router.get('/profile', (req, res) => {
         t.participants && t.participants.some(p => p.userId === user.id)
     );
 
-    res.render('profile', { user, tournaments: userTournaments });
+    res.render('profile', { profileUser: user, participatedTournaments: userTournaments });
 });
 
 router.get('/profile/:id', (req, res) => {
@@ -80,7 +80,7 @@ router.get('/profile/:id', (req, res) => {
         t.participants && t.participants.some(p => p.userId === user.id)
     );
 
-    res.render('profile', { user, tournaments: userTournaments });
+    res.render('profile', { profileUser: user, participatedTournaments: userTournaments });
 });
 
 module.exports = router;
