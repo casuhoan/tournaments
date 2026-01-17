@@ -11,30 +11,7 @@ const getUserMap = () => {
     return map;
 };
 
-// HELPER: Update Scores (Duplicated from original, should ideally be in TournamentLogic but kept here for now)
-function updateParticipantsScores(tournament) {
-    if (!tournament.matches) return;
-    tournament.participants.forEach(p => { p.score = 0; p.games_won = 0; p.games_lost = 0; });
-    Object.values(tournament.matches).forEach(roundMatches => {
-        roundMatches.forEach(m => {
-            if (m.winner) {
-                const p1 = tournament.participants.find(p => p.userId === m.player1);
-                const p2 = tournament.participants.find(p => p.userId === m.player2);
-                if (m.winner === 'draw') {
-                    if (p1) p1.score += 1;
-                    if (p2) p2.score += 1;
-                } else {
-                    const winner = tournament.participants.find(p => p.userId == m.winner);
-                    if (winner) winner.score += 3;
-                }
-                if (m.score1 !== null && m.score2 !== null) {
-                    if (p1) { p1.games_won += parseInt(m.score1); p1.games_lost += parseInt(m.score2); }
-                    if (p2) { p2.games_won += parseInt(m.score2); p2.games_lost += parseInt(m.score1); }
-                }
-            }
-        });
-    });
-}
+
 
 // Routes
 router.use(isAdmin); // Apply isAdmin to all routes in this file
@@ -148,7 +125,7 @@ router.post('/matches/update', (req, res) => {
     else if (match.score2 > match.score1) match.winner = String(match.player2);
     else match.winner = 'draw';
 
-    updateParticipantsScores(tournament);
+    TournamentLogic.updateScores(tournament);
     tournament.participants = TournamentLogic.calculateStandings(tournament);
 
     DataManager.saveTournaments(tournaments);

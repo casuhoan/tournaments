@@ -51,6 +51,34 @@
                     <a href="/login" class="btn btn-primary">Accedi</a>
                     <% } %>
         </div>
+        </div>
     </nav>
+
+    <script>
+        // Mobile Dropdown Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenu = document.querySelector('.user-menu');
+            if (userMenu) {
+                userMenu.addEventListener('click', (e) => {
+                    // Only toggle on click if window is small (mobile) or just always for touch support
+                    // For simplicity, we toggle class 'active'
+                    e.stopPropagation();
+                    userMenu.classList.toggle('active');
+
+                    // Also toggle display property if using inline style or class
+                    const dropdown = userMenu.querySelector('.dropdown-menu');
+                    if (dropdown) {
+                        const style = window.getComputedStyle(dropdown);
+                        // Check via CSS class mostly
+                    }
+                });
+
+                // Close on click outside
+                document.addEventListener('click', () => {
+                    userMenu.classList.remove('active');
+                });
+            }
+        });
+    </script>
 
     <div class="container">

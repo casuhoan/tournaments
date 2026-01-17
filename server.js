@@ -12,6 +12,7 @@ const authRoutes = require('./src/routes/auth');
 const profileRoutes = require('./src/routes/profile');
 const tournamentRoutes = require('./src/routes/tournament');
 const adminRoutes = require('./src/routes/admin');
+const leagueRoutes = require('./src/routes/leagues');
 
 const app = express();
 const PORT = process.env.PORT || 8000;

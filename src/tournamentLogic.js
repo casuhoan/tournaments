@@ -8,6 +8,41 @@ const TournamentLogic = {
         LOSS: 0
     },
 
+    // Update scores based on match results
+    updateScores: (tournament) => {
+        if (!tournament.matches) return;
+
+        // Reset scores first
+        tournament.participants.forEach(p => {
+            p.score = 0;
+            p.games_won = 0;
+            p.games_lost = 0;
+        });
+
+        Object.values(tournament.matches).forEach(roundMatches => {
+            if (!roundMatches) return;
+            roundMatches.forEach(m => {
+                if (m.winner) {
+                    const p1 = tournament.participants.find(p => p.userId === m.player1);
+                    const p2 = tournament.participants.find(p => p.userId === m.player2);
+
+                    if (m.winner === 'draw') {
+                        if (p1) p1.score += 1;
+                        if (p2) p2.score += 1;
+                    } else {
+                        const winner = tournament.participants.find(p => p.userId == m.winner);
+                        if (winner) winner.score += 3;
+                    }
+
+                    if (m.score1 !== null && m.score2 !== null) {
+                        if (p1) { p1.games_won += parseInt(m.score1); p1.games_lost += parseInt(m.score2); }
+                        if (p2) { p2.games_won += parseInt(m.score2); p2.games_lost += parseInt(m.score1); }
+                    }
+                }
+            });
+        });
+    },
+
     // Calculate standings for a tournament
     calculateStandings: (tournament) => {
         let participants = tournament.participants.map(p => {

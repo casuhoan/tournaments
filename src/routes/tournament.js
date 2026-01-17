@@ -11,31 +11,7 @@ const getUserMap = () => {
     return map;
 };
 
-// HELPER: Update Scores (Duplicated, ideally shared)
-function updateParticipantsScores(tournament) {
-    if (!tournament.matches) return;
-    tournament.participants.forEach(p => { p.score = 0; p.games_won = 0; p.games_lost = 0; });
-    Object.values(tournament.matches).forEach(roundMatches => {
-        if (!roundMatches) return;
-        roundMatches.forEach(m => {
-            if (m.winner) {
-                const p1 = tournament.participants.find(p => p.userId === m.player1);
-                const p2 = tournament.participants.find(p => p.userId === m.player2);
-                if (m.winner === 'draw') {
-                    if (p1) p1.score += 1;
-                    if (p2) p2.score += 1;
-                } else {
-                    const winner = tournament.participants.find(p => p.userId == m.winner);
-                    if (winner) winner.score += 3;
-                }
-                if (m.score1 !== null && m.score2 !== null) {
-                    if (p1) { p1.games_won += parseInt(m.score1); p1.games_lost += parseInt(m.score2); }
-                    if (p2) { p2.games_won += parseInt(m.score2); p2.games_lost += parseInt(m.score1); }
-                }
-            }
-        });
-    });
-}
+
 
 // Route for listing tournaments with pagination and filters
 router.get('/', (req, res) => {
@@ -262,6 +238,7 @@ router.get('/:id/decklist/:userId', (req, res) => {
         decklistName: participant.decklist_name || 'Mazzo Senza Nome',
         decklistContent: participant.decklist,
         playerName: playerName,
+        playerId: req.params.userId,
         resultString: `Rank ${participant.rank} (${participant.score} pts)`
     });
 });
