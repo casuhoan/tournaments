@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+    <div class="glass-panel">
+        <h1><i class="fas fa-tools"></i> Strumento di Migrazione Dati</h1>
+        <p>Usa questo strumento per verificare l'integrità dei dati JSON e applicare correzioni automatiche.</p>
+
+        <div class="alert" style="background: rgba(255, 165, 0, 0.2); color: orange; margin: 20px 0;">
+            <i class="fas fa-exclamation-triangle"></i> Attenzione: Esegui un backup dei file in <code>/data</code>
+            prima di procedere se possibile.
+        </div>
+
+        <form action="/admin/migrate" method="POST">
+            <button type="submit" class="btn btn-primary" style="padding: 15px 30px; font-size: 1.2rem;">
+                <i class="fas fa-sync"></i> Esegui Migrazione / Check Integrità
+            </button>
+        </form>
+    </div>
+    <%- include('../partials/footer') %>
