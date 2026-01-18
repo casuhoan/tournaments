@@ -2,12 +2,14 @@
 
     <div class="main-container">
         <div class="glass-panel">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="mobile-stack"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1><i class="fas fa-list"></i> Tutti i Tornei</h1>
-                <form action="/tournaments" method="GET" style="display: flex; gap: 10px;">
+                <form action="/tournaments" method="GET"
+                    style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                     <input type="text" name="search" placeholder="Cerca nome..." class="form-control"
-                        value="<%= filters.search %>">
-                    <select name="filter" class="form-control" style="width: auto;">
+                        style="min-width: 150px;" value="<%= filters.search %>">
+                    <select name="filter" class="form-control" style="width: auto; min-width: 150px;">
                         <option value="all" <%=filters.filter==='all' ? 'selected' : '' %>>Tutti</option>
                         <option value="active" <%=filters.filter==='active' ? 'selected' : '' %>>In Corso (Tutti)
                         </option>
